@@ -1,0 +1,54 @@
+{
+  "pillars": [
+    {
+      "id": "pillar-1",
+      "name": "Innovation",
+      "color": "blue",
+      "children": [
+        {
+          "id": "innovation-1",
+          "name": "Research & Development",
+          "color": "amber",
+          "children": [
+            { "id": "innovation-1a", "name": "Quantum Computing", "color": "violet" },
+            { "id": "innovation-1b", "name": "AI Integration", "color": "red" }
+          ]
+        },
+        {
+          "id": "innovation-2",
+          "name": "Product Design",
+          "color": "blue",
+          "children": [
+            { "id": "innovation-2a", "name": "User Experience", "color": "amber" },
+            { "id": "innovation-2b", "name": "Sustainability", "color": "blue" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pillar-2",
+      "name": "Community",
+      "color": "amber",
+      "children": [
+        {
+          "id": "community-1",
+          "name": "Education",
+          "color": "violet",
+          "children": [
+            { "id": "community-1a", "name": "Workshops", "color": "amber" },
+            { "id": "community-1b", "name": "Scholarships", "color": "blue" }
+          ]
+        },
+        {
+          "id": "community-2",
+          "name": "Engagement",
+          "color": "red",
+          "children": [
+            { "id": "community-2a", "name": "Events", "color": "red" },
+            { "id": "community-2b", "name": "Online Platforms", "color": "violet" }
+          ]
+        }
+      ]
+    }
+  ]
+}
