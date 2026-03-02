@@ -83,8 +83,9 @@ export function AudioParticles() {
 
   const getAudioLevel = useCallback(() => {
     if (!analyserRef.current || !dataArrayRef.current) return 0
-    analyserRef.current.getByteFrequencyData(dataArrayRef.current)
-    const data = dataArrayRef.current
+    const arr = dataArrayRef.current
+    analyserRef.current.getByteFrequencyData(arr as unknown as Uint8Array<ArrayBuffer>)
+    const data = arr
 
     // Focus on bass and mid frequencies for beat detection
     let bassSum = 0
