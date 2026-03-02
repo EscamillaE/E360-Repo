@@ -21,7 +21,7 @@ export function AudioParticles() {
   const animationRef = useRef<number>(0)
   const audioContextRef = useRef<AudioContext | null>(null)
   const analyserRef = useRef<AnalyserNode | null>(null)
-  const dataArrayRef = useRef<Uint8Array | null>(null)
+  const dataArrayRef = useRef<Uint8Array<ArrayBuffer> | null>(null)
   const logoRef = useRef<HTMLImageElement | null>(null)
   const [isAudioActive, setIsAudioActive] = useState(false)
   const [audioLevel, setAudioLevel] = useState(0)
@@ -62,7 +62,7 @@ export function AudioParticles() {
 
       audioContextRef.current = audioContext
       analyserRef.current = analyser
-      dataArrayRef.current = new Uint8Array(analyser.frequencyBinCount)
+      dataArrayRef.current = new Uint8Array(analyser.frequencyBinCount) as Uint8Array<ArrayBuffer>
       setIsAudioActive(true)
     } catch {
       // Microphone not available or denied - particles still animate
