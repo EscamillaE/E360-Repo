@@ -1,5 +1,4 @@
 import {
-  consumeStream,
   convertToModelMessages,
   streamText,
   UIMessage,
@@ -51,6 +50,11 @@ MOBILIARIO (por unidad):
 - Thonik: $132
 - Sewing: $154
 
+CABINAS FOTOGRAFICAS:
+- Cabina 360: $6,000/evento
+- Cabina 180: $5,000/evento
+- Espejo Magico: $4,500/evento
+
 ENERGIA:
 - Planta 60 KVA (8 hrs): $10,450
 - Planta 40 KVA (8 hrs): $7,700
@@ -59,6 +63,11 @@ ENERGIA:
 ALIMENTOS:
 - Coffee Break: $90/persona
 - Snacks: $70/persona
+
+SERVICIOS ADICIONALES:
+- Barra de Bebidas: $3,500/evento
+- Fotografia & Video: $4,500/evento
+- Decoracion y Ambientacion: Precio personalizado
 
 INSTRUCCIONES:
 - Responde siempre en espanol
@@ -80,6 +89,5 @@ export async function POST(req: Request) {
 
   return result.toUIMessageStreamResponse({
     originalMessages: messages,
-    consumeSseStream: consumeStream,
   })
 }
