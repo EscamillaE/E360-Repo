@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useCallback, useState } from "react"
+import { useApp } from "@/components/providers"
 
 interface Particle {
   x: number
@@ -16,6 +17,7 @@ interface Particle {
 }
 
 export function AudioParticles() {
+  const { t } = useApp()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const particlesRef = useRef<Particle[]>([])
   const animationRef = useRef<number>(0)

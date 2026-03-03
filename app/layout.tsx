@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
+import { AppProvider } from "@/components/providers"
 import "./globals.css"
 
 const geistSans = Geist({
@@ -13,13 +14,16 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Eventos 360 - Premium Event Production",
+  title: "Eventos 360 | Produccion Integral de Eventos",
   description:
-    "Experiencias extraordinarias para eventos inolvidables. DJ, audio, iluminacion, efectos especiales y mas.",
+    "Cabina 360, audio profesional, iluminacion, efectos especiales y todo para crear eventos inolvidables en Queretaro.",
 }
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0a",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -31,11 +35,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es" className="dark">
+    <html lang="es" className="dark" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
-        {children}
+        <AppProvider>{children}</AppProvider>
       </body>
     </html>
   )

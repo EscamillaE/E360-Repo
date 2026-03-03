@@ -2,9 +2,12 @@
 
 import { useEffect, useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { ChevronDown } from "lucide-react"
+import { useApp } from "@/components/providers"
 
 export function HeroSection() {
+  const { t } = useApp()
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
@@ -13,91 +16,76 @@ export function HeroSection() {
   }, [])
 
   return (
-    <section className="relative flex min-h-screen flex-col items-center justify-center px-6 text-center">
-      {/* Radial background glow */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 50% 40% at 50% 45%, hsla(38, 92%, 50%, 0.06) 0%, transparent 100%)",
-        }}
-      />
-
+    <section className="relative flex min-h-[100dvh] flex-col items-center justify-center px-6 text-center">
       <div
         className={`relative z-10 flex flex-col items-center transition-all duration-1000 ease-out ${
-          isVisible
-            ? "translate-y-0 opacity-100"
-            : "translate-y-8 opacity-0"
+          isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
         }`}
       >
         {/* Logo */}
-        <div className="mb-8 relative">
-          <div className="absolute inset-0 -m-4 rounded-full blur-3xl bg-gold/10" />
+        <div className="mb-10 relative">
           <Image
             src="/images/logo.png"
             alt="Eventos 360 Logo"
-            width={180}
-            height={180}
-            className="relative drop-shadow-2xl"
+            width={140}
+            height={140}
+            className="relative drop-shadow-lg"
             priority
           />
         </div>
 
         {/* Tagline */}
         <p
-          className={`mb-4 text-xs font-medium uppercase tracking-[0.3em] text-gold transition-all delay-300 duration-700 ${
+          className={`mb-6 text-[11px] font-medium uppercase tracking-[0.35em] text-gold transition-all delay-300 duration-700 ${
             isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           }`}
         >
-          Produccion Integral de Eventos - Queretaro
+          {t.hero.tagline}
         </p>
 
         {/* Heading */}
         <h1
-          className={`mb-6 max-w-3xl text-4xl font-bold leading-tight tracking-tight text-foreground transition-all delay-500 duration-700 md:text-6xl lg:text-7xl ${
+          className={`mb-6 max-w-2xl text-4xl font-bold leading-[1.1] tracking-tight text-foreground transition-all delay-500 duration-700 md:text-6xl lg:text-7xl ${
             isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           }`}
         >
           <span className="text-balance">
-            Convierte tu evento en una
+            {t.hero.heading1}
             <br />
-            <span className="text-glow-gold text-gold">experiencia inolvidable</span>
+            <span className="text-gold">{t.hero.heading2}</span>
           </span>
         </h1>
 
         {/* Subtitle */}
         <p
-          className={`mb-10 max-w-lg text-base leading-relaxed text-muted-foreground transition-all delay-700 duration-700 md:text-lg ${
+          className={`mb-10 max-w-md text-[15px] leading-relaxed text-muted-foreground transition-all delay-700 duration-700 ${
             isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           }`}
         >
-          Cabina 360, audio profesional, iluminacion, efectos especiales, shows
-          de robot LED, drones y todo lo que necesitas para capturar tus
-          momentos y sorprender a tus invitados.
+          {t.hero.subtitle}
         </p>
 
-        {/* CTA Buttons */}
+        {/* CTA */}
         <div
           className={`flex flex-col gap-3 sm:flex-row sm:gap-4 transition-all delay-[900ms] duration-700 ${
             isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           }`}
         >
-          <a
-            href="/cotizador"
-            className="inline-flex items-center justify-center rounded-full bg-gold px-8 py-3.5 text-sm font-semibold text-primary-foreground transition-all hover:bg-gold-light hover:shadow-lg hover:shadow-gold/20"
-          >
-            Cotiza tu evento
-          </a>
-          <a
+          <Link
             href="/catalogo"
-            className="inline-flex items-center justify-center rounded-full border border-border bg-card/50 px-8 py-3.5 text-sm font-semibold text-foreground backdrop-blur-sm transition-all hover:border-gold/30 hover:bg-card"
+            className="inline-flex items-center justify-center rounded-full bg-gold px-8 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-gold-light"
           >
-            Ver Catalogo
-          </a>
+            {t.hero.cta1}
+          </Link>
+          <Link
+            href="#contacto"
+            className="inline-flex items-center justify-center rounded-full border border-border px-8 py-3 text-sm font-semibold text-foreground transition-all hover:bg-secondary"
+          >
+            {t.hero.cta2}
+          </Link>
         </div>
       </div>
 
-      {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
         <ChevronDown className="h-5 w-5 text-muted-foreground" />
       </div>
