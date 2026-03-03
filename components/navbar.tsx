@@ -7,9 +7,11 @@ import { cn } from "@/lib/utils"
 
 const navLinks = [
   { label: "Inicio", href: "#" },
-  { label: "Servicios", href: "#services" },
-  { label: "Galeria", href: "#gallery" },
-  { label: "Contacto", href: "#contact" },
+  { label: "Servicios", href: "#servicios" },
+  { label: "Catalogo", href: "/catalogo" },
+  { label: "Cotizador", href: "/cotizador" },
+  { label: "Galeria", href: "#galeria" },
+  { label: "Contacto", href: "#contacto" },
 ]
 
 export function Navbar() {

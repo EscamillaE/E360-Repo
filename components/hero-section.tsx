@@ -49,7 +49,7 @@ export function HeroSection() {
             isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           }`}
         >
-          Premium Event Production
+          Produccion Integral de Eventos - Queretaro
         </p>
 
         {/* Heading */}
@@ -59,9 +59,9 @@ export function HeroSection() {
           }`}
         >
           <span className="text-balance">
-            Experiencias que
+            Convierte tu evento en una
             <br />
-            <span className="text-glow-gold text-gold">trascienden</span>
+            <span className="text-glow-gold text-gold">experiencia inolvidable</span>
           </span>
         </h1>
 
@@ -71,8 +71,9 @@ export function HeroSection() {
             isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           }`}
         >
-          DJ, audio, iluminacion, efectos especiales, shows de robot LED,
-          drones y todo lo que necesitas para crear eventos inolvidables.
+          Cabina 360, audio profesional, iluminacion, efectos especiales, shows
+          de robot LED, drones y todo lo que necesitas para capturar tus
+          momentos y sorprender a tus invitados.
         </p>
 
         {/* CTA Buttons */}
@@ -82,23 +83,17 @@ export function HeroSection() {
           }`}
         >
           <a
-            href="https://wa.me/?text=Hola%2C%20me%20interesa%20cotizar%20un%20evento%20con%20Eventos%20360"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/cotizador"
             className="inline-flex items-center justify-center rounded-full bg-gold px-8 py-3.5 text-sm font-semibold text-primary-foreground transition-all hover:bg-gold-light hover:shadow-lg hover:shadow-gold/20"
           >
-            Cotizar Evento
+            Cotiza tu evento
           </a>
-          <button
-            onClick={() => {
-              document
-                .getElementById("services")
-                ?.scrollIntoView({ behavior: "smooth" })
-            }}
+          <a
+            href="/catalogo"
             className="inline-flex items-center justify-center rounded-full border border-border bg-card/50 px-8 py-3.5 text-sm font-semibold text-foreground backdrop-blur-sm transition-all hover:border-gold/30 hover:bg-card"
           >
-            Ver Servicios
-          </button>
+            Ver Catalogo
+          </a>
         </div>
       </div>
 

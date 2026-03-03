@@ -8,15 +8,32 @@ import {
   Disc,
   Zap,
   UtensilsCrossed,
+  Camera,
+  Lightbulb,
+  Sparkles,
 } from "lucide-react"
 
 const services = [
   {
     icon: Music,
-    title: "Paquetes DJ & Audio",
+    title: "DJ & Audio Profesional",
     description:
-      "Desde la Cabina Blanca hasta Sweet Dream, paquetes completos con DJ profesional, audio premium e iluminacion de alto nivel.",
+      "Sonido de alta fidelidad y DJ con experiencia. Desde Cabina Blanca hasta Sweet Dream, paquetes para cualquier tipo de evento.",
     highlight: "Desde $4,830 MXN",
+  },
+  {
+    icon: Camera,
+    title: "Cabina 360 y 180",
+    description:
+      "Videos dinamicos en 360 grados y fotos semicirculares con efectos divertidos, listos para compartir al instante.",
+    highlight: "Videos virales",
+  },
+  {
+    icon: Lightbulb,
+    title: "Iluminacion",
+    description:
+      "Luces LED, cabezas moviles y lasers que transforman el espacio y crean la atmosfera perfecta para tu evento.",
+    highlight: "Ambiente unico",
   },
   {
     icon: Flame,
@@ -27,17 +44,24 @@ const services = [
   },
   {
     icon: Zap,
-    title: "Shows en Vivo",
+    title: "Robot LED & Drones",
     description:
       "Robot LED interactivo y shows de drones con figuras personalizadas que transforman tu evento en un espectaculo unico.",
-    highlight: "Robot LED & Drones",
+    highlight: "Shows en vivo",
   },
   {
     icon: Disc,
     title: "Pistas de Baile",
     description:
-      "Pistas de pixeles LED, pistas blancas y pistas HD personalizadas. Desde 4x4 hasta 6x5 metros.",
+      "Pistas de pixeles LED, pistas blancas y pistas HD personalizadas. Desde 4x4 hasta 6x5 metros que invitan a bailar.",
     highlight: "LED interactivo",
+  },
+  {
+    icon: Sparkles,
+    title: "Espejo Magico",
+    description:
+      "Espejo fotografico interactivo con impresiones instantaneas, animaciones y accesorios divertidos para tus invitados.",
+    highlight: "Fotos al instante",
   },
   {
     icon: Armchair,
@@ -48,9 +72,9 @@ const services = [
   },
   {
     icon: UtensilsCrossed,
-    title: "Catering & Extras",
+    title: "Catering & Barra",
     description:
-      "Coffee break, snacks, loza fina, cristaleria y cubiertos. Todo lo necesario para una experiencia completa.",
+      "Coffee break, snacks, barras moviles con bartenders profesionales y menus de cocteles personalizados.",
     highlight: "Servicio integral",
   },
 ]
@@ -114,18 +138,18 @@ function ServiceCard({
 
 export function ServicesSection() {
   return (
-    <section id="services" className="relative px-6 py-24">
+    <section id="servicios" className="relative px-6 py-24">
       <div className="mx-auto max-w-6xl">
         <div className="mb-16 text-center">
           <p className="mb-3 text-xs font-medium uppercase tracking-[0.3em] text-gold">
-            Nuestros Servicios
+            Servicios
           </p>
           <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl text-balance">
             Todo para tu evento perfecto
           </h2>
           <p className="mx-auto max-w-lg text-base text-muted-foreground leading-relaxed">
-            Desde la produccion de audio hasta los efectos especiales mas
-            espectaculares, tenemos todo cubierto.
+            Cabina 360, audio profesional, iluminacion, efectos especiales y
+            mas para capturar tus momentos y sorprender a tus invitados.
           </p>
         </div>
 
