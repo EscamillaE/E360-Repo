@@ -1,7 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
 import { Sparkles, AlertCircle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 
 export default async function Page({
   searchParams,
@@ -21,24 +19,23 @@ export default async function Page({
                 <Sparkles className="h-8 w-8 text-gold transition-transform group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gold/20 blur-xl rounded-full" />
               </div>
-              <span className="text-2xl font-bold text-glow-gold">
+              <span className="text-2xl font-bold">
                 Eventos<span className="text-gold">360</span>
               </span>
             </Link>
           </div>
 
-          <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
-            <CardHeader className="text-center">
+          {/* Card */}
+          <div className="rounded-xl border border-border/50 bg-card/80 backdrop-blur-sm shadow-lg">
+            <div className="p-6 text-center border-b border-border/30">
               <div className="flex justify-center mb-4">
-                <div className="relative">
-                  <AlertCircle className="h-16 w-16 text-destructive" />
-                </div>
+                <AlertCircle className="h-16 w-16 text-destructive" />
               </div>
-              <CardTitle className="text-2xl text-foreground">
+              <h1 className="text-2xl font-bold text-foreground">
                 Algo salio mal
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-center">
+              </h1>
+            </div>
+            <div className="p-6 text-center">
               {params?.error ? (
                 <p className="text-sm text-muted-foreground bg-destructive/10 p-3 rounded-md">
                   Error: {params.error}
@@ -49,19 +46,21 @@ export default async function Page({
                 </p>
               )}
               <div className="mt-6 flex flex-col gap-2">
-                <Button asChild className="bg-gold hover:bg-gold-light text-background">
-                  <Link href="/auth/login">
-                    Intentar de nuevo
-                  </Link>
-                </Button>
-                <Button asChild variant="ghost" className="text-muted-foreground hover:text-foreground">
-                  <Link href="/">
-                    Volver al inicio
-                  </Link>
-                </Button>
+                <Link
+                  href="/auth/login"
+                  className="w-full rounded-lg bg-gold px-4 py-2.5 text-sm font-semibold text-background transition-all hover:bg-gold-light hover:shadow-lg hover:shadow-gold/20 text-center"
+                >
+                  Intentar de nuevo
+                </Link>
+                <Link
+                  href="/"
+                  className="w-full rounded-lg px-4 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground text-center"
+                >
+                  Volver al inicio
+                </Link>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </div>

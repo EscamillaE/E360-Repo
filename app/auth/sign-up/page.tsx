@@ -1,20 +1,10 @@
 'use client'
 
 import { createClient } from '@/lib/supabase/client'
-import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { Sparkles } from 'lucide-react'
+import { Sparkles, Loader2 } from 'lucide-react'
 
 export default function Page() {
   const [fullName, setFullName] = useState('')
@@ -78,77 +68,88 @@ export default function Page() {
                 <Sparkles className="h-8 w-8 text-gold transition-transform group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gold/20 blur-xl rounded-full" />
               </div>
-              <span className="text-2xl font-bold text-glow-gold">
+              <span className="text-2xl font-bold">
                 Eventos<span className="text-gold">360</span>
               </span>
             </Link>
           </div>
 
-          <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
-            <CardHeader className="text-center">
-              <CardTitle className="text-2xl text-foreground">Crear Cuenta</CardTitle>
-              <CardDescription className="text-muted-foreground">
+          {/* Card */}
+          <div className="rounded-xl border border-border/50 bg-card/80 backdrop-blur-sm shadow-lg">
+            <div className="p-6 text-center border-b border-border/30">
+              <h1 className="text-2xl font-bold text-foreground">Crear Cuenta</h1>
+              <p className="text-sm text-muted-foreground mt-1">
                 Registrate para acceder a cotizaciones y mas
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+              </p>
+            </div>
+            <div className="p-6">
               <form onSubmit={handleSignUp}>
                 <div className="flex flex-col gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="fullName" className="text-foreground">Nombre Completo</Label>
-                    <Input
+                    <label htmlFor="fullName" className="text-sm font-medium text-foreground">
+                      Nombre Completo
+                    </label>
+                    <input
                       id="fullName"
                       type="text"
                       placeholder="Juan Perez"
                       required
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="bg-background/50 border-border focus:border-gold focus:ring-gold/20"
+                      className="w-full rounded-lg border border-border bg-background/50 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-colors"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="phone" className="text-foreground">Telefono</Label>
-                    <Input
+                    <label htmlFor="phone" className="text-sm font-medium text-foreground">
+                      Telefono
+                    </label>
+                    <input
                       id="phone"
                       type="tel"
                       placeholder="442 123 4567"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="bg-background/50 border-border focus:border-gold focus:ring-gold/20"
+                      className="w-full rounded-lg border border-border bg-background/50 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-colors"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="email" className="text-foreground">Correo Electronico</Label>
-                    <Input
+                    <label htmlFor="email" className="text-sm font-medium text-foreground">
+                      Correo Electronico
+                    </label>
+                    <input
                       id="email"
                       type="email"
                       placeholder="tu@email.com"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="bg-background/50 border-border focus:border-gold focus:ring-gold/20"
+                      className="w-full rounded-lg border border-border bg-background/50 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-colors"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="password" className="text-foreground">Contrasena</Label>
-                    <Input
+                    <label htmlFor="password" className="text-sm font-medium text-foreground">
+                      Contrasena
+                    </label>
+                    <input
                       id="password"
                       type="password"
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="bg-background/50 border-border focus:border-gold focus:ring-gold/20"
+                      className="w-full rounded-lg border border-border bg-background/50 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-colors"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="repeat-password" className="text-foreground">Confirmar Contrasena</Label>
-                    <Input
+                    <label htmlFor="repeat-password" className="text-sm font-medium text-foreground">
+                      Confirmar Contrasena
+                    </label>
+                    <input
                       id="repeat-password"
                       type="password"
                       required
                       value={repeatPassword}
                       onChange={(e) => setRepeatPassword(e.target.value)}
-                      className="bg-background/50 border-border focus:border-gold focus:ring-gold/20"
+                      className="w-full rounded-lg border border-border bg-background/50 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-colors"
                     />
                   </div>
                   {error && (
@@ -156,13 +157,20 @@ export default function Page() {
                       {error}
                     </p>
                   )}
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-gold hover:bg-gold-light text-background font-semibold transition-all hover:shadow-lg hover:shadow-gold/20" 
+                  <button
+                    type="submit"
                     disabled={isLoading}
+                    className="w-full rounded-lg bg-gold px-4 py-2.5 text-sm font-semibold text-background transition-all hover:bg-gold-light hover:shadow-lg hover:shadow-gold/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
-                    {isLoading ? 'Registrando...' : 'Crear Cuenta'}
-                  </Button>
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Registrando...
+                      </>
+                    ) : (
+                      'Crear Cuenta'
+                    )}
+                  </button>
                 </div>
                 <div className="mt-5 text-center text-sm text-muted-foreground">
                   Ya tienes cuenta?{' '}
@@ -174,8 +182,8 @@ export default function Page() {
                   </Link>
                 </div>
               </form>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           <p className="text-center text-xs text-muted-foreground">
             <Link href="/" className="hover:text-gold transition-colors">

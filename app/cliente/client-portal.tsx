@@ -18,7 +18,7 @@ import {
   Loader2,
   Trash2,
 } from "lucide-react"
-import { useLanguage } from "@/components/providers"
+import { useApp } from "@/components/providers"
 import type { UserProfile, ClientQuote, ClientEvent, ClientFavorite } from "@/lib/actions/client"
 import { signOut, removeFavorite, updateUserProfile } from "@/lib/actions/client"
 
@@ -33,7 +33,7 @@ interface ClientPortalProps {
 }
 
 export function ClientPortal({ user, profile, quotes, events, favorites }: ClientPortalProps) {
-  const { language } = useLanguage()
+  const { locale: language } = useApp()
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<ClientTab>("overview")
   const [isLoggingOut, setIsLoggingOut] = useState(false)

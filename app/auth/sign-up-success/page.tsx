@@ -1,10 +1,3 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 import Link from 'next/link'
 import { Sparkles, Mail, CheckCircle } from 'lucide-react'
 
@@ -20,28 +13,29 @@ export default function Page() {
                 <Sparkles className="h-8 w-8 text-gold transition-transform group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gold/20 blur-xl rounded-full" />
               </div>
-              <span className="text-2xl font-bold text-glow-gold">
+              <span className="text-2xl font-bold">
                 Eventos<span className="text-gold">360</span>
               </span>
             </Link>
           </div>
 
-          <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
-            <CardHeader className="text-center">
+          {/* Card */}
+          <div className="rounded-xl border border-border/50 bg-card/80 backdrop-blur-sm shadow-lg">
+            <div className="p-6 text-center border-b border-border/30">
               <div className="flex justify-center mb-4">
                 <div className="relative">
                   <CheckCircle className="h-16 w-16 text-gold" />
                   <div className="absolute inset-0 bg-gold/20 blur-xl rounded-full" />
                 </div>
               </div>
-              <CardTitle className="text-2xl text-foreground">
+              <h1 className="text-2xl font-bold text-foreground">
                 Registro Exitoso!
-              </CardTitle>
-              <CardDescription className="text-muted-foreground">
+              </h1>
+              <p className="text-sm text-muted-foreground mt-1">
                 Revisa tu correo para confirmar tu cuenta
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-center">
+              </p>
+            </div>
+            <div className="p-6 text-center">
               <div className="flex items-center justify-center gap-2 text-muted-foreground mb-4">
                 <Mail className="h-5 w-5 text-gold" />
                 <span>Hemos enviado un correo de verificacion</span>
@@ -57,8 +51,8 @@ export default function Page() {
                   Ir a Iniciar Sesion
                 </Link>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           <p className="text-center text-xs text-muted-foreground">
             <Link href="/" className="hover:text-gold transition-colors">

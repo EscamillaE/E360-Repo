@@ -16,7 +16,7 @@ import {
   ChevronRight,
 } from "lucide-react"
 import type { CategoryWithItems, CatalogItem } from "@/lib/actions/catalog"
-import { useLanguage } from "@/components/providers"
+import { useApp } from "@/components/providers"
 
 const iconMap: Record<string, React.ElementType> = {
   Volume2: Volume2,
@@ -159,7 +159,7 @@ function ProductCard({ item, index, lang }: { item: CatalogItem; index: number; 
 }
 
 export function CatalogClient({ categories }: { categories: CategoryWithItems[] }) {
-  const { language } = useLanguage()
+  const { locale: language } = useApp()
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
 

@@ -25,7 +25,7 @@ import {
   Trash2,
   Star,
 } from "lucide-react"
-import { useLanguage } from "@/components/providers"
+import { useApp } from "@/components/providers"
 import type { UserProfile } from "@/lib/actions/client"
 import type { AdminStats, AdminQuote, AdminCatalogItem, AdminClient } from "@/lib/actions/admin"
 import type { Category } from "@/lib/actions/catalog"
@@ -45,7 +45,7 @@ interface AdminDashboardProps {
 }
 
 export function AdminDashboard({ user, profile, stats, quotes, catalog, clients, categories }: AdminDashboardProps) {
-  const { language } = useLanguage()
+  const { locale: language } = useApp()
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<AdminTab>("dashboard")
   const [isLoggingOut, setIsLoggingOut] = useState(false)

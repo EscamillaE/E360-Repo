@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Calculator, Plus, Minus, Send, Save, Loader2, CheckCircle } from "lucide-react"
-import { useLanguage } from "@/components/providers"
+import { useApp } from "@/components/providers"
 import { createClient } from "@/lib/supabase/client"
 import { createQuote } from "@/lib/actions/quotes"
 import type { CatalogItem } from "@/lib/actions/catalog"
@@ -22,7 +22,7 @@ interface QuoteCalculatorProps {
 }
 
 export function QuoteCalculator({ initialItems = [], preselectedItemId }: QuoteCalculatorProps) {
-  const { language } = useLanguage()
+  const { locale: language } = useApp()
   const [catalogItems, setCatalogItems] = useState<CatalogItem[]>(initialItems)
   const [selectedItems, setSelectedItems] = useState<QuoteLineItem[]>([])
   const [eventName, setEventName] = useState("")
