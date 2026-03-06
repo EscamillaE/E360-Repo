@@ -2,12 +2,14 @@
 
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-import { ShoppingBag, User, Shield, Monitor, ChevronRight } from "lucide-react"
+import { ShoppingBag, User, Shield, Monitor, ChevronRight, LogIn } from "lucide-react"
 import { useApp } from "@/components/providers"
+import { createClient } from "@/lib/supabase/client"
 
 export function PortalCards() {
-  const { t } = useApp()
+  const { t, locale } = useApp()
   const [isVisible, setIsVisible] = useState(false)
+  const [user, setUser] = useState<{ email: string } | null>(null)
   const ref = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -21,30 +23,48 @@ export function PortalCards() {
     return () => observer.disconnect()
   }, [])
 
+  // Check auth status
+  useEffect(() => {
+    const checkAuth = async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user ? { email: user.email || '' } : null)
+    }
+    checkAuth()
+  }, [])
+
   const portals = [
     {
       icon: ShoppingBag,
       title: t.portals.catalog,
       description: t.portals.catalogDesc,
       href: "/catalogo",
+      requiresAuth: false,
     },
     {
-      icon: User,
-      title: t.portals.client,
-      description: t.portals.clientDesc,
-      href: "/cliente",
+      icon: user ? User : LogIn,
+      title: user 
+        ? t.portals.client 
+        : (locale === 'es' ? 'Iniciar Sesion' : 'Login'),
+      description: user 
+        ? t.portals.clientDesc 
+        : (locale === 'es' ? 'Accede a tu cuenta para ver cotizaciones y eventos' : 'Access your account to view quotes and events'),
+      href: user ? "/cliente" : "/auth/login",
+      requiresAuth: false,
     },
     {
       icon: Shield,
       title: t.portals.admin,
       description: t.portals.adminDesc,
       href: "/admin",
+      requiresAuth: true,
     },
     {
       icon: Monitor,
       title: t.portals.kiosk,
       description: t.portals.kioskDesc,
       href: "/kiosk",
+      requiresAuth: false,
     },
   ]
 

@@ -1,9 +1,16 @@
 import Link from "next/link"
-import Image from "next/image"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Sparkles } from "lucide-react"
 import { QuoteCalculator } from "@/components/quote-calculator"
+import { getCatalogItems } from "@/lib/actions/catalog"
 
-export default function CotizadorPage() {
+export default async function CotizadorPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ item?: string }>
+}) {
+  const params = await searchParams
+  const items = await getCatalogItems()
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -18,13 +25,9 @@ export default function CotizadorPage() {
           </Link>
           <div className="h-5 w-px bg-border" />
           <div className="flex items-center gap-3">
-            <Image
-              src="/images/logo.png"
-              alt="Eventos 360"
-              width={32}
-              height={32}
-              className="rounded-full"
-            />
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gold/10">
+              <Sparkles className="h-4 w-4 text-gold" />
+            </div>
             <h1 className="text-lg font-bold text-foreground">
               Cotizador de Eventos
             </h1>
@@ -46,7 +49,7 @@ export default function CotizadorPage() {
           </p>
         </div>
 
-        <QuoteCalculator />
+        <QuoteCalculator initialItems={items} preselectedItemId={params.item} />
       </div>
     </div>
   )
