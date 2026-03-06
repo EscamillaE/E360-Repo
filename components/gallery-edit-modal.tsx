@@ -3,10 +3,6 @@
 import { useState, useRef } from "react"
 import { X, Upload, Trash2, GripVertical, Plus, Loader2, Eye, EyeOff } from "lucide-react"
 import { useApp } from "@/components/providers"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 
 interface MediaItem {
   id: string
@@ -244,23 +240,18 @@ export function GalleryEditModal({ isOpen, onClose, mediaItems, onUpdate }: Gall
                   className="hidden"
                   id="media-upload"
                 />
-                <label htmlFor="media-upload">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="cursor-pointer gap-2"
-                    disabled={isUploading}
-                    asChild
-                  >
-                    <span>
-                      {isUploading ? (
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                      ) : (
-                        <Plus className="h-3.5 w-3.5" />
-                      )}
-                      {isUploading ? t.uploading : t.addMedia}
-                    </span>
-                  </Button>
+                <label
+                  htmlFor="media-upload"
+                  className={`inline-flex cursor-pointer items-center gap-2 rounded-md border border-border bg-transparent px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-secondary ${
+                    isUploading ? "pointer-events-none opacity-50" : ""
+                  }`}
+                >
+                  {isUploading ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Plus className="h-3.5 w-3.5" />
+                  )}
+                  {isUploading ? t.uploading : t.addMedia}
                 </label>
               </div>
             </div>
@@ -366,65 +357,65 @@ export function GalleryEditModal({ isOpen, onClose, mediaItems, onUpdate }: Gall
 
                 {/* Title Spanish */}
                 <div className="space-y-1.5">
-                  <Label htmlFor="title_es" className="text-xs">
+                  <label htmlFor="title_es" className="text-xs font-medium text-foreground">
                     {t.titleEs}
-                  </Label>
-                  <Input
+                  </label>
+                  <input
                     id="title_es"
                     value={editingItem.title_es || ""}
                     onChange={(e) =>
                       setEditingItem({ ...editingItem, title_es: e.target.value })
                     }
                     placeholder="Titulo en espanol"
-                    className="h-9 text-sm"
+                    className="h-9 w-full rounded-md border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
                   />
                 </div>
 
                 {/* Title English */}
                 <div className="space-y-1.5">
-                  <Label htmlFor="title_en" className="text-xs">
+                  <label htmlFor="title_en" className="text-xs font-medium text-foreground">
                     {t.titleEn}
-                  </Label>
-                  <Input
+                  </label>
+                  <input
                     id="title_en"
                     value={editingItem.title_en || ""}
                     onChange={(e) =>
                       setEditingItem({ ...editingItem, title_en: e.target.value })
                     }
                     placeholder="Title in English"
-                    className="h-9 text-sm"
+                    className="h-9 w-full rounded-md border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
                   />
                 </div>
 
                 {/* Description Spanish */}
                 <div className="space-y-1.5">
-                  <Label htmlFor="desc_es" className="text-xs">
+                  <label htmlFor="desc_es" className="text-xs font-medium text-foreground">
                     {t.descEs}
-                  </Label>
-                  <Textarea
+                  </label>
+                  <textarea
                     id="desc_es"
                     value={editingItem.description_es || ""}
                     onChange={(e) =>
                       setEditingItem({ ...editingItem, description_es: e.target.value })
                     }
                     placeholder="Descripcion en espanol"
-                    className="min-h-[60px] resize-none text-sm"
+                    className="min-h-[60px] w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
                   />
                 </div>
 
                 {/* Description English */}
                 <div className="space-y-1.5">
-                  <Label htmlFor="desc_en" className="text-xs">
+                  <label htmlFor="desc_en" className="text-xs font-medium text-foreground">
                     {t.descEn}
-                  </Label>
-                  <Textarea
+                  </label>
+                  <textarea
                     id="desc_en"
                     value={editingItem.description_en || ""}
                     onChange={(e) =>
                       setEditingItem({ ...editingItem, description_en: e.target.value })
                     }
                     placeholder="Description in English"
-                    className="min-h-[60px] resize-none text-sm"
+                    className="min-h-[60px] w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
                   />
                 </div>
 
@@ -452,29 +443,26 @@ export function GalleryEditModal({ isOpen, onClose, mediaItems, onUpdate }: Gall
 
                 {/* Actions */}
                 <div className="flex gap-2 pt-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
+                  <button
                     onClick={() => setEditingItem(null)}
-                    className="flex-1"
+                    className="flex-1 rounded-md border border-border bg-transparent px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
                   >
                     {t.cancel}
-                  </Button>
-                  <Button
-                    size="sm"
+                  </button>
+                  <button
                     onClick={handleSaveItem}
                     disabled={isSaving}
-                    className="flex-1 bg-gold text-primary-foreground hover:bg-gold/90"
+                    className="flex flex-1 items-center justify-center gap-2 rounded-md bg-gold px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-gold/90 disabled:opacity-50"
                   >
                     {isSaving ? (
                       <>
-                        <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
                         {t.saving}
                       </>
                     ) : (
                       t.save
                     )}
-                  </Button>
+                  </button>
                 </div>
               </div>
             ) : (

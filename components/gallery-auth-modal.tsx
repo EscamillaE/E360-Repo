@@ -3,9 +3,6 @@
 import { useState } from "react"
 import { X, Loader2, Shield } from "lucide-react"
 import { useApp } from "@/components/providers"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { createClient } from "@/lib/supabase/client"
 
 interface GalleryAuthModalProps {
@@ -130,10 +127,10 @@ export function GalleryAuthModal({ isOpen, onClose, onSuccess }: GalleryAuthModa
 
           <div className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-xs">
+              <label htmlFor="email" className="text-xs font-medium text-foreground">
                 {t.email}
-              </Label>
-              <Input
+              </label>
+              <input
                 id="email"
                 type="email"
                 value={email}
@@ -141,15 +138,15 @@ export function GalleryAuthModal({ isOpen, onClose, onSuccess }: GalleryAuthModa
                 placeholder="admin@eventos360.com"
                 required
                 autoComplete="email"
-                className="h-10"
+                className="h-10 w-full rounded-md border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="password" className="text-xs">
+              <label htmlFor="password" className="text-xs font-medium text-foreground">
                 {t.password}
-              </Label>
-              <Input
+              </label>
+              <input
                 id="password"
                 type="password"
                 value={password}
@@ -157,35 +154,34 @@ export function GalleryAuthModal({ isOpen, onClose, onSuccess }: GalleryAuthModa
                 placeholder="••••••••"
                 required
                 autoComplete="current-password"
-                className="h-10"
+                className="h-10 w-full rounded-md border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
               />
             </div>
           </div>
 
           <div className="mt-6 flex gap-3">
-            <Button
+            <button
               type="button"
-              variant="outline"
               onClick={onClose}
-              className="flex-1"
               disabled={isLoading}
+              className="flex-1 rounded-md border border-border bg-transparent px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-secondary disabled:opacity-50"
             >
               {t.cancel}
-            </Button>
-            <Button
+            </button>
+            <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 bg-gold text-primary-foreground hover:bg-gold/90"
+              className="flex flex-1 items-center justify-center gap-2 rounded-md bg-gold px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-gold/90 disabled:opacity-50"
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
                   {t.loggingIn}
                 </>
               ) : (
                 t.login
               )}
-            </Button>
+            </button>
           </div>
         </form>
       </div>
