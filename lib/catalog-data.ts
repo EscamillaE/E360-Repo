@@ -46,8 +46,8 @@ export const catalog: CatalogCategory[] = [
         category: "Paquetes DJ & Audio",
         description:
           "2 medios 15\" (bocinas), iluminacion LED, DJ/Versatil/STAFF, cabina pixeles iluminada, 2 cabezas moviles beam, 2 torres iluminacion, microfonos, conduccion del evento, souvenirs.",
-        price: "$6,820 MXN",
-        priceValue: 6820,
+        price: "$9,200 MXN",
+        priceValue: 9200,
         unit: "evento",
         serviceHours: "5 hrs servicio continuo",
         includes: ["2 medios 15\" (bocinas)", "Iluminacion LED", "DJ / Versatil / STAFF", "Cabina Pixeles iluminada", "2 Cabezas moviles beam", "2 Torres para Iluminacion", "Microfonos", "Conduccion del evento", "Souvenirs (Globos, corbatas, varitas etc.)"],

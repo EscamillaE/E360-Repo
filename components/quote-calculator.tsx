@@ -13,8 +13,8 @@ interface QuoteItem {
 
 const quotableServices = [
   // Paquetes DJ
-  { id: "magic", name: "Magic (5 hrs)", price: 4830, unit: "paquete" },
-  { id: "magic-pixeles", name: "Magic Pixeles (5 hrs)", price: 6820, unit: "paquete" },
+  { id: "magic", name: "Magic (5 hrs)", price: 6500, unit: "paquete" },
+  { id: "magic-pixeles", name: "Magic Pixeles (5 hrs)", price: 9200, unit: "paquete" },
   { id: "party", name: "Party (5 hrs)", price: 8140, unit: "paquete" },
   { id: "party-con", name: "Party con pantallas 55\" (5 hrs)", price: 11000, unit: "paquete" },
   { id: "black", name: "Black (5 hrs)", price: 9900, unit: "paquete" },

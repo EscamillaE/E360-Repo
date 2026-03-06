@@ -6,8 +6,8 @@ import { ChevronRight, Calculator } from "lucide-react"
 import { useApp } from "@/components/providers"
 
 const popularPackages = [
-  { name: "Magic", price: "$4,830", duration: "5 hrs servicio continuo" },
-  { name: "Magic Pixeles", price: "$6,820", duration: "5 hrs servicio continuo" },
+  { name: "Magic", price: "$6,500", duration: "5 hrs servicio continuo" },
+  { name: "Magic Pixeles", price: "$9,200", duration: "5 hrs servicio continuo" },
   { name: "Fancy", price: "$17,600", duration: "6 hrs servicio continuo" },
   { name: "Luxury", price: "$30,800", duration: "6 hrs servicio continuo" },
   { name: "Gold Bar", price: "$36,300", duration: "6 hrs servicio continuo" },
