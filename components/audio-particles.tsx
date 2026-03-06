@@ -254,7 +254,7 @@ export function AudioParticles() {
       {/* Audio toggle button */}
       <button
         onClick={isAudioActive ? stopAudio : startAudio}
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full border border-gold/30 bg-card/80 px-4 py-2.5 text-sm font-medium backdrop-blur-md transition-all hover:border-gold/60 hover:bg-card"
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full border border-gold/30 bg-card/90 px-4 py-2.5 text-sm font-medium backdrop-blur-md transition-all hover:border-glow-neon hover:bg-card"
         aria-label={isAudioActive ? "Disable audio reactive mode" : "Enable audio reactive mode"}
       >
         {/* Audio bars visualization */}

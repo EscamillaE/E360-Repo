@@ -254,7 +254,7 @@ export function VideoShowcase() {
               <Settings className="h-4 w-4" />
             </button>
 
-            <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.35em] text-gold">
+            <p className="gradient-neon-text mb-3 text-[11px] font-medium uppercase tracking-[0.35em]">
               {t.gallery.label}
             </p>
             <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl text-balance">

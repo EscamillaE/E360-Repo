@@ -43,7 +43,7 @@ export function QuotePreview() {
               <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-gold/10">
                 <Calculator className="h-5 w-5 text-gold" />
               </div>
-              <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.35em] text-gold">
+              <p className="gradient-neon-text mb-2 text-[11px] font-medium uppercase tracking-[0.35em]">
                 {t.quote.label}
               </p>
               <h2 className="mb-4 text-2xl font-bold text-foreground md:text-3xl text-balance">
@@ -54,7 +54,7 @@ export function QuotePreview() {
               </p>
               <Link
                 href="/catalogo"
-                className="inline-flex w-fit items-center gap-2 rounded-full bg-gold px-8 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-gold-light"
+                className="btn-neon inline-flex w-fit items-center gap-2 rounded-full px-8 py-3 text-sm font-semibold text-white"
               >
                 {t.quote.cta}
                 <ChevronRight className="h-4 w-4" />

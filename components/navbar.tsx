@@ -46,7 +46,7 @@ export function Navbar() {
             className="rounded-full"
           />
           <span className="text-sm font-semibold tracking-wide text-foreground">
-            EVENTOS <span className="text-gold">360</span>
+            EVENTOS <span className="gradient-neon-text">360</span>
           </span>
         </Link>
 
@@ -91,7 +91,7 @@ export function Navbar() {
           {/* CTA */}
           <Link
             href="/catalogo"
-            className="hidden rounded-full bg-gold px-5 py-2 text-xs font-semibold text-primary-foreground transition-all hover:bg-gold-light sm:inline-flex"
+            className="btn-neon hidden rounded-full px-5 py-2 text-xs font-semibold text-white sm:inline-flex"
           >
             {t.nav.quote}
           </Link>
@@ -132,7 +132,7 @@ export function Navbar() {
           <Link
             href="/catalogo"
             onClick={() => setIsMobileOpen(false)}
-            className="mt-2 rounded-full bg-gold px-5 py-2.5 text-center text-sm font-semibold text-primary-foreground"
+            className="btn-neon mt-2 rounded-full px-5 py-2.5 text-center text-sm font-semibold text-white"
           >
             {t.nav.quoteNow}
           </Link>

@@ -35,7 +35,7 @@ export function Footer() {
               href={`https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(locale === "es" ? "Hola, me interesa cotizar un evento con Eventos 360" : "Hello, I'm interested in getting a quote for an event with Eventos 360")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-gold px-8 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-gold-light"
+              className="btn-neon inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 text-sm font-semibold text-white"
             >
               <Phone className="h-4 w-4" />
               {t.footer.whatsapp}

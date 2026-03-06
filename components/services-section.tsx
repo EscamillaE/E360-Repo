@@ -68,7 +68,7 @@ export function ServicesSection() {
     <section id="servicios" className="relative px-6 py-28">
       <div className="mx-auto max-w-6xl">
         <div className="mb-16 text-center">
-          <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.35em] text-gold">
+          <p className="gradient-neon-text mb-3 text-[11px] font-medium uppercase tracking-[0.35em]">
             {t.services.label}
           </p>
           <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl text-balance">
