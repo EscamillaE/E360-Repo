@@ -5,9 +5,8 @@ import React, { useEffect, useMemo, useState } from "react";
 const STORAGE_KEY = "e360.simple.v1";
 
 const CATALOG = [
-  { id: "PKG-CAB-001", name: "Cabina Blanca", category: "Packages", subcategory: "DJ / Audio", unit: "paquete", price: 4830, hrs: 5 },
-  { id: "PKG-MAG-002", name: "Magic", category: "Packages", subcategory: "DJ / Audio", unit: "paquete", price: 6820, hrs: 5 },
-  { id: "PKG-MAGP-003", name: "Magic Pixeles", category: "Packages", subcategory: "DJ / Audio", unit: "paquete", price: 6820, hrs: 5 },
+  { id: "PKG-MAG-001", name: "Magic", category: "Packages", subcategory: "DJ / Audio", unit: "paquete", price: 6500, hrs: 5 },
+  { id: "PKG-MAGP-002", name: "Magic Pixeles", category: "Packages", subcategory: "DJ / Audio", unit: "paquete", price: 9200, hrs: 5 },
   { id: "PKG-PTY-004", name: "Party (sin pantallas)", category: "Packages", subcategory: "DJ / Audio", unit: "paquete", price: 8140, hrs: 5 },
   { id: "PKG-PTY-005", name: "Party (con pantallas 55”)", category: "Packages", subcategory: "DJ / Audio", unit: "paquete", price: 11000, hrs: 5 },
   { id: "PKG-BLK-006", name: "Black", category: "Packages", subcategory: "DJ / Audio", unit: "paquete", price: 9900, hrs: 5 },
@@ -148,7 +147,7 @@ function safeText(s) {
 
 function makeWhatsAppLink(text) {
   const encoded = encodeURIComponent(text);
-  return `https://wa.me/?text=${encoded}`;
+  return `https://wa.me/5214427953753?text=${encoded}`;
 }
 
 function todayISO() {
