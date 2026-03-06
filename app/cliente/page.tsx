@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -14,9 +14,43 @@ import {
   Clock,
   CheckCircle2,
   Sparkles,
+  Loader2,
+  LogOut,
+  LogIn,
 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { createClient } from "@/lib/supabase/client"
 
 type ClientTab = "overview" | "quotes" | "events" | "favorites" | "chat"
+
+interface Quote {
+  id: string
+  quote_number: string
+  event_type: string
+  event_date: string | null
+  venue: string | null
+  items: unknown[]
+  total: number
+  status: string
+  created_at: string
+}
+
+interface Event {
+  id: string
+  name: string
+  event_date: string
+  venue: string | null
+  status: string
+}
+
+interface Profile {
+  id: string
+  email: string
+  name: string
+  role: string
+}
 
 const tabs = [
   { id: "overview" as const, label: "Mi Perfil", icon: User },
@@ -26,38 +60,203 @@ const tabs = [
   { id: "chat" as const, label: "Asesor AI", icon: MessageSquare },
 ]
 
-const sampleQuotes = [
-  {
-    id: "Q-001",
-    event: "Boda - Salon Jardin",
-    date: "15 de Marzo, 2026",
-    status: "aprobada",
-    total: "$46,200 MXN",
-    items: ["Sweet Dream (7 hrs)", "Robot LED", "Show de Drones"],
-  },
-  {
-    id: "Q-002",
-    event: "Fiesta de Cumpleanos",
-    date: "22 de Abril, 2026",
-    status: "pendiente",
-    total: "$17,600 MXN",
-    items: ["Luxury Petite (6 hrs)", "Pista Pixeles 4x4"],
-  },
-]
+function StatusBadge({ status }: { status: string }) {
+  const colors: Record<string, string> = {
+    pendiente: "bg-amber-500/10 text-amber-400",
+    aprobada: "bg-emerald-500/10 text-emerald-400",
+    "en revision": "bg-blue-500/10 text-blue-400",
+    rechazada: "bg-red-500/10 text-red-400",
+    completada: "bg-emerald-500/10 text-emerald-400",
+    confirmado: "bg-emerald-500/10 text-emerald-400",
+    "en progreso": "bg-blue-500/10 text-blue-400",
+    cancelado: "bg-red-500/10 text-red-400",
+  }
+  return (
+    <span className={`rounded-full px-2.5 py-1 text-[10px] font-medium ${colors[status] || "bg-secondary text-muted-foreground"}`}>
+      {status.charAt(0).toUpperCase() + status.slice(1)}
+    </span>
+  )
+}
 
-const sampleEvents = [
-  {
-    id: "E-001",
-    name: "Boda Lopez-Garcia",
-    date: "15 de Marzo, 2026",
-    venue: "Salon Jardin Real, Queretaro",
-    status: "confirmado",
-    package: "Sweet Dream",
-  },
-]
+function LoginForm({ onSuccess }: { onSuccess: () => void }) {
+  const [isLogin, setIsLogin] = useState(true)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [name, setName] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+    setError(null)
+    setSuccess(null)
+
+    try {
+      const supabase = createClient()
+
+      if (isLogin) {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        })
+        if (error) throw error
+        onSuccess()
+      } else {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/cliente`,
+            data: {
+              full_name: name,
+            },
+          },
+        })
+        if (error) throw error
+        setSuccess("Revisa tu correo para confirmar tu cuenta")
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error de autenticacion")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <div className="w-full max-w-sm">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error && (
+          <div className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="rounded-lg bg-emerald-500/10 p-3 text-sm text-emerald-400">
+            {success}
+          </div>
+        )}
+
+        {!isLogin && (
+          <div className="space-y-1.5">
+            <Label htmlFor="name" className="text-xs">Nombre</Label>
+            <Input
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Tu nombre"
+              required={!isLogin}
+              className="h-10"
+            />
+          </div>
+        )}
+
+        <div className="space-y-1.5">
+          <Label htmlFor="email" className="text-xs">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="tu@email.com"
+            required
+            className="h-10"
+          />
+        </div>
+
+        <div className="space-y-1.5">
+          <Label htmlFor="password" className="text-xs">Contrasena</Label>
+          <Input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            required
+            minLength={6}
+            className="h-10"
+          />
+        </div>
+
+        <Button
+          type="submit"
+          disabled={isLoading}
+          className="w-full bg-gold text-primary-foreground hover:bg-gold/90"
+        >
+          {isLoading ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : isLogin ? (
+            "Iniciar Sesion"
+          ) : (
+            "Crear Cuenta"
+          )}
+        </Button>
+
+        <p className="text-center text-xs text-muted-foreground">
+          {isLogin ? "No tienes cuenta?" : "Ya tienes cuenta?"}{" "}
+          <button
+            type="button"
+            onClick={() => {
+              setIsLogin(!isLogin)
+              setError(null)
+              setSuccess(null)
+            }}
+            className="text-gold hover:underline"
+          >
+            {isLogin ? "Registrate" : "Inicia sesion"}
+          </button>
+        </p>
+      </form>
+    </div>
+  )
+}
 
 export default function ClientePage() {
   const [activeTab, setActiveTab] = useState<ClientTab>("overview")
+  const [isLoading, setIsLoading] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [profile, setProfile] = useState<Profile | null>(null)
+  const [quotes, setQuotes] = useState<Quote[]>([])
+  const [events, setEvents] = useState<Event[]>([])
+
+  const fetchData = useCallback(async () => {
+    try {
+      const res = await fetch("/api/cliente")
+      if (res.ok) {
+        const data = await res.json()
+        setIsAuthenticated(data.isAuthenticated)
+        setProfile(data.profile)
+        setQuotes(data.quotes || [])
+        setEvents(data.events || [])
+      }
+    } catch (error) {
+      console.error("Error fetching client data:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
+  const handleLogout = async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    setIsAuthenticated(false)
+    setProfile(null)
+    setQuotes([])
+    setEvents([])
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-gold" />
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -86,10 +285,22 @@ export default function ClientePage() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gold/20 text-xs font-bold text-gold">
-              C
-            </div>
-            <span className="text-sm text-foreground">Cliente</span>
+            {isAuthenticated && profile ? (
+              <>
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gold/20 text-xs font-bold text-gold">
+                  {profile.name.charAt(0).toUpperCase()}
+                </div>
+                <span className="text-sm text-foreground">{profile.name}</span>
+                <button
+                  onClick={handleLogout}
+                  className="ml-2 flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                >
+                  <LogOut className="h-4 w-4" />
+                </button>
+              </>
+            ) : (
+              <span className="text-sm text-muted-foreground">Invitado</span>
+            )}
           </div>
         </div>
       </header>
@@ -122,21 +333,47 @@ export default function ClientePage() {
           <div className="grid gap-6 lg:grid-cols-3">
             {/* Profile card */}
             <div className="rounded-2xl border border-border bg-card/50 p-6 text-center lg:col-span-1">
-              <div className="mb-4 flex justify-center">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gold/20 text-2xl font-bold text-gold">
-                  C
-                </div>
-              </div>
-              <h3 className="mb-1 text-lg font-semibold text-foreground">
-                Cliente Invitado
-              </h3>
-              <p className="mb-4 text-xs text-muted-foreground">
-                Inicia sesion para guardar tus cotizaciones y dar seguimiento a
-                tus eventos.
-              </p>
-              <button className="w-full rounded-full bg-gold px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-all hover:bg-gold-light">
-                Crear Cuenta
-              </button>
+              {isAuthenticated && profile ? (
+                <>
+                  <div className="mb-4 flex justify-center">
+                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gold/20 text-2xl font-bold text-gold">
+                      {profile.name.charAt(0).toUpperCase()}
+                    </div>
+                  </div>
+                  <h3 className="mb-1 text-lg font-semibold text-foreground">
+                    {profile.name}
+                  </h3>
+                  <p className="mb-4 text-xs text-muted-foreground">
+                    {profile.email}
+                  </p>
+                  <div className="flex justify-center gap-4 text-center">
+                    <div>
+                      <p className="text-lg font-bold text-foreground">{quotes.length}</p>
+                      <p className="text-xs text-muted-foreground">Cotizaciones</p>
+                    </div>
+                    <div>
+                      <p className="text-lg font-bold text-foreground">{events.length}</p>
+                      <p className="text-xs text-muted-foreground">Eventos</p>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="mb-4 flex justify-center">
+                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gold/20 text-2xl font-bold text-gold">
+                      <LogIn className="h-8 w-8" />
+                    </div>
+                  </div>
+                  <h3 className="mb-1 text-lg font-semibold text-foreground">
+                    Bienvenido
+                  </h3>
+                  <p className="mb-6 text-xs text-muted-foreground">
+                    Inicia sesion para guardar tus cotizaciones y dar seguimiento a
+                    tus eventos.
+                  </p>
+                  <LoginForm onSuccess={fetchData} />
+                </>
+              )}
             </div>
 
             {/* Quick actions */}
@@ -180,6 +417,27 @@ export default function ClientePage() {
                   <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>
+
+              {/* Recent activity */}
+              {isAuthenticated && quotes.length > 0 && (
+                <div className="mt-6">
+                  <h4 className="mb-3 text-sm font-medium text-foreground">Actividad reciente</h4>
+                  <div className="space-y-2">
+                    {quotes.slice(0, 3).map((quote) => (
+                      <div
+                        key={quote.id}
+                        className="flex items-center justify-between rounded-lg border border-border/50 bg-card/30 p-3"
+                      >
+                        <div>
+                          <p className="text-sm font-medium text-foreground">{quote.event_type}</p>
+                          <p className="text-xs text-muted-foreground">{quote.quote_number}</p>
+                        </div>
+                        <StatusBadge status={quote.status} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -200,50 +458,71 @@ export default function ClientePage() {
               </Link>
             </div>
 
-            <div className="space-y-3">
-              {sampleQuotes.map((quote) => (
-                <div
-                  key={quote.id}
-                  className="rounded-2xl border border-border bg-card/50 p-5 transition-all hover:border-gold/20"
-                >
-                  <div className="mb-3 flex items-start justify-between">
-                    <div>
-                      <h4 className="text-sm font-semibold text-foreground">
-                        {quote.event}
-                      </h4>
-                      <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-                        <Calendar className="h-3 w-3" />
-                        {quote.date}
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-base font-bold text-gold">
-                        {quote.total}
-                      </p>
-                      <span
-                        className={`mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                          quote.status === "aprobada"
-                            ? "bg-emerald-500/10 text-emerald-400"
-                            : "bg-amber-500/10 text-amber-400"
-                        }`}
-                      >
-                        {quote.status.charAt(0).toUpperCase() + quote.status.slice(1)}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {quote.items.map((item) => (
-                      <span
-                        key={item}
-                        className="rounded-full bg-secondary px-2.5 py-1 text-[10px] text-muted-foreground"
-                      >
-                        {item}
-                      </span>
-                    ))}
+            {quotes.length === 0 ? (
+              <div className="rounded-2xl border border-border bg-card/50 p-8 text-center">
+                <div className="mb-4 flex justify-center">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gold/10">
+                    <FileText className="h-6 w-6 text-gold" />
                   </div>
                 </div>
-              ))}
-            </div>
+                <h3 className="mb-2 text-base font-semibold text-foreground">
+                  Sin cotizaciones
+                </h3>
+                <p className="mb-4 text-sm text-muted-foreground">
+                  {isAuthenticated
+                    ? "Aun no tienes cotizaciones. Crea tu primera cotizacion para empezar a planear tu evento."
+                    : "Inicia sesion para ver tus cotizaciones guardadas."}
+                </p>
+                <Link
+                  href="/cotizador"
+                  className="inline-flex items-center gap-1.5 text-sm text-gold transition-colors hover:text-gold/80"
+                >
+                  Crear cotizacion
+                  <ChevronRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {quotes.map((quote) => (
+                  <div
+                    key={quote.id}
+                    className="rounded-2xl border border-border bg-card/50 p-5 transition-all hover:border-gold/20"
+                  >
+                    <div className="mb-3 flex items-start justify-between">
+                      <div>
+                        <h4 className="text-sm font-semibold text-foreground">
+                          {quote.event_type}
+                        </h4>
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          {quote.quote_number}
+                        </p>
+                        {quote.event_date && (
+                          <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
+                            <Calendar className="h-3 w-3" />
+                            {new Date(quote.event_date).toLocaleDateString("es-MX", {
+                              day: "numeric",
+                              month: "long",
+                              year: "numeric",
+                            })}
+                          </div>
+                        )}
+                        {quote.venue && (
+                          <p className="mt-1 text-xs text-muted-foreground">{quote.venue}</p>
+                        )}
+                      </div>
+                      <div className="text-right">
+                        <p className="text-base font-bold text-gold">
+                          ${Number(quote.total).toLocaleString()} MXN
+                        </p>
+                        <div className="mt-1">
+                          <StatusBadge status={quote.status} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -253,42 +532,60 @@ export default function ClientePage() {
             <h3 className="mb-6 text-lg font-semibold text-foreground">
               Mis Eventos
             </h3>
-            <div className="space-y-3">
-              {sampleEvents.map((event) => (
-                <div
-                  key={event.id}
-                  className="rounded-2xl border border-gold/20 bg-card/50 p-5"
-                >
-                  <div className="mb-3 flex items-start justify-between">
-                    <div>
-                      <h4 className="text-sm font-semibold text-foreground">
-                        {event.name}
-                      </h4>
-                      <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
-                        <Calendar className="h-3 w-3" />
-                        {event.date}
-                      </div>
-                      <div className="mt-1 text-xs text-muted-foreground">
-                        {event.venue}
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-xs text-emerald-400">
-                      <CheckCircle2 className="h-3.5 w-3.5" />
-                      Confirmado
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-gold/10 px-2.5 py-1 text-[10px] font-medium text-gold">
-                      Paquete {event.package}
-                    </span>
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <Clock className="h-3 w-3" />
-                      Proximo
-                    </div>
+            {events.length === 0 ? (
+              <div className="rounded-2xl border border-border bg-card/50 p-8 text-center">
+                <div className="mb-4 flex justify-center">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gold/10">
+                    <Calendar className="h-6 w-6 text-gold" />
                   </div>
                 </div>
-              ))}
-            </div>
+                <h3 className="mb-2 text-base font-semibold text-foreground">
+                  Sin eventos programados
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {isAuthenticated
+                    ? "Los eventos confirmados de tus cotizaciones aprobadas apareceran aqui."
+                    : "Inicia sesion para ver tus eventos."}
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {events.map((event) => (
+                  <div
+                    key={event.id}
+                    className="rounded-2xl border border-gold/20 bg-card/50 p-5"
+                  >
+                    <div className="mb-3 flex items-start justify-between">
+                      <div>
+                        <h4 className="text-sm font-semibold text-foreground">
+                          {event.name}
+                        </h4>
+                        <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
+                          <Calendar className="h-3 w-3" />
+                          {new Date(event.event_date).toLocaleDateString("es-MX", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          })}
+                        </div>
+                        {event.venue && (
+                          <div className="mt-1 text-xs text-muted-foreground">
+                            {event.venue}
+                          </div>
+                        )}
+                      </div>
+                      <StatusBadge status={event.status} />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <Clock className="h-3 w-3" />
+                        {new Date(event.event_date) > new Date() ? "Proximo" : "Pasado"}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -309,7 +606,7 @@ export default function ClientePage() {
             </p>
             <Link
               href="/catalogo"
-              className="inline-flex items-center gap-1.5 text-sm text-gold transition-colors hover:text-gold-light"
+              className="inline-flex items-center gap-1.5 text-sm text-gold transition-colors hover:text-gold/80"
             >
               Explorar catalogo
               <ChevronRight className="h-3.5 w-3.5" />
@@ -335,7 +632,7 @@ export default function ClientePage() {
             </p>
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-sm text-gold transition-colors hover:text-gold-light"
+              className="inline-flex items-center gap-1.5 text-sm text-gold transition-colors hover:text-gold/80"
             >
               Ir al asistente AI
               <ChevronRight className="h-3.5 w-3.5" />

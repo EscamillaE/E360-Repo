@@ -14,9 +14,44 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Eventos 360 | Produccion Integral de Eventos",
+  title: {
+    default: "Eventos 360 | Produccion Integral de Eventos",
+    template: "%s | Eventos 360",
+  },
   description:
     "Cabina 360, audio profesional, iluminacion, efectos especiales y todo para crear eventos inolvidables en Queretaro.",
+  keywords: [
+    "eventos",
+    "produccion de eventos",
+    "cabina 360",
+    "bodas",
+    "XV anos",
+    "fiestas",
+    "Queretaro",
+    "audio profesional",
+    "iluminacion",
+    "DJ",
+  ],
+  authors: [{ name: "Eventos 360" }],
+  creator: "Eventos 360",
+  openGraph: {
+    type: "website",
+    locale: "es_MX",
+    siteName: "Eventos 360",
+    title: "Eventos 360 | Produccion Integral de Eventos",
+    description:
+      "Cabina 360, audio profesional, iluminacion, efectos especiales y todo para crear eventos inolvidables en Queretaro.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Eventos 360 | Produccion Integral de Eventos",
+    description:
+      "Cabina 360, audio profesional, iluminacion, efectos especiales y todo para crear eventos inolvidables en Queretaro.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export const viewport: Viewport = {
