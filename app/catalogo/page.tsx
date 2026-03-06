@@ -88,6 +88,7 @@ function CategoryCard({
 
 function ProductCard({ item, index }: { item: CatalogItem; index: number }) {
   const [isVisible, setIsVisible] = useState(false)
+  const [showDetails, setShowDetails] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -124,19 +125,48 @@ function ProductCard({ item, index }: { item: CatalogItem; index: number }) {
         <div className="absolute right-3 top-3 rounded-full bg-gold/90 px-3 py-1 text-xs font-bold text-primary-foreground">
           {item.price}
         </div>
+        {/* Service hours badge */}
+        {item.serviceHours && (
+          <div className="absolute left-3 top-3 rounded-full bg-background/80 px-2 py-1 text-[10px] font-medium text-foreground backdrop-blur-sm">
+            {item.serviceHours}
+          </div>
+        )}
       </div>
 
       <div className="p-5">
         <h4 className="mb-1 text-base font-semibold text-foreground">
           {item.name}
         </h4>
-        <p className="mb-3 text-sm leading-relaxed text-muted-foreground">
+        <p className="mb-3 text-sm leading-relaxed text-muted-foreground line-clamp-3">
           {item.description}
         </p>
+        
+        {/* Includes toggle */}
+        {item.includes && item.includes.length > 0 && (
+          <div className="mb-3">
+            <button
+              onClick={() => setShowDetails(!showDetails)}
+              className="text-xs font-medium text-gold hover:text-gold-light transition-colors"
+            >
+              {showDetails ? "Ocultar detalles" : `Ver que incluye (${item.includes.length})`}
+            </button>
+            {showDetails && (
+              <ul className="mt-2 space-y-1 text-xs text-muted-foreground max-h-32 overflow-y-auto">
+                {item.includes.map((inc, i) => (
+                  <li key={i} className="flex items-start gap-1.5">
+                    <span className="text-gold mt-0.5">•</span>
+                    <span>{inc}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+        
         <div className="flex items-center justify-between">
           <span className="text-xs text-muted-foreground">{item.unit}</span>
           <a
-            href={`https://wa.me/?text=${encodeURIComponent(`Hola, me interesa cotizar: ${item.name} (${item.price})`)}`}
+            href={`https://wa.me/5214427953753?text=${encodeURIComponent(`Hola, me interesa cotizar: ${item.name} (${item.price})`)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="rounded-full bg-gold/10 px-3 py-1.5 text-xs font-medium text-gold transition-all hover:bg-gold/20"
