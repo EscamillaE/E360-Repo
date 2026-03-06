@@ -341,4 +341,4 @@ export const translations = {
   },
 } as const
 
-export type Translations = (typeof translations)["es"]
+export type Translations = (typeof translations)[Locale]
