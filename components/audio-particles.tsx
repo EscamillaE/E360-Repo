@@ -27,6 +27,7 @@ export function AudioParticles() {
   const logoRef = useRef<HTMLImageElement | null>(null)
   const [isAudioActive, setIsAudioActive] = useState(false)
   const [audioLevel, setAudioLevel] = useState(0)
+  const [isMounted, setIsMounted] = useState(false)
   const mouseRef = useRef({ x: 0, y: 0 })
   const beatRef = useRef(0)
 
@@ -102,6 +103,10 @@ export function AudioParticles() {
     const midAvg = midSum / (midEnd - bassEnd) / 255
 
     return Math.min(1, bassAvg * 1.5 + midAvg * 0.5)
+  }, [])
+
+  useEffect(() => {
+    setIsMounted(true)
   }, [])
 
   useEffect(() => {
@@ -246,33 +251,35 @@ export function AudioParticles() {
         style={{ zIndex: 0 }}
       />
 
-      {/* Audio toggle button */}
-      <button
-        onClick={isAudioActive ? stopAudio : startAudio}
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full border border-gold/30 bg-card/80 px-4 py-2.5 text-sm font-medium backdrop-blur-md transition-all hover:border-gold/60 hover:bg-card"
-        aria-label={isAudioActive ? "Disable audio reactive mode" : "Enable audio reactive mode"}
-      >
-        {/* Audio bars visualization */}
-        <div className="flex items-end gap-0.5 h-4">
-          {[0.6, 0.8, 1, 0.7, 0.5].map((multiplier, i) => (
-            <div
-              key={i}
-              className="w-0.5 rounded-full transition-all duration-100"
-              style={{
-                height: isAudioActive
-                  ? `${Math.max(4, audioLevel * 16 * multiplier)}px`
-                  : "4px",
-                backgroundColor: isAudioActive
-                  ? `hsl(38, 92%, ${50 + audioLevel * 20}%)`
-                  : "hsl(var(--muted-foreground))",
-              }}
-            />
-          ))}
-        </div>
-        <span className="text-foreground">
-          {isAudioActive ? "Audio ON" : "Audio OFF"}
-        </span>
-      </button>
+      {/* Audio toggle button - only render after mount to prevent hydration mismatch */}
+      {isMounted && (
+        <button
+          onClick={isAudioActive ? stopAudio : startAudio}
+          className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full border border-gold/30 bg-card/80 px-4 py-2.5 text-sm font-medium backdrop-blur-md transition-all hover:border-gold/60 hover:bg-card"
+          aria-label={isAudioActive ? "Disable audio reactive mode" : "Enable audio reactive mode"}
+        >
+          {/* Audio bars visualization */}
+          <div className="flex items-end gap-0.5 h-4">
+            {[0.6, 0.8, 1, 0.7, 0.5].map((multiplier, i) => (
+              <div
+                key={i}
+                className="w-0.5 rounded-full transition-all duration-100"
+                style={{
+                  height: isAudioActive
+                    ? `${Math.max(4, audioLevel * 16 * multiplier)}px`
+                    : "4px",
+                  backgroundColor: isAudioActive
+                    ? `hsl(38, 92%, ${50 + audioLevel * 20}%)`
+                    : "hsl(var(--muted-foreground))",
+                }}
+              />
+            ))}
+          </div>
+          <span className="text-foreground">
+            {isAudioActive ? "Audio ON" : "Audio OFF"}
+          </span>
+        </button>
+      )}
     </>
   )
 }

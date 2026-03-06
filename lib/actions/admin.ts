@@ -155,10 +155,14 @@ export async function getAdminQuotes(): Promise<AdminQuote[]> {
     return []
   }
   
-  return (quotes || []).map(q => ({
-    ...q,
-    profile: q.profiles as AdminQuote['profile']
-  }))
+  return (quotes || []).map(q => {
+    // profiles comes as an array from the join, get first element or null
+    const profileData = Array.isArray(q.profiles) ? q.profiles[0] : q.profiles
+    return {
+      ...q,
+      profile: profileData as AdminQuote['profile']
+    }
+  })
 }
 
 export async function updateQuoteStatus(quoteId: string, status: 'approved' | 'rejected' | 'pending'): Promise<{ success: boolean }> {
