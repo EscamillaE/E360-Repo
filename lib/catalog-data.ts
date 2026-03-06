@@ -33,8 +33,8 @@ export const catalog: CatalogCategory[] = [
         category: "Paquetes DJ & Audio",
         description:
           "2 medios 15\" (bocinas), iluminacion LED, DJ Versatil/STAFF, microfono, tripies. Cabina a elegir: blanca paneles, blanca vintage o Talavera.",
-        price: "$4,830 MXN",
-        priceValue: 4830,
+        price: "$6,500 MXN",
+        priceValue: 6500,
         unit: "evento",
         serviceHours: "5 hrs servicio continuo",
         includes: ["2 medios 15\" (bocinas)", "Iluminacion LED", "DJ Versatil / STAFF", "Microfono", "Tripies", "Cabina a elegir"],
