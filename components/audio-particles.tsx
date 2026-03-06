@@ -258,11 +258,12 @@ export function AudioParticles() {
         aria-label={isAudioActive ? "Disable audio reactive mode" : "Enable audio reactive mode"}
       >
         {/* Audio bars visualization */}
-        <div className="flex items-end gap-0.5 h-4">
+        <div className="flex items-end gap-0.5 h-4" suppressHydrationWarning>
           {[0.6, 0.8, 1, 0.7, 0.9].map((multiplier, i) => (
             <div
               key={i}
               className="w-0.5 rounded-full transition-all duration-100"
+              suppressHydrationWarning
               style={{
                 height: isMounted && isAudioActive
                   ? `${Math.max(4, audioLevel * 16 * multiplier)}px`
