@@ -77,15 +77,19 @@ export async function GET() {
         upcomingEvents: upcomingEvents || 0,
         totalClients: totalClients || 0,
       },
-      recentQuotes: recentQuotes?.map(q => ({
-        id: q.id,
-        quoteNumber: q.quote_number,
-        client: q.clients?.name || "Sin cliente",
-        event: q.event_type,
-        total: parseFloat(q.total) || 0,
-        status: q.status,
-        date: q.event_date,
-      })) || [],
+      recentQuotes: recentQuotes?.map(q => {
+        // clients is returned as an array from the join, get first item
+        const client = Array.isArray(q.clients) ? q.clients[0] : q.clients
+        return {
+          id: q.id,
+          quoteNumber: q.quote_number,
+          client: client?.name || "Sin cliente",
+          event: q.event_type,
+          total: parseFloat(q.total) || 0,
+          status: q.status,
+          date: q.event_date,
+        }
+      }) || [],
     })
   } catch (error) {
     console.error("Error fetching admin stats:", error)
