@@ -18,9 +18,6 @@ import {
   LogOut,
   LogIn,
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { createClient } from "@/lib/supabase/client"
 
 type ClientTab = "overview" | "quotes" | "events" | "favorites" | "chat"
@@ -140,34 +137,34 @@ function LoginForm({ onSuccess }: { onSuccess: () => void }) {
 
         {!isLogin && (
           <div className="space-y-1.5">
-            <Label htmlFor="name" className="text-xs">Nombre</Label>
-            <Input
+            <label htmlFor="name" className="text-xs font-medium text-foreground">Nombre</label>
+            <input
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Tu nombre"
               required={!isLogin}
-              className="h-10"
+              className="h-10 w-full rounded-lg border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
             />
           </div>
         )}
 
         <div className="space-y-1.5">
-          <Label htmlFor="email" className="text-xs">Email</Label>
-          <Input
+          <label htmlFor="email" className="text-xs font-medium text-foreground">Email</label>
+          <input
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="tu@email.com"
             required
-            className="h-10"
+            className="h-10 w-full rounded-lg border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
           />
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="password" className="text-xs">Contrasena</Label>
-          <Input
+          <label htmlFor="password" className="text-xs font-medium text-foreground">Contrasena</label>
+          <input
             id="password"
             type="password"
             value={password}
@@ -175,23 +172,23 @@ function LoginForm({ onSuccess }: { onSuccess: () => void }) {
             placeholder="••••••••"
             required
             minLength={6}
-            className="h-10"
+            className="h-10 w-full rounded-lg border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
           />
         </div>
 
-        <Button
+        <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-gold text-primary-foreground hover:bg-gold/90"
+          className="w-full rounded-lg bg-gold px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-gold/90 disabled:opacity-50"
         >
           {isLoading ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Loader2 className="mx-auto h-4 w-4 animate-spin" />
           ) : isLogin ? (
             "Iniciar Sesion"
           ) : (
             "Crear Cuenta"
           )}
-        </Button>
+        </button>
 
         <p className="text-center text-xs text-muted-foreground">
           {isLogin ? "No tienes cuenta?" : "Ya tienes cuenta?"}{" "}

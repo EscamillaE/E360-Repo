@@ -22,10 +22,6 @@ import {
   Edit2,
   LogOut,
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { createClient } from "@/lib/supabase/client"
 
 type AdminTab = "dashboard" | "catalog" | "quotes" | "clients" | "settings"
@@ -161,50 +157,50 @@ function ClientModal({
         </div>
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div className="space-y-1.5">
-            <Label htmlFor="name" className="text-xs">Nombre *</Label>
-            <Input
+            <label htmlFor="name" className="text-xs font-medium text-foreground">Nombre *</label>
+            <input
               id="name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
-              className="h-9"
+              className="h-9 w-full rounded-lg border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="email" className="text-xs">Email</Label>
-            <Input
+            <label htmlFor="email" className="text-xs font-medium text-foreground">Email</label>
+            <input
               id="email"
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="h-9"
+              className="h-9 w-full rounded-lg border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="phone" className="text-xs">Telefono</Label>
-            <Input
+            <label htmlFor="phone" className="text-xs font-medium text-foreground">Telefono</label>
+            <input
               id="phone"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="h-9"
+              className="h-9 w-full rounded-lg border border-border bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="notes" className="text-xs">Notas</Label>
-            <Textarea
+            <label htmlFor="notes" className="text-xs font-medium text-foreground">Notas</label>
+            <textarea
               id="notes"
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-              className="min-h-[80px] resize-none"
+              className="min-h-[80px] w-full resize-none rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold"
             />
           </div>
           <div className="flex gap-3 pt-2">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+            <button type="button" onClick={onClose} className="flex-1 rounded-lg border border-border bg-transparent px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-secondary">
               Cancelar
-            </Button>
-            <Button type="submit" disabled={isSaving} className="flex-1 bg-gold text-primary-foreground hover:bg-gold/90">
-              {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : "Guardar"}
-            </Button>
+            </button>
+            <button type="submit" disabled={isSaving} className="flex-1 rounded-lg bg-gold px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-gold/90 disabled:opacity-50">
+              {isSaving ? <Loader2 className="mx-auto h-4 w-4 animate-spin" /> : "Guardar"}
+            </button>
           </div>
         </form>
       </div>
@@ -532,10 +528,10 @@ export default function AdminPage() {
                     Administra productos, precios y categorias
                   </p>
                 </div>
-                <Button className="gap-2 bg-gold text-primary-foreground hover:bg-gold/90">
+                <button className="inline-flex items-center gap-2 rounded-lg bg-gold px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-gold/90">
                   <Plus className="h-4 w-4" />
                   Agregar Producto
-                </Button>
+                </button>
               </div>
 
               <div className="rounded-2xl border border-border bg-card/50 p-8 text-center">
@@ -574,11 +570,9 @@ export default function AdminPage() {
                     Gestiona todas las cotizaciones de tus clientes
                   </p>
                 </div>
-                <Link href="/cotizador">
-                  <Button className="gap-2 bg-gold text-primary-foreground hover:bg-gold/90">
-                    <Plus className="h-4 w-4" />
-                    Nueva Cotizacion
-                  </Button>
+                <Link href="/cotizador" className="inline-flex items-center gap-2 rounded-lg bg-gold px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-gold/90">
+                  <Plus className="h-4 w-4" />
+                  Nueva Cotizacion
                 </Link>
               </div>
 
@@ -662,16 +656,16 @@ export default function AdminPage() {
                     Directorio y gestion de clientes
                   </p>
                 </div>
-                <Button
+                <button
                   onClick={() => {
                     setEditingClient(null)
                     setShowClientModal(true)
                   }}
-                  className="gap-2 bg-gold text-primary-foreground hover:bg-gold/90"
+                  className="inline-flex items-center gap-2 rounded-lg bg-gold px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-gold/90"
                 >
                   <Plus className="h-4 w-4" />
                   Nuevo Cliente
-                </Button>
+                </button>
               </div>
 
               <div className="rounded-2xl border border-border bg-card/50">
