@@ -7,11 +7,11 @@ import { useApp } from "@/components/providers"
 
 const popularPackages = [
   { name: "Magic", price: "$6,500", duration: "5 hrs servicio continuo" },
-  { name: "Magic Pixeles", price: "$9,200", duration: "5 hrs servicio continuo" },
-  { name: "Fancy", price: "$17,600", duration: "6 hrs servicio continuo" },
-  { name: "Luxury", price: "$30,800", duration: "6 hrs servicio continuo" },
-  { name: "Gold Bar", price: "$36,300", duration: "6 hrs servicio continuo" },
-  { name: "Sweet Dream", price: "$46,200", duration: "7 hrs servicio continuo" },
+  { name: "Magic Pixeles", price: "$8,184", duration: "5 hrs servicio continuo" },
+  { name: "Fancy", price: "$21,120", duration: "6 hrs servicio continuo" },
+  { name: "Luxury", price: "$36,960", duration: "6 hrs servicio continuo" },
+  { name: "Gold Bar", price: "$43,560", duration: "6 hrs servicio continuo" },
+  { name: "Sweet Dream", price: "$55,440", duration: "7 hrs servicio continuo" },
 ]
 
 export function QuotePreview() {
