@@ -36,7 +36,7 @@ export default function StripeCheckout({ items, subtotal, iva, total }: StripeCh
     <div id="stripe-checkout" className="w-full">
       <EmbeddedCheckoutProvider
         stripe={stripePromise}
-        options={{ clientSecret: fetchClientSecret }}
+        options={{ fetchClientSecret }}
       >
         <EmbeddedCheckout />
       </EmbeddedCheckoutProvider>
