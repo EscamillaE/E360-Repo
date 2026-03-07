@@ -42,7 +42,7 @@ export function AiAssistant() {
       <button
         onClick={() => setIsOpen(true)}
         className={cn(
-          "fixed bottom-6 left-6 z-50 flex items-center gap-2 rounded-full border border-gold/30 bg-card/80 px-4 py-2.5 text-sm font-medium backdrop-blur-md transition-all hover:border-gold/60 hover:bg-card",
+          "fixed bottom-6 left-6 z-50 flex items-center gap-2 rounded-full border border-gold/30 bg-card/90 px-4 py-2.5 text-sm font-medium backdrop-blur-md transition-all hover:border-glow-neon hover:bg-card",
           isOpen && "hidden"
         )}
         aria-label="Open AI Assistant"
@@ -138,7 +138,7 @@ export function AiAssistant() {
                     className={cn(
                       "max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed",
                       isUser
-                        ? "bg-gold text-primary-foreground rounded-br-md"
+                        ? "gradient-neon text-white rounded-br-md"
                         : "bg-secondary text-foreground rounded-bl-md"
                     )}
                   >
@@ -174,7 +174,7 @@ export function AiAssistant() {
               <button
                 type="submit"
                 disabled={!input.trim() || isLoading}
-                className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold text-primary-foreground transition-all hover:bg-gold-light disabled:opacity-40 disabled:hover:bg-gold"
+                className="btn-neon flex h-10 w-10 items-center justify-center rounded-xl text-white disabled:opacity-40"
                 aria-label="Send message"
               >
                 {isLoading ? (

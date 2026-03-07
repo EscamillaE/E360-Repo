@@ -1,8 +1,24 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { Play, Volume2, VolumeX } from "lucide-react"
+import { useEffect, useRef, useState, useCallback } from "react"
+import { Play, Volume2, VolumeX, Settings } from "lucide-react"
 import { useApp } from "@/components/providers"
+import { GalleryAuthModal } from "@/components/gallery-auth-modal"
+import { GalleryEditModal } from "@/components/gallery-edit-modal"
+import { createClient } from "@/lib/supabase/client"
+
+interface MediaItem {
+  id: string
+  title_es: string | null
+  title_en: string | null
+  description_es: string | null
+  description_en: string | null
+  url: string
+  media_type: "video" | "image"
+  thumbnail_url: string | null
+  is_featured: boolean
+  sort_order: number
+}
 
 const defaultVideos = [
   {
@@ -28,20 +44,27 @@ const defaultVideos = [
   },
 ]
 
-function VideoCard({
-  video,
-  index,
-  locale,
-}: {
-  video: (typeof defaultVideos)[0]
+interface VideoCardProps {
+  video: {
+    src: string
+    titleEs: string
+    titleEn: string
+    descEs: string
+    descEn: string
+    mediaType?: "video" | "image"
+  }
   index: number
   locale: "es" | "en"
-}) {
+}
+
+function VideoCard({ video, index, locale }: VideoCardProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
   const containerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
+
+  const isVideo = video.mediaType !== "image"
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -55,6 +78,7 @@ function VideoCard({
   }, [])
 
   const handlePlay = () => {
+    if (!isVideo) return
     if (videoRef.current) {
       if (isPlaying) {
         videoRef.current.pause()
@@ -85,28 +109,38 @@ function VideoCard({
       style={{ transitionDelay: `${index * 120}ms` }}
     >
       <div
-        className="relative aspect-[9/16] max-h-[380px] cursor-pointer overflow-hidden"
+        className={`relative aspect-[9/16] max-h-[380px] overflow-hidden ${isVideo ? "cursor-pointer" : ""}`}
         onClick={handlePlay}
       >
-        <video
-          ref={videoRef}
-          src={video.src}
-          className="h-full w-full object-cover"
-          loop
-          muted={isMuted}
-          playsInline
-          preload="metadata"
-        />
-        <div
-          className={`absolute inset-0 flex items-center justify-center bg-background/20 transition-opacity duration-300 ${
-            isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"
-          }`}
-        >
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-foreground/10 backdrop-blur-md transition-transform hover:scale-110">
-            <Play className="h-5 w-5 text-foreground ml-0.5" />
+        {isVideo ? (
+          <video
+            ref={videoRef}
+            src={video.src}
+            className="h-full w-full object-cover"
+            loop
+            muted={isMuted}
+            playsInline
+            preload="metadata"
+          />
+        ) : (
+          <img
+            src={video.src}
+            alt={title || "Gallery image"}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        )}
+        {isVideo && (
+          <div
+            className={`absolute inset-0 flex items-center justify-center bg-background/20 transition-opacity duration-300 ${
+              isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"
+            }`}
+          >
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-foreground/10 backdrop-blur-md transition-transform hover:scale-110">
+              <Play className="h-5 w-5 text-foreground ml-0.5" />
+            </div>
           </div>
-        </div>
-        {isPlaying && (
+        )}
+        {isVideo && isPlaying && (
           <button
             onClick={toggleMute}
             className="absolute bottom-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-background/60 backdrop-blur-sm"
@@ -130,28 +164,129 @@ function VideoCard({
 
 export function VideoShowcase() {
   const { t, locale } = useApp()
+  const [showAuthModal, setShowAuthModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Fetch media items from database
+  const fetchMedia = useCallback(async () => {
+    try {
+      const res = await fetch("/api/gallery")
+      if (res.ok) {
+        const data = await res.json()
+        setMediaItems(data.media || [])
+      }
+    } catch (error) {
+      console.error("Error fetching gallery:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
+  // Check if user is already logged in as admin
+  useEffect(() => {
+    const checkAuth = async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", user.id)
+          .single()
+        
+        if (profile?.role === "admin") {
+          setIsAdmin(true)
+        }
+      }
+    }
+    
+    checkAuth()
+    fetchMedia()
+  }, [fetchMedia])
+
+  const handleGearClick = () => {
+    if (isAdmin) {
+      setShowEditModal(true)
+    } else {
+      setShowAuthModal(true)
+    }
+  }
+
+  const handleAuthSuccess = () => {
+    setIsAdmin(true)
+    setShowAuthModal(false)
+    setShowEditModal(true)
+  }
+
+  // Use database items if available, otherwise fallback to defaults
+  const videosToDisplay = mediaItems.length > 0 
+    ? mediaItems.map(item => ({
+        src: item.url,
+        titleEs: item.title_es || "",
+        titleEn: item.title_en || "",
+        descEs: item.description_es || "",
+        descEn: item.description_en || "",
+        mediaType: item.media_type,
+      }))
+    : defaultVideos.map(v => ({ ...v, mediaType: "video" as const }))
 
   return (
-    <section id="galeria" className="relative px-6 py-28">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-16 text-center">
-          <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.35em] text-gold">
-            {t.gallery.label}
-          </p>
-          <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl text-balance">
-            {t.gallery.heading}
-          </h2>
-          <p className="mx-auto max-w-md text-[15px] leading-relaxed text-muted-foreground">
-            {t.gallery.subtitle}
-          </p>
-        </div>
+    <>
+      <section id="galeria" className="relative px-6 py-28">
+        <div className="mx-auto max-w-6xl">
+          {/* Header with gear icon */}
+          <div className="relative mb-16 text-center">
+            {/* Gear icon for edit mode */}
+            <button
+              onClick={handleGearClick}
+              className={`absolute right-0 top-0 flex h-9 w-9 items-center justify-center rounded-full border transition-all ${
+                isAdmin 
+                  ? "border-gold/30 bg-gold/10 text-gold hover:bg-gold/20" 
+                  : "border-border bg-card text-muted-foreground hover:border-gold/20 hover:text-gold"
+              }`}
+              aria-label={locale === "es" ? "Editar galeria" : "Edit gallery"}
+              title={locale === "es" ? "Editar galeria" : "Edit gallery"}
+            >
+              <Settings className="h-4 w-4" />
+            </button>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {defaultVideos.map((video, index) => (
-            <VideoCard key={video.src} video={video} index={index} locale={locale} />
-          ))}
+            <p className="gradient-neon-text mb-3 text-[11px] font-medium uppercase tracking-[0.35em]">
+              {t.gallery.label}
+            </p>
+            <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl text-balance">
+              {t.gallery.heading}
+            </h2>
+            <p className="mx-auto max-w-md text-[15px] leading-relaxed text-muted-foreground">
+              {t.gallery.subtitle}
+            </p>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {videosToDisplay.map((video, index) => (
+              <VideoCard key={video.src + index} video={video} index={index} locale={locale} />
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Auth Modal */}
+      <GalleryAuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={handleAuthSuccess}
+      />
+
+      {/* Edit Modal */}
+      <GalleryEditModal
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        mediaItems={mediaItems}
+        onUpdate={fetchMedia}
+      />
+    </>
   )
 }

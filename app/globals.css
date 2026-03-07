@@ -9,48 +9,54 @@
   --card-foreground: 0 0% 9%;
   --popover: 0 0% 100%;
   --popover-foreground: 0 0% 9%;
-  --primary: 38 92% 50%;
+  --primary: 32 100% 50%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 0 0% 96%;
+  --secondary: 40 10% 94%;
   --secondary-foreground: 0 0% 9%;
-  --muted: 0 0% 94%;
-  --muted-foreground: 0 0% 45%;
-  --accent: 38 70% 48%;
+  --muted: 40 10% 92%;
+  --muted-foreground: 0 0% 40%;
+  --accent: 38 100% 50%;
   --accent-foreground: 0 0% 100%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --border: 0 0% 91%;
-  --input: 0 0% 91%;
-  --ring: 38 92% 50%;
+  --border: 40 10% 88%;
+  --input: 40 10% 88%;
+  --ring: 32 100% 50%;
   --radius: 0.75rem;
-  --gold: 38 92% 50%;
-  --gold-light: 43 96% 58%;
-  --gold-dark: 33 88% 35%;
+  /* Orange-Yellow Neon Gradient Colors */
+  --gold: 38 100% 50%;
+  --gold-light: 45 100% 55%;
+  --gold-dark: 28 100% 45%;
+  --neon-orange: 25 100% 50%;
+  --neon-yellow: 48 100% 50%;
 }
 
 .dark {
-  --background: 0 0% 4%;
-  --foreground: 0 0% 93%;
-  --card: 0 0% 7%;
-  --card-foreground: 0 0% 93%;
-  --popover: 0 0% 7%;
-  --popover-foreground: 0 0% 93%;
-  --primary: 38 92% 50%;
-  --primary-foreground: 0 0% 4%;
-  --secondary: 0 0% 12%;
-  --secondary-foreground: 0 0% 93%;
+  --background: 0 0% 3%;
+  --foreground: 0 0% 95%;
+  --card: 0 0% 6%;
+  --card-foreground: 0 0% 95%;
+  --popover: 0 0% 6%;
+  --popover-foreground: 0 0% 95%;
+  --primary: 32 100% 50%;
+  --primary-foreground: 0 0% 3%;
+  --secondary: 0 0% 10%;
+  --secondary-foreground: 0 0% 95%;
   --muted: 0 0% 12%;
-  --muted-foreground: 0 0% 55%;
-  --accent: 38 70% 40%;
-  --accent-foreground: 0 0% 95%;
+  --muted-foreground: 0 0% 60%;
+  --accent: 38 100% 50%;
+  --accent-foreground: 0 0% 3%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --border: 0 0% 15%;
-  --input: 0 0% 15%;
-  --ring: 38 92% 50%;
-  --gold: 38 92% 50%;
-  --gold-light: 43 96% 65%;
-  --gold-dark: 33 88% 35%;
+  --border: 0 0% 14%;
+  --input: 0 0% 14%;
+  --ring: 32 100% 50%;
+  /* Orange-Yellow Neon Gradient Colors */
+  --gold: 38 100% 50%;
+  --gold-light: 45 100% 60%;
+  --gold-dark: 28 100% 40%;
+  --neon-orange: 25 100% 55%;
+  --neon-yellow: 48 100% 55%;
 }
 
 @theme inline {
@@ -76,6 +82,8 @@
   --color-gold: hsl(var(--gold));
   --color-gold-light: hsl(var(--gold-light));
   --color-gold-dark: hsl(var(--gold-dark));
+  --color-neon-orange: hsl(var(--neon-orange));
+  --color-neon-yellow: hsl(var(--neon-yellow));
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -112,4 +120,36 @@ body {
 
 .text-glow-gold {
   text-shadow: 0 0 20px hsl(var(--gold) / 0.4), 0 0 40px hsl(var(--gold) / 0.2);
+}
+
+/* Orange-Yellow Neon Gradient */
+.gradient-neon {
+  background: linear-gradient(135deg, hsl(var(--neon-orange)), hsl(var(--gold)), hsl(var(--neon-yellow)));
+}
+
+.gradient-neon-text {
+  background: linear-gradient(135deg, hsl(var(--neon-orange)), hsl(var(--gold)), hsl(var(--neon-yellow)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glow-neon {
+  box-shadow: 0 0 20px hsl(var(--gold) / 0.5), 0 0 40px hsl(var(--neon-orange) / 0.3);
+}
+
+.border-glow-neon {
+  border-color: hsl(var(--gold));
+  box-shadow: 0 0 10px hsl(var(--gold) / 0.4), 0 0 20px hsl(var(--neon-orange) / 0.2);
+}
+
+/* Button hover with neon effect */
+.btn-neon {
+  background: linear-gradient(135deg, hsl(var(--neon-orange)), hsl(var(--gold)));
+  transition: all 0.3s ease;
+}
+
+.btn-neon:hover {
+  background: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--neon-yellow)));
+  box-shadow: 0 0 20px hsl(var(--gold) / 0.6), 0 0 40px hsl(var(--neon-orange) / 0.3);
 }

@@ -6,10 +6,12 @@ import { ChevronRight, Calculator } from "lucide-react"
 import { useApp } from "@/components/providers"
 
 const popularPackages = [
-  { name: "Cabina Blanca", price: "$4,830", duration: "5 hrs" },
-  { name: "Party con pantallas", price: "$11,000", duration: "5 hrs" },
-  { name: "Luxury", price: "$30,800", duration: "6 hrs" },
-  { name: "Sweet Dream", price: "$46,200", duration: "7 hrs" },
+  { name: "Magic", price: "$6,500", duration: "5 hrs servicio continuo" },
+  { name: "Magic Pixeles", price: "$8,184", duration: "5 hrs servicio continuo" },
+  { name: "Fancy", price: "$21,120", duration: "6 hrs servicio continuo" },
+  { name: "Luxury", price: "$36,960", duration: "6 hrs servicio continuo" },
+  { name: "Gold Bar", price: "$43,560", duration: "6 hrs servicio continuo" },
+  { name: "Sweet Dream", price: "$55,440", duration: "7 hrs servicio continuo" },
 ]
 
 export function QuotePreview() {
@@ -41,7 +43,7 @@ export function QuotePreview() {
               <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-gold/10">
                 <Calculator className="h-5 w-5 text-gold" />
               </div>
-              <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.35em] text-gold">
+              <p className="gradient-neon-text mb-2 text-[11px] font-medium uppercase tracking-[0.35em]">
                 {t.quote.label}
               </p>
               <h2 className="mb-4 text-2xl font-bold text-foreground md:text-3xl text-balance">
@@ -52,7 +54,7 @@ export function QuotePreview() {
               </p>
               <Link
                 href="/catalogo"
-                className="inline-flex w-fit items-center gap-2 rounded-full bg-gold px-8 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-gold-light"
+                className="btn-neon inline-flex w-fit items-center gap-2 rounded-full px-8 py-3 text-sm font-semibold text-white"
               >
                 {t.quote.cta}
                 <ChevronRight className="h-4 w-4" />

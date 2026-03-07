@@ -36,7 +36,7 @@ export function HeroSection() {
 
         {/* Tagline */}
         <p
-          className={`mb-6 text-[11px] font-medium uppercase tracking-[0.35em] text-gold transition-all delay-300 duration-700 ${
+          className={`gradient-neon-text mb-6 text-[11px] font-medium uppercase tracking-[0.35em] transition-all delay-300 duration-700 ${
             isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           }`}
         >
@@ -52,7 +52,7 @@ export function HeroSection() {
           <span className="text-balance">
             {t.hero.heading1}
             <br />
-            <span className="text-gold">{t.hero.heading2}</span>
+            <span className="gradient-neon-text">{t.hero.heading2}</span>
           </span>
         </h1>
 
@@ -73,7 +73,7 @@ export function HeroSection() {
         >
           <Link
             href="/catalogo"
-            className="inline-flex items-center justify-center rounded-full bg-gold px-8 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-gold-light"
+            className="btn-neon inline-flex items-center justify-center rounded-full px-8 py-3 text-sm font-semibold text-white"
           >
             {t.hero.cta1}
           </Link>

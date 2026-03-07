@@ -301,15 +301,16 @@ export default function KioskPage() {
             <div className="mb-6 flex flex-col items-center gap-3">
               <p className="text-sm text-muted-foreground">O contactanos en:</p>
               <a
-                href="https://wa.me/?text=Hola%2C%20los%20vi%20en%20la%20expo%20del%20Centro%20de%20Negocios%20de%20Queretaro%20y%20me%20interesa%20cotizar%20un%20evento"
+                href="https://wa.me/5214427953753?text=Hola%2C%20los%20vi%20en%20la%20expo%20del%20Centro%20de%20Negocios%20de%20Queretaro%20y%20me%20interesa%20cotizar%20un%20evento"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-full bg-gold px-8 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-gold-light active:scale-95"
               >
                 Enviar WhatsApp
               </a>
+              <p className="text-sm font-medium text-foreground">442-795-3753</p>
               <p className="text-sm text-muted-foreground">
-                contacto@eventos360.com
+                proyectos360.qro@gmail.com
               </p>
             </div>
 

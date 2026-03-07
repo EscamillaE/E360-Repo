@@ -12,46 +12,69 @@ interface QuoteItem {
 }
 
 const quotableServices = [
-  { id: "cabina-blanca", name: "Cabina Blanca (5 hrs)", price: 4830, unit: "paquete" },
-  { id: "magic", name: "Magic (5 hrs)", price: 6820, unit: "paquete" },
-  { id: "magic-pixeles", name: "Magic Pixeles (5 hrs)", price: 6820, unit: "paquete" },
-  { id: "party-sin", name: "Party sin pantallas (5 hrs)", price: 8140, unit: "paquete" },
-  { id: "party-con", name: "Party con pantallas 55\" (5 hrs)", price: 11000, unit: "paquete" },
-  { id: "black", name: "Black (5 hrs)", price: 9900, unit: "paquete" },
-  { id: "luxury-petite", name: "Luxury Petite (6 hrs)", price: 17600, unit: "paquete" },
-  { id: "fancy", name: "Fancy (6 hrs)", price: 17600, unit: "paquete" },
-  { id: "luxury", name: "Luxury (6 hrs)", price: 30800, unit: "paquete" },
-  { id: "gold-bar", name: "Gold Bar (6 hrs)", price: 36300, unit: "paquete" },
-  { id: "sweet-dream", name: "Sweet Dream (7 hrs)", price: 46200, unit: "paquete" },
-  { id: "luxury-gold-pp", name: "Luxury Gold (por persona)", price: 1650, unit: "persona" },
-  { id: "cabina-360", name: "Cabina 360", price: 6000, unit: "evento" },
-  { id: "cabina-180", name: "Cabina 180", price: 5000, unit: "evento" },
-  { id: "espejo", name: "Espejo Magico", price: 4500, unit: "evento" },
+  // Paquetes DJ
+  { id: "magic", name: "Magic (5 hrs)", price: 6500, unit: "paquete" },
+  { id: "magic-pixeles", name: "Magic Pixeles (5 hrs)", price: 8184, unit: "paquete" },
+  { id: "party", name: "Party (5 hrs)", price: 9768, unit: "paquete" },
+  { id: "party-con", name: "Party con pantallas 55\" (5 hrs)", price: 13200, unit: "paquete" },
+  { id: "black", name: "Black (5 hrs)", price: 11880, unit: "paquete" },
+  { id: "luxury-petite", name: "Luxury Petite (6 hrs)", price: 21120, unit: "paquete" },
+  { id: "fancy", name: "Fancy (6 hrs)", price: 21120, unit: "paquete" },
+  { id: "luxury", name: "Luxury (6 hrs)", price: 36960, unit: "paquete" },
+  { id: "gold-bar", name: "Gold Bar (6 hrs)", price: 43560, unit: "paquete" },
+  { id: "sweet-dream", name: "Sweet Dream (7 hrs)", price: 55440, unit: "paquete" },
+  { id: "luxury-gold-pp", name: "Luxury Gold con salon (por persona, min 60)", price: 1650, unit: "persona" },
+  // Efectos especiales
   { id: "fuego", name: "Maquina de Fuego (30 disparos)", price: 990, unit: "hora" },
   { id: "chispero", name: "Chispero", price: 385, unit: "detonacion" },
   { id: "co2", name: "Maquina CO2 (papel plata)", price: 2200, unit: "hora" },
   { id: "mariposa", name: "Papel Mariposa", price: 660, unit: "extra" },
   { id: "color", name: "Papel de Color", price: 770, unit: "extra" },
   { id: "humo", name: "Maquina de Humo", price: 825, unit: "evento" },
-  { id: "laser", name: "Aro Laser", price: 3300, unit: "evento" },
-  { id: "robot", name: "Robot LED", price: 2145, unit: "show" },
+  { id: "laser", name: "Aro Laser (5W + humo + operador)", price: 3300, unit: "evento" },
+  { id: "fireworks", name: "Paquete Fireworks (bombas + chisperos 50m)", price: 7150, unit: "show" },
+  // Shows
+  { id: "robot", name: "Robot LED (45 min)", price: 2145, unit: "show" },
+  { id: "luismi", name: "Show Luis Miguel (40 min)", price: 1980, unit: "show" },
+  { id: "letras", name: "Letras Gigantes", price: 935, unit: "c/u" },
   { id: "drones", name: "Show de Drones (min. 20)", price: 6000, unit: "figura" },
-  { id: "pista-px-4x4", name: "Pista Pixeles 4x4", price: 5500, unit: "evento" },
-  { id: "pista-px-6x5", name: "Pista Pixeles 6x5", price: 12100, unit: "evento" },
-  { id: "pista-bl-4x4", name: "Pista Blanca 4x4", price: 3960, unit: "evento" },
-  { id: "pista-bl-6x5", name: "Pista Blanca 6x5", price: 8800, unit: "evento" },
+  // Pistas
+  { id: "pista-px-4x4", name: "Pista Pixeles 4x4m", price: 5500, unit: "evento" },
+  { id: "pista-px-4x5", name: "Pista Pixeles 4x5m", price: 7150, unit: "evento" },
+  { id: "pista-px-5x5", name: "Pista Pixeles 5x5m", price: 9350, unit: "evento" },
+  { id: "pista-px-6x5", name: "Pista Pixeles 6x5m", price: 12100, unit: "evento" },
+  { id: "pista-bl-4x4", name: "Pista Blanca con Iniciales 4x4m", price: 3960, unit: "evento" },
+  { id: "pista-bl-4x5", name: "Pista Blanca con Iniciales 4x5m", price: 5280, unit: "evento" },
+  { id: "pista-bl-5x5", name: "Pista Blanca con Iniciales 5x5m", price: 7040, unit: "evento" },
+  { id: "pista-bl-6x5", name: "Pista Blanca con Iniciales 6x5m", price: 8800, unit: "evento" },
+  // Iluminacion
+  { id: "canon-calido", name: "Canon Iluminacion (calido/ambar/frio)", price: 935, unit: "c/u" },
+  { id: "canon-ip65", name: "Canon LED IP65 Exterior", price: 600, unit: "c/u" },
+  // Sillas
   { id: "tiffany", name: "Silla Tiffany", price: 38.5, unit: "unidad" },
   { id: "chanel", name: "Silla Chanel", price: 44, unit: "unidad" },
   { id: "crossback", name: "Silla Crossback", price: 82.5, unit: "unidad" },
   { id: "thonik", name: "Silla Thonik", price: 132, unit: "unidad" },
   { id: "sewing", name: "Silla Sewing", price: 154, unit: "unidad" },
+  // Mesas
+  { id: "mesa-cuadrada", name: "Mesa Cuadrada", price: 610, unit: "c/u" },
+  { id: "mesa-redonda-12", name: "Mesa Redonda (12 personas)", price: 627, unit: "c/u" },
+  { id: "mesa-redonda-10", name: "Mesa Redonda (10 personas)", price: 550, unit: "c/u" },
+  // Decoracion
+  { id: "centro-pequeno", name: "Centro de Mesa Pequeno", price: 495, unit: "c/u" },
+  { id: "centro-mediano", name: "Centro de Mesa Mediano", price: 715, unit: "c/u" },
+  { id: "centro-grande", name: "Centro de Mesa Grande", price: 935, unit: "c/u" },
+  { id: "candelabro", name: "Candelabro 3x3", price: 13200, unit: "c/u" },
+  { id: "macrame", name: "Decoracion Macrame", price: 4400, unit: "c/u" },
+  { id: "serie-luces", name: "Serie Luces Vintage (15m)", price: 550, unit: "c/u" },
+  { id: "vitroleros", name: "Vitroleros", price: 330, unit: "c/u" },
+  // Plantas de luz
   { id: "planta-60", name: "Planta 60 KVA (8 hrs)", price: 10450, unit: "evento" },
   { id: "planta-40", name: "Planta 40 KVA (8 hrs)", price: 7700, unit: "evento" },
   { id: "planta-3000", name: "Planta 3000W (8 hrs)", price: 2750, unit: "evento" },
+  // Catering
   { id: "coffee", name: "Coffee Break", price: 90, unit: "persona" },
-  { id: "snacks", name: "Snacks", price: 70, unit: "persona" },
-  { id: "barra", name: "Barra de Bebidas", price: 3500, unit: "evento" },
-  { id: "foto-video", name: "Fotografia & Video", price: 4500, unit: "evento" },
+  { id: "snacks", name: "Snacks / Mesa de Postres", price: 70, unit: "persona" },
 ]
 
 export function QuoteCalculator() {
@@ -238,7 +261,7 @@ export function QuoteCalculator() {
 
             {/* WhatsApp CTA */}
             <a
-              href={`https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`}
+              href={`https://wa.me/5214427953753?text=${encodeURIComponent(whatsappMessage)}`}
               target="_blank"
               rel="noopener noreferrer"
               className={`mt-4 flex w-full items-center justify-center gap-2 rounded-full py-3 text-sm font-semibold transition-all ${

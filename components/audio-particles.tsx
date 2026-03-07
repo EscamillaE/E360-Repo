@@ -27,6 +27,11 @@ export function AudioParticles() {
   const logoRef = useRef<HTMLImageElement | null>(null)
   const [isAudioActive, setIsAudioActive] = useState(false)
   const [audioLevel, setAudioLevel] = useState(0)
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
   const mouseRef = useRef({ x: 0, y: 0 })
   const beatRef = useRef(0)
 
@@ -249,20 +254,21 @@ export function AudioParticles() {
       {/* Audio toggle button */}
       <button
         onClick={isAudioActive ? stopAudio : startAudio}
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full border border-gold/30 bg-card/80 px-4 py-2.5 text-sm font-medium backdrop-blur-md transition-all hover:border-gold/60 hover:bg-card"
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full border border-gold/30 bg-card/90 px-4 py-2.5 text-sm font-medium backdrop-blur-md transition-all hover:border-glow-neon hover:bg-card"
         aria-label={isAudioActive ? "Disable audio reactive mode" : "Enable audio reactive mode"}
       >
         {/* Audio bars visualization */}
-        <div className="flex items-end gap-0.5 h-4">
-          {[0, 1, 2, 3, 4].map((i) => (
+        <div className="flex items-end gap-0.5 h-4" suppressHydrationWarning>
+          {[0.6, 0.8, 1, 0.7, 0.9].map((multiplier, i) => (
             <div
               key={i}
               className="w-0.5 rounded-full transition-all duration-100"
+              suppressHydrationWarning
               style={{
-                height: isAudioActive
-                  ? `${Math.max(4, audioLevel * 16 * (0.5 + Math.random() * 0.5))}px`
+                height: isMounted && isAudioActive
+                  ? `${Math.max(4, audioLevel * 16 * multiplier)}px`
                   : "4px",
-                backgroundColor: isAudioActive
+                backgroundColor: isMounted && isAudioActive
                   ? `hsl(38, 92%, ${50 + audioLevel * 20}%)`
                   : "hsl(var(--muted-foreground))",
               }}
