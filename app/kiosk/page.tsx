@@ -283,11 +283,7 @@ export default function KioskPage() {
         <nav className="flex items-center gap-4 border-b border-border bg-card/50 px-8 py-3 backdrop-blur-sm">
           <button
             onClick={() => setView("welcome")}
-            className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-base font-semibold transition-all ${
-              view === "welcome" 
-                ? "tab-premium-active" 
-                : "border border-border bg-card/50 text-foreground hover:border-gold/30"
-            }`}
+            className="flex items-center gap-2 rounded-full border border-border bg-card/50 px-5 py-2.5 text-base font-semibold text-foreground transition-all hover:border-gold/30"
           >
             <Home className="h-4 w-4" />
             Inicio
