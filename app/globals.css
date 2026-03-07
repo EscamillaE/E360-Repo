@@ -32,31 +32,31 @@
 }
 
 .dark {
-  --background: 0 0% 3%;
-  --foreground: 0 0% 95%;
-  --card: 0 0% 6%;
-  --card-foreground: 0 0% 95%;
-  --popover: 0 0% 6%;
-  --popover-foreground: 0 0% 95%;
-  --primary: 32 100% 50%;
-  --primary-foreground: 0 0% 3%;
-  --secondary: 0 0% 10%;
-  --secondary-foreground: 0 0% 95%;
-  --muted: 0 0% 12%;
-  --muted-foreground: 0 0% 60%;
-  --accent: 38 100% 50%;
-  --accent-foreground: 0 0% 3%;
+  --background: 220 20% 4%;
+  --foreground: 0 0% 98%;
+  --card: 220 18% 7%;
+  --card-foreground: 0 0% 98%;
+  --popover: 220 18% 7%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 36 100% 50%;
+  --primary-foreground: 220 20% 4%;
+  --secondary: 220 15% 12%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 220 15% 15%;
+  --muted-foreground: 220 10% 55%;
+  --accent: 36 100% 50%;
+  --accent-foreground: 220 20% 4%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --border: 0 0% 14%;
-  --input: 0 0% 14%;
-  --ring: 32 100% 50%;
-  /* Orange-Yellow Neon Gradient Colors */
-  --gold: 38 100% 50%;
-  --gold-light: 45 100% 60%;
-  --gold-dark: 28 100% 40%;
-  --neon-orange: 25 100% 55%;
-  --neon-yellow: 48 100% 55%;
+  --border: 220 15% 16%;
+  --input: 220 15% 16%;
+  --ring: 36 100% 50%;
+  /* Vibrant Neon Orange-Yellow Colors */
+  --gold: 36 100% 50%;
+  --gold-light: 42 100% 55%;
+  --gold-dark: 30 100% 45%;
+  --neon-orange: 30 100% 55%;
+  --neon-yellow: 45 100% 55%;
 }
 
 @theme inline {
@@ -152,4 +152,74 @@ body {
 .btn-neon:hover {
   background: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--neon-yellow)));
   box-shadow: 0 0 20px hsl(var(--gold) / 0.6), 0 0 40px hsl(var(--neon-orange) / 0.3);
+}
+
+/* Catalog carousel custom styles */
+.carousel-container {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.carousel-container::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-item {
+  scroll-snap-align: start;
+}
+
+/* Price tag glow effect */
+.price-glow {
+  text-shadow: 0 0 10px hsl(var(--gold) / 0.6), 0 0 20px hsl(var(--neon-orange) / 0.4);
+}
+
+/* Tab active indicator */
+.tab-active {
+  background: linear-gradient(135deg, hsl(var(--neon-orange)), hsl(var(--gold)));
+  box-shadow: 0 4px 20px hsl(var(--gold) / 0.4);
+}
+
+/* Card hover glow */
+.card-glow:hover {
+  box-shadow: 0 0 30px hsl(var(--gold) / 0.15), 0 10px 40px hsl(var(--background) / 0.5);
+}
+
+/* Image zoom on hover */
+.image-zoom {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.image-zoom:hover {
+  transform: scale(1.08);
+}
+
+/* Smooth slide animation */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-in {
+  animation: slideIn 0.4s ease-out forwards;
+}
+
+/* Pulse animation for badges */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px hsl(var(--gold) / 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px hsl(var(--gold) / 0.7), 0 0 30px hsl(var(--neon-orange) / 0.3);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
 }
