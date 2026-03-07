@@ -309,3 +309,100 @@ body {
   box-shadow: 0 8px 30px hsl(var(--gold) / 0.5), 0 0 60px hsl(var(--neon-orange) / 0.25);
   transform: translateY(-2px);
 }
+
+/* Kiosk Mode Specific Styles */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Orb glow pulse */
+@keyframes orb-pulse {
+  0%, 100% {
+    box-shadow: 0 0 40px hsl(var(--gold) / 0.4), 0 0 80px hsl(var(--neon-orange) / 0.2);
+  }
+  50% {
+    box-shadow: 0 0 60px hsl(var(--gold) / 0.6), 0 0 120px hsl(var(--neon-orange) / 0.4);
+  }
+}
+
+.orb-glow {
+  animation: orb-pulse 2s ease-in-out infinite;
+}
+
+/* QR Code hover effect */
+.qr-hover:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 40px hsl(var(--gold) / 0.3);
+}
+
+/* Category card entrance animation */
+@keyframes card-entrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card-entrance {
+  animation: card-entrance 0.5s ease-out forwards;
+}
+
+/* Voice wave animation */
+@keyframes voice-wave {
+  0%, 100% {
+    height: 8px;
+  }
+  50% {
+    height: 24px;
+  }
+}
+
+.voice-wave-bar {
+  animation: voice-wave 0.5s ease-in-out infinite;
+}
+
+/* Shimmer loading effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, hsl(var(--card)) 25%, hsl(var(--gold) / 0.1) 50%, hsl(var(--card)) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Kiosk touch feedback */
+.touch-feedback:active {
+  transform: scale(0.97);
+  transition: transform 0.1s ease-out;
+}
+
+/* Large price display for kiosk */
+.price-display-large {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, hsl(var(--neon-orange)), hsl(var(--gold)), hsl(var(--neon-yellow)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+}
