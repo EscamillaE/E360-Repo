@@ -7,7 +7,7 @@ export function HeroAudioParticles() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const audioContextRef = useRef<AudioContext | null>(null)
   const analyzerRef = useRef<AnalyserNode | null>(null)
-  const dataArrayRef = useRef<Uint8Array | null>(null)
+  const dataArrayRef = useRef<Uint8Array<ArrayBuffer> | null>(null)
   const particlesRef = useRef<Particle[]>([])
   const [isAudioActive, setIsAudioActive] = useState(false)
   const [audioLevel, setAudioLevel] = useState(0)
@@ -161,7 +161,8 @@ export function HeroAudioParticles() {
         microphone.current = source
         source.connect(analyzer)
 
-        const dataArray = new Uint8Array(analyzer.frequencyBinCount)
+        const bufferLength = analyzer.frequencyBinCount
+        const dataArray = new Uint8Array(new ArrayBuffer(bufferLength))
         dataArrayRef.current = dataArray
 
         const updateLevel = () => {
