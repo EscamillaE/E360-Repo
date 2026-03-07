@@ -2,9 +2,11 @@
 
 import { useState, useMemo } from "react"
 import Image from "next/image"
-import { Search, Plus, Minus, ChevronRight } from "lucide-react"
+import { Search, Plus, Minus, ChevronRight, Image as ImageIcon } from "lucide-react"
 import { cn, currencyMXN } from "@/lib/utils"
 import { CATALOG, CATEGORY_META, getCategories, type CatalogProduct } from "@/lib/catalog"
+import { ProductGalleryModal } from "@/components/product-gallery-modal"
+import { useGalleryImages } from "@/hooks/use-gallery-images"
 
 export function CatalogView() {
   const [search, setSearch] = useState("")
@@ -103,7 +105,7 @@ export function CatalogView() {
               {/* Category Header with Image */}
               <button
                 onClick={() => setExpandedCategory(isExpanded ? null : category)}
-                className="group relative h-40 rounded-xl overflow-hidden border border-border"
+                className="group relative h-40 rounded-xl overflow-hidden border border-border hover:border-gold/30 transition-all hover-lift hover:shadow-xl hover:shadow-gold/10"
               >
                 <Image
                   src={meta?.image || "/images/packages-dj.jpg"}
@@ -171,81 +173,110 @@ function ProductCard({
   isExpanded: boolean
 }) {
   const meta = CATEGORY_META[product.category]
+  const [galleryOpen, setGalleryOpen] = useState(false)
+  const { images } = useGalleryImages(product.name)
+  const hasGallery = images && images.length > 0
 
   return (
-    <div
-      className={cn(
-        "rounded-xl border border-border bg-card overflow-hidden transition-all hover:border-gold/30 group",
-        isExpanded ? "" : "min-w-[240px] max-w-[240px] snap-start shrink-0"
-      )}
-    >
-      {/* Product image */}
-      <div className="relative h-28 overflow-hidden">
-        <Image
-          src={meta?.image || "/images/packages-dj.jpg"}
-          alt={product.name}
-          fill
-          className="object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
-        <div className="absolute top-2 left-2">
-          <span className="text-[10px] font-bold bg-background/60 glass text-foreground border border-border/50 rounded-full px-2 py-0.5">
-            {meta?.label || product.category}
-          </span>
-        </div>
-        {qty > 0 && (
-          <div className="absolute top-2 right-2">
-            <span className="text-[10px] font-bold bg-gold/90 text-gold-foreground rounded-full px-2 py-0.5">
-              {qty}x
+    <>
+      <div
+        className={cn(
+          "rounded-xl border border-border bg-card overflow-hidden transition-all hover:border-gold/50 hover:shadow-xl hover:shadow-gold/10 group hover-lift",
+          isExpanded ? "" : "min-w-[240px] max-w-[240px] snap-start shrink-0"
+        )}
+      >
+        {/* Product image */}
+        <div className="relative h-28 overflow-hidden">
+          <Image
+            src={meta?.image || "/images/packages-dj.jpg"}
+            alt={product.name}
+            fill
+            className="object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-card via-card/40 to-transparent" />
+          <div className="absolute top-2 left-2">
+            <span className="text-[10px] font-bold bg-background/60 glass text-foreground border border-border/50 rounded-full px-2 py-0.5">
+              {meta?.label || product.category}
             </span>
           </div>
-        )}
-      </div>
+          {qty > 0 && (
+            <div className="absolute top-2 right-2">
+              <span className="text-[10px] font-bold bg-gold/90 text-gold-foreground rounded-full px-2 py-0.5">
+                {qty}x
+              </span>
+            </div>
+          )}
+          {hasGallery && (
+            <button
+              onClick={() => setGalleryOpen(true)}
+              className="absolute inset-0 flex items-center justify-center bg-background/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              aria-label={`Ver galería de ${product.name}`}
+            >
+              <ImageIcon className="w-6 h-6 text-white drop-shadow-lg" />
+            </button>
+          )}
+        </div>
 
-      {/* Body */}
-      <div className="p-3 flex flex-col gap-2">
-        <div className="flex items-start justify-between gap-2">
-          <div className="min-w-0">
-            <div className="font-sans text-sm font-bold text-foreground truncate">{product.name}</div>
-            <div className="font-sans text-xs text-muted-foreground">
-              {product.unit}
-              {product.subcategory ? ` / ${product.subcategory}` : ""}
-              {product.size ? ` / ${product.size}` : ""}
-              {product.hrs ? ` / ${product.hrs}h` : ""}
+        {/* Body */}
+        <div className="p-3 flex flex-col gap-2">
+          <div className="flex items-start justify-between gap-2">
+            <div className="min-w-0">
+              <div className="font-sans text-sm font-bold text-foreground truncate">{product.name}</div>
+              <div className="font-sans text-xs text-muted-foreground">
+                {product.unit}
+                {product.subcategory ? ` / ${product.subcategory}` : ""}
+                {product.size ? ` / ${product.size}` : ""}
+                {product.hrs ? ` / ${product.hrs}h` : ""}
+              </div>
+            </div>
+            <div className="font-sans text-sm font-black text-foreground shrink-0">
+              {currencyMXN(product.price)}
             </div>
           </div>
-          <div className="font-sans text-sm font-black text-foreground shrink-0">
-            {currencyMXN(product.price)}
-          </div>
-        </div>
 
-        {product.priceNote && (
-          <div className="text-[10px] text-muted-foreground">{product.priceNote}</div>
-        )}
+          {product.priceNote && (
+            <div className="text-[10px] text-muted-foreground">{product.priceNote}</div>
+          )}
 
-        {/* Quantity controls */}
-        <div className="flex items-center justify-between gap-2 pt-1 border-t border-border/50">
-          <div className="font-mono text-[10px] text-muted-foreground">{product.id}</div>
-          <div className="flex items-center gap-1.5">
-            <button
-              onClick={(e) => { e.stopPropagation(); onSub() }}
-              disabled={qty <= 0}
-              className="flex items-center justify-center w-7 h-7 rounded-lg border border-border bg-secondary text-foreground disabled:opacity-30 hover:bg-accent transition-all"
-              aria-label={`Quitar ${product.name}`}
-            >
-              <Minus className="w-3 h-3" />
-            </button>
-            <span className="font-sans text-xs font-bold min-w-[20px] text-center text-foreground">{qty}</span>
-            <button
-              onClick={(e) => { e.stopPropagation(); onAdd() }}
-              className="flex items-center justify-center w-7 h-7 rounded-lg border border-gold/30 bg-gold/10 text-gold hover:bg-gold/20 transition-all"
-              aria-label={`Agregar ${product.name}`}
-            >
-              <Plus className="w-3 h-3" />
-            </button>
+          {/* Quantity controls */}
+          <div className="flex items-center justify-between gap-2 pt-1 border-t border-border/50">
+            <div className="font-mono text-[10px] text-muted-foreground">{product.id}</div>
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={(e) => { e.stopPropagation(); onSub() }}
+                disabled={qty <= 0}
+                className="flex items-center justify-center w-7 h-7 rounded-lg border border-border bg-secondary text-foreground disabled:opacity-30 hover:bg-accent transition-all"
+                aria-label={`Quitar ${product.name}`}
+              >
+                <Minus className="w-3 h-3" />
+              </button>
+              <span className="font-sans text-xs font-bold min-w-[20px] text-center text-foreground">{qty}</span>
+              <button
+                onClick={(e) => { e.stopPropagation(); onAdd() }}
+                className="flex items-center justify-center w-7 h-7 rounded-lg border border-gold/30 bg-gold/10 text-gold hover:bg-gold/20 transition-all"
+                aria-label={`Agregar ${product.name}`}
+              >
+                <Plus className="w-3 h-3" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Gallery Modal */}
+      {hasGallery && (
+        <ProductGalleryModal
+          productName={product.name}
+          images={images.map((img: any) => ({
+            id: img.id,
+            url: img.url,
+            title: img.title_es || img.title_en,
+            description: img.description_es || img.description_en,
+          }))}
+          isOpen={galleryOpen}
+          onClose={() => setGalleryOpen(false)}
+        />
+      )}
+    </>
   )
 }
