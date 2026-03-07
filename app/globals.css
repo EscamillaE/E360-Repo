@@ -406,3 +406,85 @@ body {
   -webkit-text-fill-color: transparent;
   text-shadow: none;
 }
+
+/* Hover outline neon accent for better readability */
+.hover-outline {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+}
+
+.hover-outline:hover {
+  border-color: hsl(var(--gold));
+  box-shadow: 0 0 20px hsl(var(--gold) / 0.3), inset 0 0 0 1px hsl(var(--gold) / 0.1);
+}
+
+/* Card with hover neon outline */
+.card-hover-outline {
+  border: 2px solid hsl(var(--border));
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  background: hsl(var(--card));
+}
+
+.card-hover-outline:hover {
+  border-color: hsl(var(--gold));
+  box-shadow: 0 0 25px hsl(var(--gold) / 0.25), 0 10px 40px hsl(0 0% 0% / 0.4);
+}
+
+/* Flip card animation */
+.flip-card {
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Light mode hover outline */
+:root .hover-outline:hover {
+  border-color: hsl(var(--gold-dark));
+  box-shadow: 0 0 15px hsl(var(--gold) / 0.4), inset 0 0 0 1px hsl(var(--gold) / 0.15);
+}
+
+:root .card-hover-outline:hover {
+  border-color: hsl(var(--gold-dark));
+  box-shadow: 0 0 20px hsl(var(--gold) / 0.3), 0 8px 30px hsl(0 0% 0% / 0.15);
+}
+
+/* Payment method badges */
+.payment-badge {
+  background: hsl(var(--card));
+  border: 2px solid hsl(var(--border));
+  transition: all 0.3s ease;
+}
+
+.payment-badge:hover {
+  border-color: hsl(var(--gold));
+  box-shadow: 0 0 15px hsl(var(--gold) / 0.3);
+}
+
+.payment-badge.selected {
+  border-color: hsl(var(--gold));
+  background: hsl(var(--gold) / 0.1);
+  box-shadow: 0 0 20px hsl(var(--gold) / 0.4);
+}
