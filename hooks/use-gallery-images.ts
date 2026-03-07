@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react"
+"use client"
+
+import { useEffect, useState, useMemo } from "react"
 import { createClient } from "@supabase/supabase-js"
 
 interface GalleryImage {
@@ -11,20 +13,33 @@ interface GalleryImage {
   sort_order: number
 }
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
-)
+// Create supabase client lazily to avoid SSR issues
+function getSupabaseClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  if (!url || !key) return null
+  return createClient(url, key)
+}
 
-export function useGalleryImages(productName: string, locale: string = "es") {
+export function useGalleryImages(productName: string) {
   const [images, setImages] = useState<GalleryImage[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
+  const supabase = useMemo(() => getSupabaseClient(), [])
+
   useEffect(() => {
+    if (!supabase || !productName) {
+      setLoading(false)
+      setImages([])
+      return
+    }
+
     const fetchImages = async () => {
       try {
         setLoading(true)
+        setError(null)
+
         const { data: catalogItems, error: catalogError } = await supabase
           .from("catalog_items")
           .select("id")
@@ -33,8 +48,9 @@ export function useGalleryImages(productName: string, locale: string = "es") {
           .single()
 
         if (catalogError || !catalogItems) {
-          setError("Product not found")
+          // Product not found is not an error - just no gallery images
           setImages([])
+          setLoading(false)
           return
         }
 
@@ -58,10 +74,8 @@ export function useGalleryImages(productName: string, locale: string = "es") {
       }
     }
 
-    if (productName) {
-      fetchImages()
-    }
-  }, [productName, locale])
+    fetchImages()
+  }, [productName, supabase])
 
   return { images, loading, error }
 }

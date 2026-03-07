@@ -188,7 +188,7 @@ export function Gallery3DSlider({ items }: { items: GalleryItem[] }) {
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-gold/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-10 w-72 h-72 bg-neon-orange/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 right-10 w-72 h-72 bg-warning/5 rounded-full blur-3xl" />
       </div>
     </div>
   )
