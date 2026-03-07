@@ -157,7 +157,7 @@ export function HeroAudioParticles() {
         analyzer.fftSize = 256
         analyzerRef.current = analyzer
 
-        const source = audioContext.createMediaStreamAudioSource(stream)
+        const source = audioContext.createMediaStreamSource(stream)
         microphone.current = source
         source.connect(analyzer)
 
