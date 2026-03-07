@@ -1260,6 +1260,132 @@ function Clientes({ clients, selectedClientId, onSelect, onAdd, onEdit, onDelete
   );
 }
 
+function buildQuoteId(eventId, date) {
+  const prefix = "COT";
+  const datePart = date ? date.replace(/-/g, "").slice(2) : "000000";
+  const idPart = (eventId || "").replace(/\D/g, "").padStart(3, "0").slice(-3);
+  return `${prefix}-${datePart}-${idPart}`;
+}
+
+function openQuotePDF({ quoteId, clientName, eventTitle, eventDate, location, notes, items }) {
+  function fmt(n) {
+    return new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(n);
+  }
+  const today = new Date().toLocaleDateString("es-MX", { year: "numeric", month: "long", day: "numeric" });
+  const subtotal = items.reduce((s, li) => s + (li.price || 0) * (li.qty || 0), 0);
+  const iva = subtotal * 0.16;
+  const total = subtotal + iva;
+  const deposit = total * 0.5;
+  const balance = total - deposit;
+
+  const rows = items.map((li) => {
+    const lineTotal = (li.price || 0) * (li.qty || 0);
+    return `<tr>
+      <td class="td-sku">${li.productId || ""}</td>
+      <td class="td-name">${li.name}${li.unit ? ` <span class="unit">(${li.unit})</span>` : ""}</td>
+      <td class="td-num">${li.qty}</td>
+      <td class="td-num">${fmt(li.price || 0)}</td>
+      <td class="td-num td-bold">${fmt(lineTotal)}</td>
+    </tr>`;
+  }).join("");
+
+  const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"/>
+  <title>Cotización ${quoteId} — ${clientName}</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    @page{size:Letter;margin:18mm 16mm 22mm 16mm}
+    html,body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;color:#1a1a2e;background:#fff}
+    .watermark{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-35deg);width:420px;opacity:.045;pointer-events:none;z-index:0}
+    .watermark img{width:100%;display:block;filter:grayscale(1)}
+    .doc-header{display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #f59e0b;padding-bottom:14px;margin-bottom:20px}
+    .doc-header-left{display:flex;align-items:center;gap:14px}
+    .doc-logo{width:72px;height:72px;object-fit:cover;border-radius:10px}
+    .doc-brand-name{font-size:22px;font-weight:900;letter-spacing:-.5px;color:#1a1a2e}
+    .doc-brand-sub{font-size:10px;color:#888;letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+    .doc-header-right{text-align:right}
+    .doc-quote-label{font-size:9px;text-transform:uppercase;letter-spacing:.2em;color:#888}
+    .doc-quote-id{font-size:20px;font-weight:900;color:#f59e0b;letter-spacing:-.5px}
+    .doc-quote-date{font-size:9px;color:#888;margin-top:2px}
+    .meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+    .meta-card{background:#f8f8fa;border:1px solid #e5e7eb;border-radius:10px;padding:12px 14px}
+    .meta-label{font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#aaa;margin-bottom:4px}
+    .meta-value{font-size:12px;font-weight:700;color:#1a1a2e}
+    .meta-value-sub{font-size:10px;color:#666;margin-top:2px}
+    .section-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:#f59e0b;margin-bottom:8px}
+    table{width:100%;border-collapse:collapse;margin-bottom:20px}
+    thead th{background:#1a1a2e;color:#fff;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:8px 10px;text-align:left}
+    thead th:first-child{border-radius:6px 0 0 6px}thead th:last-child{border-radius:0 6px 6px 0}
+    tbody tr:nth-child(even){background:#f9f9fb}tbody tr:nth-child(odd){background:#fff}
+    td{padding:7px 10px;vertical-align:middle;border-bottom:1px solid #f0f0f5;font-size:10.5px;color:#333}
+    .td-sku{font-family:monospace;font-size:9px;color:#aaa;white-space:nowrap}
+    .td-name{min-width:160px;font-weight:600}
+    .td-num{text-align:right;white-space:nowrap}
+    .td-bold{font-weight:800;color:#1a1a2e}
+    .unit{font-size:9px;color:#aaa;font-weight:400}
+    .totals-wrap{display:flex;justify-content:flex-end;margin-bottom:20px}
+    .totals-box{background:#f8f8fa;border:1px solid #e5e7eb;border-radius:10px;padding:14px 20px;min-width:260px}
+    .totals-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:11px;color:#555}
+    .totals-row.divider{border-top:1px solid #e5e7eb;margin-top:6px;padding-top:8px}
+    .tot-main .tot-label{font-size:13px;font-weight:900;color:#1a1a2e}
+    .tot-main .tot-value{font-size:18px;font-weight:900;color:#1a1a2e}
+    .tot-deposit .tot-value{font-weight:800;color:#f59e0b}
+    .doc-footer{position:fixed;bottom:8mm;left:0;right:0;padding:0 16mm;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #e5e7eb;padding-top:6px}
+    .footer-badge{display:inline-block;background:#1a1a2e;color:#f59e0b;font-size:7px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:20px}
+    .footer-txt{font-size:8px;color:#bbb}
+    @media screen{body{background:#e5e7eb;padding:20px}.page{background:#fff;max-width:816px;margin:0 auto;padding:40px;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.12)}}
+  </style></head>
+  <body>
+    <div class="watermark" aria-hidden="true"><img src="/images/e360-logo.jpg" alt=""/></div>
+    <div class="page">
+      <div class="doc-header">
+        <div class="doc-header-left">
+          <img class="doc-logo" src="/images/e360-logo.jpg" alt="Eventos 360"/>
+          <div><div class="doc-brand-name">Eventos 360</div><div class="doc-brand-sub">Producción de eventos integral</div></div>
+        </div>
+        <div class="doc-header-right">
+          <div class="doc-quote-label">Cotización</div>
+          <div class="doc-quote-id">${quoteId}</div>
+          <div class="doc-quote-date">Emitida el ${today}</div>
+        </div>
+      </div>
+      <div class="meta-grid">
+        <div class="meta-card"><div class="meta-label">Cliente / Prospecto</div><div class="meta-value">${clientName}</div></div>
+        <div class="meta-card">
+          <div class="meta-label">Evento</div>
+          <div class="meta-value">${eventTitle}</div>
+          ${eventDate ? `<div class="meta-value-sub">${eventDate}${location ? ` &bull; ${location}` : ""}</div>` : ""}
+        </div>
+      </div>
+      <div class="section-title">Detalle de servicios</div>
+      <table>
+        <thead><tr><th>SKU</th><th>Descripción</th><th style="text-align:right">Cant.</th><th style="text-align:right">P. Unit.</th><th style="text-align:right">Subtotal</th></tr></thead>
+        <tbody>${rows || `<tr><td colspan="5" style="text-align:center;color:#aaa;padding:20px">Sin items</td></tr>`}</tbody>
+      </table>
+      <div class="totals-wrap">
+        <div class="totals-box">
+          <div class="totals-row"><span class="tot-label">Subtotal</span><span class="tot-value">${fmt(subtotal)}</span></div>
+          <div class="totals-row"><span class="tot-label">IVA (16%)</span><span class="tot-value">${fmt(iva)}</span></div>
+          <div class="totals-row divider tot-main"><span class="tot-label">Total</span><span class="tot-value">${fmt(total)}</span></div>
+          <div class="totals-row tot-deposit"><span class="tot-label">Anticipo (50%)</span><span class="tot-value">${fmt(deposit)}</span></div>
+          <div class="totals-row"><span class="tot-label">Saldo</span><span class="tot-value">${fmt(balance)}</span></div>
+        </div>
+      </div>
+      ${notes ? `<div style="background:#fffdf5;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:6px;padding:10px 14px;margin-bottom:20px;font-size:10px;color:#555"><strong>Notas:</strong> ${notes}</div>` : ""}
+      <div class="doc-footer">
+        <div class="footer-txt">Eventos 360 &mdash; Producción integral de eventos</div>
+        <div class="footer-txt"><span class="footer-badge">${quoteId}</span> &nbsp;&bull;&nbsp; ${clientName} &nbsp;&bull;&nbsp; ${today}</div>
+        <div class="footer-txt">Página 1</div>
+      </div>
+    </div>
+    <script>window.onload=function(){window.print()}<\/script>
+  </body></html>`;
+
+  const win = window.open("", "_blank", "width=900,height=700");
+  if (!win) { alert("Activa las ventanas emergentes para generar el PDF."); return; }
+  win.document.write(html);
+  win.document.close();
+}
+
 function Eventos({ events, clientsById, selectedEventId, onSelect, onAdd, onEdit, onDelete, onLinkClient, onQty, onWhatsApp }) {
   const selected = selectedEventId ? events.find((e) => e.id === selectedEventId) : null;
 
@@ -1347,10 +1473,32 @@ function Eventos({ events, clientsById, selectedEventId, onSelect, onAdd, onEdit
                       )
                     )}
                   </div>
+                  <div style={{ fontSize: 10, color: "#f59e0b", fontWeight: 700, marginTop: 2, fontFamily: "monospace" }}>
+                    {buildQuoteId(selected.id, selected.date)}
+                  </div>
                 </div>
-                <button style={styles.primaryBtn} onClick={() => onWhatsApp(selected)}>
-                  Enviar WhatsApp
-                </button>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <button style={styles.primaryBtn} onClick={() => onWhatsApp(selected)}>
+                    WhatsApp
+                  </button>
+                  <button
+                    style={{ ...styles.secondaryBtn, borderColor: "rgba(245,158,11,0.4)", color: "#f59e0b" }}
+                    onClick={() => {
+                      const client = selected.clientId ? clientsById[selected.clientId] : null;
+                      openQuotePDF({
+                        quoteId: buildQuoteId(selected.id, selected.date),
+                        clientName: client?.name || "Sin cliente",
+                        eventTitle: selected.title,
+                        eventDate: selected.date,
+                        location: selected.location,
+                        notes: selected.notes,
+                        items: Array.isArray(selected.items) ? selected.items : [],
+                      });
+                    }}
+                  >
+                    PDF
+                  </button>
+                </div>
               </div>
 
               <div style={styles.mutedSmall}>

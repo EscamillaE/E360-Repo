@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Plus, Send, Trash2, FileText, Minus } from "lucide-react"
 import { cn, currencyMXN } from "@/lib/utils"
+import { generateQuotePDF } from "@/lib/generate-pdf"
 
 interface LineItem {
   sku: string
@@ -24,12 +25,23 @@ const DEMO_CONTACTS = [
   { id: "c3", name: "Familia Ramirez", type: "cliente" },
 ]
 
+// Generate a deterministic quote ID from client + date
+function buildQuoteId(clientId: string, date: string) {
+  const prefix = "COT"
+  const datePart = date.replace(/-/g, "").slice(2) // e.g. 260315
+  const clientPart = clientId.replace(/\D/g, "").padStart(3, "0").slice(-3)
+  return `${prefix}-${datePart}-${clientPart}`
+}
+
 export function QuotesView() {
   const [lineItems, setLineItems] = useState<LineItem[]>(DEMO_LINE_ITEMS)
   const [clientId, setClientId] = useState("c1")
   const [eventDate, setEventDate] = useState("2026-03-15")
   const [location, setLocation] = useState("Hacienda Los Olivos, Queretaro")
   const [notes, setNotes] = useState("")
+
+  const quoteId = buildQuoteId(clientId, eventDate)
+  const clientName = DEMO_CONTACTS.find((c) => c.id === clientId)?.name ?? "Sin cliente"
 
   const subtotal = lineItems.reduce((s, li) => s + li.qty * li.unitPrice, 0)
   const iva = subtotal * 0.16
@@ -55,7 +67,10 @@ export function QuotesView() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="font-sans text-2xl font-black tracking-tight text-foreground text-balance">Cotizaciones</h2>
-          <p className="font-sans text-sm text-muted-foreground mt-1">Arma tu cotizacion y envia por WhatsApp.</p>
+          <p className="font-sans text-sm text-muted-foreground mt-1">
+            Arma tu cotizacion y envia por WhatsApp.
+            <span className="ml-2 font-mono text-xs text-gold font-bold">{quoteId}</span>
+          </p>
         </div>
         <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gold/10 border border-gold/30 text-gold text-sm font-bold hover:bg-gold/20 transition-all">
           <Plus className="w-4 h-4" />
@@ -152,7 +167,25 @@ export function QuotesView() {
                 <Send className="w-4 h-4" />
                 WhatsApp
               </button>
-              <button className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-border text-muted-foreground text-sm font-bold hover:bg-accent hover:text-foreground transition-all">
+              <button
+                onClick={() =>
+                  generateQuotePDF({
+                    quoteId,
+                    clientName,
+                    eventTitle: "Cotización de Servicios",
+                    eventDate,
+                    location,
+                    notes,
+                    items: lineItems.map((li) => ({
+                      sku: li.sku,
+                      name: li.name,
+                      qty: li.qty,
+                      unitPrice: li.unitPrice,
+                    })),
+                  })
+                }
+                className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-border text-muted-foreground text-sm font-bold hover:bg-accent hover:text-foreground transition-all"
+              >
                 <FileText className="w-4 h-4" />
                 PDF
               </button>
