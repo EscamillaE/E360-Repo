@@ -66,12 +66,12 @@ export function DashboardView({ onNavigate }: DashboardProps) {
           return (
             <div
               key={kpi.label}
-              className="relative rounded-xl border border-border bg-card p-4 hover:bg-accent/50 transition-all cursor-pointer group overflow-hidden"
+              className="relative rounded-xl border border-border bg-card p-4 hover:bg-accent/50 transition-all cursor-pointer group overflow-hidden hover-lift"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative">
                 <div className="flex items-center gap-2 mb-2">
-                  <Icon className={cn("w-4 h-4", kpi.color)} />
+                  <Icon className={cn("w-4 h-4 transition-transform group-hover:scale-110", kpi.color)} />
                   <span className="text-xs font-semibold text-muted-foreground">{kpi.label}</span>
                 </div>
                 <div className="text-3xl font-black tracking-tight text-foreground">{kpi.value}</div>
