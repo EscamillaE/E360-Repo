@@ -32,31 +32,31 @@
 }
 
 .dark {
-  --background: 220 20% 4%;
+  --background: 0 0% 4%;
   --foreground: 0 0% 98%;
-  --card: 220 18% 7%;
+  --card: 0 0% 8%;
   --card-foreground: 0 0% 98%;
-  --popover: 220 18% 7%;
+  --popover: 0 0% 8%;
   --popover-foreground: 0 0% 98%;
-  --primary: 36 100% 50%;
-  --primary-foreground: 220 20% 4%;
-  --secondary: 220 15% 12%;
+  --primary: 32 100% 52%;
+  --primary-foreground: 0 0% 4%;
+  --secondary: 0 0% 12%;
   --secondary-foreground: 0 0% 98%;
-  --muted: 220 15% 15%;
-  --muted-foreground: 220 10% 55%;
-  --accent: 36 100% 50%;
-  --accent-foreground: 220 20% 4%;
+  --muted: 0 0% 16%;
+  --muted-foreground: 0 0% 65%;
+  --accent: 32 100% 52%;
+  --accent-foreground: 0 0% 4%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --border: 220 15% 16%;
-  --input: 220 15% 16%;
-  --ring: 36 100% 50%;
+  --border: 0 0% 18%;
+  --input: 0 0% 18%;
+  --ring: 32 100% 52%;
   /* Vibrant Neon Orange-Yellow Colors */
-  --gold: 36 100% 50%;
-  --gold-light: 42 100% 55%;
-  --gold-dark: 30 100% 45%;
-  --neon-orange: 30 100% 55%;
-  --neon-yellow: 45 100% 55%;
+  --gold: 32 100% 52%;
+  --gold-light: 38 100% 58%;
+  --gold-dark: 26 100% 46%;
+  --neon-orange: 25 100% 55%;
+  --neon-yellow: 42 100% 58%;
 }
 
 @theme inline {
@@ -222,4 +222,90 @@ body {
 
 .pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Premium Card Styles */
+.premium-card {
+  background: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(0 0% 6%) 100%);
+  border: 1px solid hsl(var(--border));
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.premium-card:hover {
+  border-color: hsl(var(--gold) / 0.4);
+  box-shadow: 0 0 40px hsl(var(--gold) / 0.12), 0 20px 50px hsl(0 0% 0% / 0.5);
+  transform: translateY(-4px);
+}
+
+/* Price tag premium style */
+.price-badge {
+  background: linear-gradient(135deg, hsl(var(--neon-orange)), hsl(var(--gold)));
+  box-shadow: 0 4px 20px hsl(var(--gold) / 0.5);
+}
+
+/* Large text utility */
+.text-readable {
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+/* Hero text size */
+.hero-title {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* Premium scrollbar for carousels */
+.carousel-premium {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  scroll-padding-left: 1rem;
+}
+
+.carousel-premium::-webkit-scrollbar {
+  display: none;
+}
+
+/* Neon border glow animation */
+@keyframes border-glow {
+  0%, 100% {
+    border-color: hsl(var(--gold) / 0.3);
+    box-shadow: 0 0 15px hsl(var(--gold) / 0.2);
+  }
+  50% {
+    border-color: hsl(var(--gold) / 0.6);
+    box-shadow: 0 0 25px hsl(var(--gold) / 0.4), 0 0 50px hsl(var(--neon-orange) / 0.2);
+  }
+}
+
+.border-glow-animate {
+  animation: border-glow 3s ease-in-out infinite;
+}
+
+/* Active tab premium style */
+.tab-premium-active {
+  background: linear-gradient(135deg, hsl(var(--neon-orange)), hsl(var(--gold)), hsl(var(--neon-yellow)));
+  box-shadow: 0 4px 25px hsl(var(--gold) / 0.5);
+  color: hsl(0 0% 4%);
+  font-weight: 700;
+}
+
+/* Image overlay gradient */
+.image-overlay {
+  background: linear-gradient(to top, hsl(0 0% 4% / 0.9) 0%, transparent 60%);
+}
+
+/* Button premium hover */
+.btn-premium {
+  background: linear-gradient(135deg, hsl(var(--neon-orange)), hsl(var(--gold)));
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-premium:hover {
+  background: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--neon-yellow)));
+  box-shadow: 0 8px 30px hsl(var(--gold) / 0.5), 0 0 60px hsl(var(--neon-orange) / 0.25);
+  transform: translateY(-2px);
 }

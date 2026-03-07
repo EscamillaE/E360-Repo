@@ -97,7 +97,7 @@ function CategoryCarousel({
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
-      const scrollAmount = 340
+      const scrollAmount = 380
       scrollRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
         behavior: "smooth",
@@ -106,36 +106,36 @@ function CategoryCarousel({
   }
 
   return (
-    <section className="mb-16">
+    <section className="mb-20">
       {/* Category Header */}
-      <div className="mb-6 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gold/10 border border-gold/20">
-            <Icon className="h-7 w-7 text-gold" />
+      <div className="mb-8 flex items-center justify-between">
+        <div className="flex items-center gap-5">
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-gold/20 to-neon-orange/10 border border-gold/30 shadow-lg shadow-gold/10">
+            <Icon className="h-8 w-8 text-gold" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-foreground">{category.name}</h2>
-            <p className="text-sm text-muted-foreground">
+            <h2 className="text-2xl md:text-3xl font-black text-foreground tracking-tight">{category.name}</h2>
+            <p className="text-base md:text-lg text-muted-foreground mt-1">
               {category.items.length} {category.items.length === 1 ? "producto" : "productos"} disponibles
             </p>
           </div>
         </div>
         
         {/* Carousel Controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <button
             onClick={() => scroll("left")}
             disabled={!carouselState.canScrollLeft}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition-all hover:bg-gold hover:text-background hover:border-gold disabled:opacity-30 disabled:hover:bg-card disabled:hover:text-foreground disabled:hover:border-border"
+            className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-border bg-card text-foreground transition-all hover:bg-gold hover:text-background hover:border-gold hover:shadow-lg hover:shadow-gold/30 disabled:opacity-30 disabled:hover:bg-card disabled:hover:text-foreground disabled:hover:border-border disabled:hover:shadow-none"
           >
-            <ChevronLeft className="h-5 w-5" />
+            <ChevronLeft className="h-6 w-6" />
           </button>
           <button
             onClick={() => scroll("right")}
             disabled={!carouselState.canScrollRight}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground transition-all hover:bg-gold hover:text-background hover:border-gold disabled:opacity-30 disabled:hover:bg-card disabled:hover:text-foreground disabled:hover:border-border"
+            className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-border bg-card text-foreground transition-all hover:bg-gold hover:text-background hover:border-gold hover:shadow-lg hover:shadow-gold/30 disabled:opacity-30 disabled:hover:bg-card disabled:hover:text-foreground disabled:hover:border-border disabled:hover:shadow-none"
           >
-            <ChevronRight className="h-5 w-5" />
+            <ChevronRight className="h-6 w-6" />
           </button>
         </div>
       </div>
@@ -143,7 +143,7 @@ function CategoryCarousel({
       {/* Carousel */}
       <div
         ref={scrollRef}
-        className="carousel-container flex gap-5 overflow-x-auto pb-4"
+        className="carousel-premium flex gap-6 overflow-x-auto pb-6 pr-6"
       >
         {category.items.map((item, index) => (
           <ProductCard
@@ -206,13 +206,13 @@ function ProductCard({
   return (
     <div
       ref={ref}
-      className={`carousel-item group relative flex-shrink-0 w-[320px] overflow-hidden rounded-2xl border border-border bg-card transition-all duration-500 card-glow ${
+      className={`group relative flex-shrink-0 w-[360px] overflow-hidden rounded-3xl premium-card ${
         isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-      } ${cartQuantity > 0 ? "ring-2 ring-gold/50 border-gold/30" : "hover:border-gold/20"}`}
-      style={{ transitionDelay: `${index * 50}ms` }}
+      } ${cartQuantity > 0 ? "border-gold/50 border-glow-animate" : ""}`}
+      style={{ transitionDelay: `${index * 50}ms`, transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)" }}
     >
       {/* Image Container */}
-      <div className="relative h-56 w-full overflow-hidden bg-secondary">
+      <div className="relative h-64 w-full overflow-hidden bg-secondary">
         {item.image && !imgError ? (
           <Image
             src={item.image}
@@ -220,28 +220,32 @@ function ProductCard({
             fill
             className="object-cover image-zoom"
             onError={() => setImgError(true)}
+            sizes="360px"
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gold/5 via-card to-card">
-            <Sparkles className="h-12 w-12 text-gold/30" />
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gold/10 via-card to-background">
+            <Sparkles className="h-16 w-16 text-gold/40" />
           </div>
         )}
         
+        {/* Image Overlay */}
+        <div className="absolute inset-0 image-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        
         {/* Price Badge - Large and prominent */}
-        <div className="absolute right-3 top-3 rounded-xl bg-gold px-4 py-2 shadow-lg pulse-glow">
-          <span className="text-lg font-black text-background price-glow">{item.price}</span>
+        <div className="absolute right-4 top-4 price-badge rounded-2xl px-5 py-3 shadow-2xl">
+          <span className="text-xl md:text-2xl font-black text-background">{item.price}</span>
         </div>
         
         {/* Service Hours Badge */}
         {item.serviceHours && (
-          <div className="absolute left-3 top-3 rounded-lg bg-background/90 px-3 py-1.5 backdrop-blur-sm border border-border">
-            <span className="text-xs font-semibold text-foreground">{item.serviceHours}</span>
+          <div className="absolute left-4 top-4 rounded-xl bg-background/95 px-4 py-2 backdrop-blur-md border border-border/50 shadow-lg">
+            <span className="text-sm font-bold text-foreground">{item.serviceHours}</span>
           </div>
         )}
         
         {/* Cart Quantity Badge */}
         {cartQuantity > 0 && (
-          <div className="absolute left-3 bottom-3 flex h-9 w-9 items-center justify-center rounded-full bg-gold text-sm font-black text-background shadow-lg">
+          <div className="absolute left-4 bottom-4 flex h-12 w-12 items-center justify-center rounded-full bg-gold text-lg font-black text-background shadow-lg shadow-gold/40 border-2 border-background/20">
             {cartQuantity}
           </div>
         )}
@@ -249,30 +253,30 @@ function ProductCard({
         {/* View Details Button */}
         <button
           onClick={onViewDetails}
-          className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-lg bg-background/90 px-3 py-1.5 text-xs font-semibold text-foreground backdrop-blur-sm border border-border opacity-0 transition-opacity group-hover:opacity-100 hover:bg-gold hover:text-background hover:border-gold"
+          className="absolute bottom-4 right-4 flex items-center gap-2 rounded-xl bg-background/95 px-4 py-2.5 text-sm font-bold text-foreground backdrop-blur-md border border-border/50 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 hover:bg-gold hover:text-background hover:border-gold"
         >
-          <Eye className="h-3.5 w-3.5" />
+          <Eye className="h-4 w-4" />
           Ver detalles
         </button>
       </div>
 
       {/* Content */}
-      <div className="p-5">
-        <h3 className="mb-2 text-lg font-bold text-foreground leading-tight line-clamp-1">
+      <div className="p-6">
+        <h3 className="mb-3 text-xl md:text-2xl font-black text-foreground leading-tight line-clamp-1">
           {item.name}
         </h3>
-        <p className="mb-4 text-sm leading-relaxed text-muted-foreground line-clamp-2">
+        <p className="mb-5 text-base leading-relaxed text-muted-foreground line-clamp-2">
           {item.description}
         </p>
 
         {/* Unit & Actions */}
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-gold/80 bg-gold/10 px-2 py-1 rounded-md">
+          <span className="text-sm font-bold text-gold bg-gold/15 px-4 py-2 rounded-xl border border-gold/20">
             {item.unit}
           </span>
 
           {/* Quantity Controls */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {cartQuantity > 0 && (
               <>
                 <button
@@ -280,11 +284,11 @@ function ProductCard({
                     e.stopPropagation()
                     onRemove()
                   }}
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-foreground transition-all hover:bg-destructive hover:text-destructive-foreground"
+                  className="flex h-11 w-11 items-center justify-center rounded-xl bg-secondary text-foreground transition-all hover:bg-destructive hover:text-destructive-foreground hover:scale-105"
                 >
-                  <Minus className="h-4 w-4" />
+                  <Minus className="h-5 w-5" />
                 </button>
-                <span className="min-w-[28px] text-center text-sm font-bold text-foreground">
+                <span className="min-w-[32px] text-center text-lg font-black text-foreground">
                   {cartQuantity}
                 </span>
               </>
@@ -294,9 +298,9 @@ function ProductCard({
                 e.stopPropagation()
                 onAdd()
               }}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-gold text-background transition-all hover:bg-gold-light hover:shadow-lg hover:shadow-gold/30"
+              className="flex h-11 w-11 items-center justify-center rounded-xl btn-premium text-background hover:scale-105"
             >
-              <Plus className="h-4 w-4" />
+              <Plus className="h-5 w-5" />
             </button>
           </div>
         </div>
@@ -329,19 +333,19 @@ function ProductDetailModal({
   }, [])
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-background/80 backdrop-blur-md" onClick={onClose} />
-      <div className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-border bg-card shadow-2xl slide-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6">
+      <div className="absolute inset-0 bg-background/85 backdrop-blur-xl" onClick={onClose} />
+      <div className="relative w-full max-w-3xl overflow-hidden rounded-3xl border border-border bg-card shadow-2xl slide-in">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-background/80 text-muted-foreground backdrop-blur-sm transition-colors hover:bg-gold hover:text-background"
+          className="absolute right-5 top-5 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background/90 text-muted-foreground backdrop-blur-md transition-all hover:bg-gold hover:text-background hover:scale-105"
         >
-          <X className="h-5 w-5" />
+          <X className="h-6 w-6" />
         </button>
 
         {/* Image */}
-        <div className="relative h-72 w-full overflow-hidden bg-secondary">
+        <div className="relative h-80 w-full overflow-hidden bg-secondary">
           {item.image && !imgError ? (
             <Image
               src={item.image}
@@ -351,53 +355,53 @@ function ProductDetailModal({
               onError={() => setImgError(true)}
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gold/5 via-card to-card">
-              <Sparkles className="h-16 w-16 text-gold/30" />
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gold/10 via-card to-background">
+              <Sparkles className="h-20 w-20 text-gold/40" />
             </div>
           )}
           
           {/* Price Overlay */}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/95 via-background/70 to-transparent p-6 pt-16">
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background via-background/80 to-transparent p-8 pt-24">
             <div className="flex items-end justify-between">
               <div>
-                <h2 className="text-2xl font-black text-foreground">{item.name}</h2>
-                <p className="text-sm text-muted-foreground">{item.category}</p>
+                <h2 className="text-3xl md:text-4xl font-black text-foreground leading-tight">{item.name}</h2>
+                <p className="text-lg text-muted-foreground mt-1">{item.category}</p>
               </div>
-              <div className="rounded-xl bg-gold px-5 py-3 shadow-lg">
-                <span className="text-2xl font-black text-background">{item.price}</span>
+              <div className="price-badge rounded-2xl px-6 py-4 shadow-2xl">
+                <span className="text-2xl md:text-3xl font-black text-background">{item.price}</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-8">
           {/* Service Hours */}
           {item.serviceHours && (
-            <div className="mb-4 inline-flex items-center gap-2 rounded-lg bg-gold/10 px-3 py-2 border border-gold/20">
-              <Sparkles className="h-4 w-4 text-gold" />
-              <span className="text-sm font-semibold text-foreground">{item.serviceHours}</span>
+            <div className="mb-6 inline-flex items-center gap-3 rounded-xl bg-gold/15 px-5 py-3 border border-gold/30">
+              <Sparkles className="h-5 w-5 text-gold" />
+              <span className="text-base font-bold text-foreground">{item.serviceHours}</span>
             </div>
           )}
 
-          <p className="mb-6 text-base leading-relaxed text-muted-foreground">
+          <p className="mb-8 text-lg leading-relaxed text-muted-foreground">
             {item.description}
           </p>
 
           {/* Includes List */}
           {item.includes && item.includes.length > 0 && (
-            <div className="mb-6">
-              <h4 className="mb-3 text-sm font-bold text-foreground uppercase tracking-wider">
+            <div className="mb-8">
+              <h4 className="mb-4 text-base font-black text-foreground uppercase tracking-wider">
                 Incluye:
               </h4>
-              <div className="grid gap-2 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2">
                 {item.includes.map((inc, i) => (
                   <div
                     key={i}
-                    className="flex items-start gap-2 rounded-lg bg-secondary/50 px-3 py-2"
+                    className="flex items-start gap-3 rounded-xl bg-secondary/60 px-4 py-3 border border-border/50"
                   >
-                    <span className="mt-0.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-gold" />
-                    <span className="text-sm text-muted-foreground">{inc}</span>
+                    <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-gold shadow-sm shadow-gold/50" />
+                    <span className="text-base text-muted-foreground leading-relaxed">{inc}</span>
                   </div>
                 ))}
               </div>
@@ -405,40 +409,40 @@ function ProductDetailModal({
           )}
 
           {/* Unit */}
-          <div className="mb-6 flex items-center gap-2">
-            <span className="text-xs font-medium text-muted-foreground">Precio por:</span>
-            <span className="rounded-md bg-gold/10 px-2 py-1 text-xs font-semibold text-gold">
+          <div className="mb-8 flex items-center gap-3">
+            <span className="text-base text-muted-foreground">Precio por:</span>
+            <span className="rounded-xl bg-gold/15 px-4 py-2 text-base font-bold text-gold border border-gold/30">
               {item.unit}
             </span>
           </div>
 
           {/* Actions */}
-          <div className="flex items-center justify-between border-t border-border pt-6">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between border-t border-border pt-8">
+            <div className="flex items-center gap-4">
               {cartQuantity > 0 ? (
                 <>
                   <button
                     onClick={onRemove}
-                    className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary text-foreground transition-all hover:bg-destructive hover:text-destructive-foreground"
+                    className="flex h-14 w-14 items-center justify-center rounded-2xl bg-secondary text-foreground transition-all hover:bg-destructive hover:text-destructive-foreground hover:scale-105"
                   >
-                    <Minus className="h-5 w-5" />
+                    <Minus className="h-6 w-6" />
                   </button>
-                  <span className="min-w-[40px] text-center text-xl font-bold text-foreground">
+                  <span className="min-w-[48px] text-center text-2xl font-black text-foreground">
                     {cartQuantity}
                   </span>
                   <button
                     onClick={onAdd}
-                    className="flex h-12 w-12 items-center justify-center rounded-xl bg-gold text-background transition-all hover:bg-gold-light"
+                    className="flex h-14 w-14 items-center justify-center rounded-2xl btn-premium text-background hover:scale-105"
                   >
-                    <Plus className="h-5 w-5" />
+                    <Plus className="h-6 w-6" />
                   </button>
                 </>
               ) : (
                 <button
                   onClick={onAdd}
-                  className="flex items-center gap-2 rounded-xl bg-gold px-6 py-3 text-base font-bold text-background transition-all hover:bg-gold-light hover:shadow-lg hover:shadow-gold/30"
+                  className="flex items-center gap-3 rounded-2xl btn-premium px-8 py-4 text-lg font-black text-background"
                 >
-                  <Plus className="h-5 w-5" />
+                  <Plus className="h-6 w-6" />
                   Agregar a cotizacion
                 </button>
               )}
@@ -446,8 +450,8 @@ function ProductDetailModal({
             
             {cartQuantity > 0 && (
               <div className="text-right">
-                <p className="text-sm text-muted-foreground">Subtotal</p>
-                <p className="text-xl font-black text-gold">
+                <p className="text-base text-muted-foreground">Subtotal</p>
+                <p className="text-2xl md:text-3xl font-black text-gold">
                   ${(item.priceValue * cartQuantity).toLocaleString()} MXN
                 </p>
               </div>
@@ -472,20 +476,20 @@ function CategoryTabs({
   const scrollRef = useRef<HTMLDivElement>(null)
 
   return (
-    <div className="relative mb-10">
+    <div className="relative mb-12">
       <div
         ref={scrollRef}
-        className="carousel-container flex gap-2 overflow-x-auto pb-2"
+        className="carousel-premium flex gap-3 overflow-x-auto pb-3"
       >
         <button
           onClick={() => onTabChange(null)}
-          className={`flex-shrink-0 flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all ${
+          className={`flex-shrink-0 flex items-center gap-3 rounded-2xl px-6 py-4 text-base font-bold transition-all ${
             activeTab === null
-              ? "tab-active text-background"
-              : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-gold/30"
+              ? "tab-premium-active"
+              : "bg-card border-2 border-border text-muted-foreground hover:text-foreground hover:border-gold/40 hover:bg-gold/5"
           }`}
         >
-          <Sparkles className="h-4 w-4" />
+          <Sparkles className="h-5 w-5" />
           Todos
         </button>
         {categories.map((category) => {
@@ -494,13 +498,13 @@ function CategoryTabs({
             <button
               key={category.id}
               onClick={() => onTabChange(category.id)}
-              className={`flex-shrink-0 flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-all ${
+              className={`flex-shrink-0 flex items-center gap-3 rounded-2xl px-6 py-4 text-base font-bold transition-all ${
                 activeTab === category.id
-                  ? "tab-active text-background"
-                  : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-gold/30"
+                  ? "tab-premium-active"
+                  : "bg-card border-2 border-border text-muted-foreground hover:text-foreground hover:border-gold/40 hover:bg-gold/5"
               }`}
             >
-              <Icon className="h-4 w-4" />
+              <Icon className="h-5 w-5" />
               {category.name}
             </button>
           )
@@ -547,48 +551,48 @@ function CartSidebar({
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
-      <div className="absolute inset-0 bg-background/70 backdrop-blur-md" onClick={onClose} />
-      <div className="relative flex h-full w-full max-w-md flex-col bg-card border-l border-border shadow-2xl slide-in">
+      <div className="absolute inset-0 bg-background/80 backdrop-blur-xl" onClick={onClose} />
+      <div className="relative flex h-full w-full max-w-lg flex-col bg-card border-l border-border shadow-2xl slide-in">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-border p-5">
-          <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gold/10 border border-gold/20">
-              <ShoppingCart className="h-6 w-6 text-gold" />
+        <div className="flex items-center justify-between border-b border-border p-6">
+          <div className="flex items-center gap-5">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gold/15 border border-gold/30">
+              <ShoppingCart className="h-7 w-7 text-gold" />
             </div>
             <div>
-              <h2 className="text-xl font-black text-foreground">Tu Cotizacion</h2>
-              <p className="text-sm text-muted-foreground">{cart.length} productos</p>
+              <h2 className="text-2xl font-black text-foreground">Tu Cotizacion</h2>
+              <p className="text-base text-muted-foreground">{cart.length} productos</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-muted-foreground hover:text-foreground hover:bg-gold hover:text-background transition-colors"
+            className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-muted-foreground hover:text-foreground hover:bg-gold hover:text-background transition-all hover:scale-105"
           >
-            <X className="h-5 w-5" />
+            <X className="h-6 w-6" />
           </button>
         </div>
 
         {/* Cart Items */}
-        <div className="flex-1 overflow-y-auto p-5">
+        <div className="flex-1 overflow-y-auto p-6">
           {cart.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-secondary">
-                <ShoppingCart className="h-10 w-10 text-muted-foreground/30" />
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-secondary">
+                <ShoppingCart className="h-12 w-12 text-muted-foreground/40" />
               </div>
-              <p className="text-lg font-semibold text-foreground">Tu cotizacion esta vacia</p>
-              <p className="mt-2 text-sm text-muted-foreground">
+              <p className="text-xl font-bold text-foreground">Tu cotizacion esta vacia</p>
+              <p className="mt-3 text-base text-muted-foreground">
                 Explora el catalogo y agrega productos
               </p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-5">
               {cart.map((cartItem) => (
                 <div
                   key={cartItem.item.id}
-                  className="overflow-hidden rounded-xl border border-border bg-background"
+                  className="overflow-hidden rounded-2xl border border-border bg-background premium-card"
                 >
-                  <div className="flex gap-4 p-4">
-                    <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-secondary">
+                  <div className="flex gap-5 p-5">
+                    <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl bg-secondary">
                       {cartItem.item.image ? (
                         <Image
                           src={cartItem.item.image}
@@ -598,34 +602,34 @@ function CartSidebar({
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center">
-                          <Sparkles className="h-6 w-6 text-gold/30" />
+                          <Sparkles className="h-8 w-8 text-gold/40" />
                         </div>
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-bold text-foreground truncate">
+                      <h4 className="text-base font-black text-foreground truncate">
                         {cartItem.item.name}
                       </h4>
-                      <p className="text-xs text-muted-foreground">{cartItem.item.unit}</p>
-                      <p className="mt-2 text-lg font-black text-gold">
+                      <p className="text-sm text-muted-foreground mt-1">{cartItem.item.unit}</p>
+                      <p className="mt-3 text-xl font-black text-gold">
                         ${(cartItem.item.priceValue * cartItem.quantity).toLocaleString()} MXN
                       </p>
                     </div>
-                    <div className="flex flex-col items-center justify-center gap-1">
+                    <div className="flex flex-col items-center justify-center gap-2">
                       <button
                         onClick={() => onUpdateQuantity(cartItem.item.id, 1)}
-                        className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary text-foreground hover:bg-gold hover:text-background transition-colors"
+                        className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary text-foreground hover:bg-gold hover:text-background transition-all"
                       >
-                        <Plus className="h-4 w-4" />
+                        <Plus className="h-5 w-5" />
                       </button>
-                      <span className="text-sm font-bold text-foreground">
+                      <span className="text-base font-black text-foreground">
                         {cartItem.quantity}
                       </span>
                       <button
                         onClick={() => onUpdateQuantity(cartItem.item.id, -1)}
-                        className="flex h-8 w-8 items-center justify-center rounded-lg bg-secondary text-foreground hover:bg-destructive hover:text-destructive-foreground transition-colors"
+                        className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary text-foreground hover:bg-destructive hover:text-destructive-foreground transition-all"
                       >
-                        <Minus className="h-4 w-4" />
+                        <Minus className="h-5 w-5" />
                       </button>
                     </div>
                   </div>
@@ -637,40 +641,40 @@ function CartSidebar({
 
         {/* Footer */}
         {cart.length > 0 && (
-          <div className="border-t border-border bg-background p-5">
-            <div className="mb-5 flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Total estimado:</span>
-              <span className="text-3xl font-black text-gold">${total.toLocaleString()} MXN</span>
+          <div className="border-t border-border bg-background p-6">
+            <div className="mb-6 flex items-center justify-between">
+              <span className="text-base text-muted-foreground">Total estimado:</span>
+              <span className="text-3xl md:text-4xl font-black text-gold">${total.toLocaleString()} MXN</span>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 mb-4">
+            <div className="grid grid-cols-2 gap-4 mb-5">
               <button
                 onClick={onExportPDF}
-                className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-3 text-sm font-bold text-foreground hover:bg-gold hover:text-background hover:border-gold transition-all"
+                className="flex items-center justify-center gap-3 rounded-xl border-2 border-border bg-card py-4 text-base font-bold text-foreground hover:bg-gold hover:text-background hover:border-gold transition-all"
               >
-                <Download className="h-4 w-4" />
+                <Download className="h-5 w-5" />
                 Descargar PDF
               </button>
               <button
                 onClick={onSendWhatsApp}
-                className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366] py-3 text-sm font-bold text-background hover:bg-[#22c55e] transition-colors"
+                className="flex items-center justify-center gap-3 rounded-xl bg-[#25D366] py-4 text-base font-bold text-background hover:bg-[#22c55e] transition-all"
               >
-                <Send className="h-4 w-4" />
+                <Send className="h-5 w-5" />
                 WhatsApp
               </button>
             </div>
 
             <button
               onClick={onSendEmail}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card py-3 text-sm font-bold text-foreground hover:bg-gold hover:text-background hover:border-gold transition-all mb-4"
+              className="flex w-full items-center justify-center gap-3 rounded-xl border-2 border-border bg-card py-4 text-base font-bold text-foreground hover:bg-gold hover:text-background hover:border-gold transition-all mb-5"
             >
-              <Mail className="h-4 w-4" />
+              <Mail className="h-5 w-5" />
               Enviar por Email
             </button>
 
             <button
               onClick={onClearCart}
-              className="w-full text-sm text-muted-foreground hover:text-destructive transition-colors"
+              className="w-full text-base text-muted-foreground hover:text-destructive transition-colors py-2"
             >
               Limpiar cotizacion
             </button>
@@ -797,28 +801,28 @@ export default function CatalogoPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-border bg-card/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
-          <div className="flex items-center gap-4">
+      <header className="sticky top-0 z-40 border-b border-border bg-card/95 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-5">
+          <div className="flex items-center gap-5">
             <Link
               href="/"
-              className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-gold"
+              className="flex items-center gap-2 text-muted-foreground transition-all hover:text-gold"
             >
-              <ArrowLeft className="h-5 w-5" />
-              <span className="text-sm font-medium hidden sm:inline">Inicio</span>
+              <ArrowLeft className="h-6 w-6" />
+              <span className="text-base font-semibold hidden sm:inline">Inicio</span>
             </Link>
-            <div className="h-6 w-px bg-border" />
-            <div className="flex items-center gap-3">
+            <div className="h-8 w-px bg-border" />
+            <div className="flex items-center gap-4">
               <Image
                 src="/images/logo.png"
                 alt="Eventos 360"
-                width={40}
-                height={40}
+                width={48}
+                height={48}
                 className="rounded-xl"
               />
               <div className="hidden sm:block">
-                <h1 className="text-lg font-black text-foreground">Catalogo Premium</h1>
-                <p className="text-xs text-muted-foreground">Productos y servicios</p>
+                <h1 className="text-xl font-black text-foreground">Catalogo Premium</h1>
+                <p className="text-sm text-muted-foreground">Productos y servicios</p>
               </div>
             </div>
           </div>
@@ -826,12 +830,12 @@ export default function CatalogoPage() {
           {/* Cart Button */}
           <button
             onClick={() => setIsCartOpen(true)}
-            className="relative flex items-center gap-2 rounded-xl bg-gold px-5 py-2.5 text-sm font-bold text-background transition-all hover:bg-gold-light hover:shadow-lg hover:shadow-gold/30"
+            className="relative flex items-center gap-3 rounded-xl btn-premium px-6 py-3 text-base font-bold text-background"
           >
             <ShoppingCart className="h-5 w-5" />
             <span className="hidden sm:inline">Cotizacion</span>
             {cart.length > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-xs font-black text-background ring-2 ring-card">
+              <span className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full bg-foreground text-sm font-black text-background ring-2 ring-card">
                 {cart.reduce((sum, c) => sum + c.quantity, 0)}
               </span>
             )}
@@ -839,53 +843,53 @@ export default function CatalogoPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-6 py-10">
+      <main className="mx-auto max-w-7xl px-6 py-12">
         {/* Hero Section */}
-        <div className="mb-12 text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-gold/10 px-4 py-2 border border-gold/20">
-            <Sparkles className="h-4 w-4 text-gold" />
-            <span className="text-sm font-semibold text-gold">Catalogo Completo</span>
+        <div className="mb-16 text-center">
+          <div className="mb-6 inline-flex items-center gap-3 rounded-full bg-gold/15 px-6 py-3 border border-gold/30">
+            <Sparkles className="h-5 w-5 text-gold" />
+            <span className="text-base font-bold text-gold">Catalogo Completo</span>
           </div>
-          <h1 className="mb-4 text-4xl font-black text-foreground md:text-5xl lg:text-6xl text-balance">
+          <h1 className="mb-6 hero-title font-black text-foreground text-balance">
             Productos y <span className="gradient-neon-text">Servicios</span>
           </h1>
-          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted-foreground">
+          <p className="mx-auto max-w-2xl text-lg md:text-xl leading-relaxed text-muted-foreground">
             Descubre nuestra completa gama de soluciones para eventos inolvidables.
             Todos los precios en pesos mexicanos (MXN).
           </p>
         </div>
 
         {/* Search Bar */}
-        <div className="relative mb-8 max-w-xl mx-auto">
-          <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+        <div className="relative mb-10 max-w-2xl mx-auto">
+          <Search className="absolute left-5 top-1/2 h-6 w-6 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             placeholder="Buscar productos, paquetes, efectos..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-xl border border-border bg-card py-4 pl-12 pr-4 text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/20 transition-all"
+            className="w-full rounded-2xl border-2 border-border bg-card py-5 pl-14 pr-6 text-lg text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none focus:ring-4 focus:ring-gold/20 transition-all"
           />
         </div>
 
         {/* Cart Summary Banner */}
         {cart.length > 0 && !isCartOpen && (
-          <div className="mb-8 flex items-center justify-between rounded-2xl border border-gold/30 bg-gold/5 p-5 glow-neon">
-            <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gold/20">
-                <FileText className="h-6 w-6 text-gold" />
+          <div className="mb-12 flex items-center justify-between rounded-3xl border-2 border-gold/40 bg-gold/10 p-6 glow-neon">
+            <div className="flex items-center gap-5">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gold/25 border border-gold/30">
+                <FileText className="h-7 w-7 text-gold" />
               </div>
               <div>
-                <p className="text-base font-bold text-foreground">
+                <p className="text-lg font-black text-foreground">
                   {cart.reduce((sum, c) => sum + c.quantity, 0)} productos en tu cotizacion
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  Total estimado: <span className="font-bold text-gold">${total.toLocaleString()} MXN</span>
+                <p className="text-base text-muted-foreground">
+                  Total estimado: <span className="font-black text-gold">${total.toLocaleString()} MXN</span>
                 </p>
               </div>
             </div>
             <button
               onClick={() => setIsCartOpen(true)}
-              className="rounded-xl bg-gold px-5 py-2.5 text-sm font-bold text-background hover:bg-gold-light transition-colors"
+              className="rounded-xl btn-premium px-6 py-3 text-base font-bold text-background"
             >
               Ver cotizacion
             </button>
@@ -895,11 +899,11 @@ export default function CatalogoPage() {
         {/* Search Results */}
         {searchQuery.trim() ? (
           <div>
-            <p className="mb-6 text-sm text-muted-foreground">
+            <p className="mb-8 text-lg text-muted-foreground">
               {searchResults.length} resultado{searchResults.length !== 1 ? "s" : ""} para{" "}
-              <span className="font-semibold text-foreground">{`"${searchQuery}"`}</span>
+              <span className="font-bold text-foreground">{`"${searchQuery}"`}</span>
             </p>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {searchResults.map((item, i) => (
                 <ProductCard
                   key={item.id}
