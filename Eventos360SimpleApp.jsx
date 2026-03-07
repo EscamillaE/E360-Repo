@@ -669,81 +669,433 @@ function Inicio({ data, clientsById, onGo, selectedEvent, totals }) {
     return dated[0] || list[0] || null;
   }, [data.events]);
 
+  const galleryItems = [
+    {
+      id: "1",
+      url: "https://res.cloudinary.com/dpnkrz8c8/video/upload/v1722652865/20220910_190614_cqbqgk.mp4",
+      title_es: "Eventos Corporativos",
+      title_en: "Corporate Events",
+      description_es: "Producción profesional para eventos empresariales",
+      type: "video"
+    },
+    {
+      id: "2",
+      url: "https://res.cloudinary.com/dpnkrz8c8/video/upload/v1722652866/20221126_234749_qpbx4o.mp4",
+      title_es: "Bodas de Ensueño",
+      title_en: "Dream Weddings",
+      description_es: "Momentos mágicos para tu día especial",
+      type: "video"
+    },
+    {
+      id: "3",
+      url: "https://res.cloudinary.com/dpnkrz8c8/video/upload/v1722652866/20230323_222942_lwxuwb.mp4",
+      title_es: "Fiestas Privadas",
+      title_en: "Private Parties",
+      description_es: "Ambiente perfecto para celebraciones íntimas",
+      type: "video"
+    },
+    {
+      id: "4",
+      url: "https://res.cloudinary.com/dpnkrz8c8/video/upload/v1722652850/20230323_224002_xpuuvd.mp4",
+      title_es: "Shows Especiales",
+      title_en: "Special Shows",
+      description_es: "Robot LED y efectos que impresionan",
+      type: "video"
+    },
+    {
+      id: "5",
+      url: "https://res.cloudinary.com/dpnkrz8c8/video/upload/v1722652863/VID_20231014_235307_1_v1hfnm.mp4",
+      title_es: "XV Años",
+      title_en: "Quinceanera",
+      description_es: "La fiesta perfecta para tus quince años",
+      type: "video"
+    },
+    {
+      id: "6",
+      url: "https://res.cloudinary.com/dpnkrz8c8/video/upload/v1722652864/20230210_233455_i54biz.mp4",
+      title_es: "Producción Integral",
+      title_en: "Full Production",
+      description_es: "Audio, iluminación y efectos profesionales",
+      type: "video"
+    }
+  ];
+
+  // Canvas animation for hero
+  useEffect(() => {
+    const canvas = document.getElementById("heroCanvas");
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Set canvas size
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    let particles = [];
+    const particleCount = 80;
+
+    // Initialize particles
+    for (let i = 0; i < particleCount; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const radius = 80 + Math.random() * 40;
+      particles.push({
+        x: canvas.width / 2 + Math.cos(angle) * radius,
+        y: canvas.height / 2 + Math.sin(angle) * radius,
+        z: Math.random() * 200 - 100,
+        vx: (Math.random() - 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2,
+        vz: (Math.random() - 0.5) * 2,
+        size: Math.random() * 2 + 1,
+        opacity: Math.random() * 0.5 + 0.3
+      });
+    }
+
+    let audioLevel = 0;
+    let frameCount = 0;
+
+    const animate = () => {
+      ctx.fillStyle = "rgba(3, 7, 18, 0.15)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+
+      // Slow animation without audio
+      frameCount += 1;
+      audioLevel = (Math.sin(frameCount * 0.005) + 1) * 0.3;
+
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.z += p.vz;
+
+        // Gravity towards center
+        const dx = centerX - p.x;
+        const dy = centerY - p.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance > 0) {
+          p.vx += (dx / distance) * 0.08 * (1 + audioLevel);
+          p.vy += (dy / distance) * 0.08 * (1 + audioLevel);
+        }
+
+        // Damping
+        p.vx *= 0.98;
+        p.vy *= 0.98;
+        p.vz *= 0.98;
+
+        // Perspective
+        const scale = 200 / (200 + p.z);
+        const x = centerX + (p.x - centerX) * scale;
+        const y = centerY + (p.y - centerY) * scale;
+        const size = p.size * scale;
+
+        // Draw particle
+        const hue = (Math.atan2(p.y - centerY, p.x - centerX) * 180) / Math.PI + 180;
+        ctx.fillStyle = `hsla(${hue}, 100%, 60%, ${p.opacity * (0.5 + audioLevel)})`;
+        ctx.beginPath();
+        ctx.arc(x, y, Math.max(size, 1), 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Draw center orb
+      const orbRadius = 25 + audioLevel * 15;
+      const orbGradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, orbRadius);
+      orbGradient.addColorStop(0, `hsla(38, 100%, 50%, ${0.8 + audioLevel * 0.2})`);
+      orbGradient.addColorStop(1, `hsla(38, 100%, 50%, ${0.1})`);
+      ctx.fillStyle = orbGradient;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, orbRadius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Draw glow ring
+      ctx.strokeStyle = `hsla(38, 100%, 60%, ${0.3 + audioLevel * 0.3})`;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, orbRadius * 0.8, 0, Math.PI * 2);
+      ctx.stroke();
+
+      requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    // Handle resize
+    const handleResize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
-    <div style={styles.section}>
-      <div style={styles.rowBetween}>
-        <div>
-          <div style={styles.h2}>Hoy</div>
-          <div style={styles.muted}>Tu panel rápido para operar.</div>
-        </div>
-        <div style={styles.pills}>
-          <span style={styles.pill}>{data.clients.length} clientes</span>
-          <span style={styles.pill}>{data.events.length} eventos</span>
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      {/* Hero with Audio Particles */}
+      <div style={{ position: "relative", width: "100%", minHeight: "600px" }}>
+        <iframe
+          src="about:blank"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            border: "none",
+            borderRadius: "12px"
+          }}
+        />
+        <div style={{
+          position: "relative",
+          width: "100%",
+          height: "600px",
+          background: "linear-gradient(135deg, #030712 0%, #1a1f35 100%)",
+          borderRadius: "12px",
+          overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 1
+        }}>
+          <canvas
+            id="heroCanvas"
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              top: 0,
+              left: 0
+            }}
+          />
+          <div style={{
+            position: "relative",
+            zIndex: 10,
+            textAlign: "center",
+            color: "white",
+            padding: "20px"
+          }}>
+            <h1 style={{
+              fontSize: "3.5rem",
+              fontWeight: 900,
+              marginBottom: "16px",
+              backgroundImage: "linear-gradient(135deg, #ff8c00, #ffd700, #ffff00)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text"
+            }}>
+              EVENTOS 360
+            </h1>
+            <p style={{
+              fontSize: "1.25rem",
+              color: "#999",
+              maxWidth: "600px"
+            }}>
+              Producción de eventos integral con tecnología de punta
+            </p>
+          </div>
         </div>
       </div>
 
-      <div style={styles.grid2}>
-        <div style={styles.card}>
-          <div style={styles.cardTitle}>Acciones rápidas</div>
-          <div style={{ display: "grid", gap: 10, marginTop: 12 }}>
-            <button style={styles.primaryBtn} onClick={() => onGo("eventos")}>
-              Crear / abrir evento
-            </button>
-            <button style={styles.secondaryBtn} onClick={() => onGo("clientes")}>
-              Crear / abrir cliente
-            </button>
-            <button style={styles.secondaryBtn} onClick={() => onGo("catalogo")}>
-              Ver catálogo (galería)
-            </button>
+      {/* Gallery 3D Slider */}
+      <div style={{
+        background: "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(51,27,0,0.1) 100%)",
+        padding: "60px 20px",
+        marginTop: "40px"
+      }}>
+        <div style={{
+          maxWidth: "1200px",
+          margin: "0 auto"
+        }}>
+          <div style={{ textAlign: "center", marginBottom: "40px" }}>
+            <div style={{
+              backgroundImage: "linear-gradient(135deg, #ff8c00, #ffd700, #ffff00)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              fontSize: "0.75rem",
+              fontWeight: 600,
+              letterSpacing: "0.15em",
+              marginBottom: "16px",
+              textTransform: "uppercase"
+            }}>
+              Galería
+            </div>
+            <h2 style={{
+              fontSize: "2.5rem",
+              fontWeight: 700,
+              color: "#f5f5f5",
+              marginBottom: "16px"
+            }}>
+              Nuestros Eventos
+            </h2>
+            <p style={{
+              fontSize: "1rem",
+              color: "#888",
+              maxWidth: "600px",
+              margin: "0 auto"
+            }}>
+              Explora nuestros proyectos más destacados
+            </p>
+          </div>
+
+          {/* Simple Gallery Grid */}
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            gap: "20px"
+          }}>
+            {galleryItems.map((item, idx) => (
+              <div
+                key={item.id}
+                style={{
+                  position: "relative",
+                  borderRadius: "12px",
+                  overflow: "hidden",
+                  border: "2px solid #333",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  aspectRatio: "1",
+                  background: "#000"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "#ffd700";
+                  e.currentTarget.style.boxShadow = "0 0 20px rgba(255, 215, 0, 0.3)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "#333";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                <video
+                  src={item.url}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover"
+                  }}
+                  poster={`${item.url}?quality=auto`}
+                />
+                <div style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.8))",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-end",
+                  padding: "16px",
+                  opacity: 0,
+                  transition: "opacity 0.3s ease"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.opacity = "1";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.opacity = "0";
+                }}
+                >
+                  <h3 style={{
+                    fontSize: "1rem",
+                    fontWeight: 700,
+                    color: "#fff",
+                    margin: "0 0 4px 0"
+                  }}>
+                    {item.title_es}
+                  </h3>
+                  <p style={{
+                    fontSize: "0.75rem",
+                    color: "#bbb",
+                    margin: 0
+                  }}>
+                    {item.description_es}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Rest of Inicio Component */}
+      <div style={styles.section}>
+        <div style={styles.rowBetween}>
+          <div>
+            <div style={styles.h2}>Panel de Control</div>
+            <div style={styles.muted}>Tu dashboard rápido para operar.</div>
+          </div>
+          <div style={styles.pills}>
+            <span style={styles.pill}>{data.clients.length} clientes</span>
+            <span style={styles.pill}>{data.events.length} eventos</span>
+          </div>
+        </div>
+
+        <div style={styles.grid2}>
+          <div style={styles.card}>
+            <div style={styles.cardTitle}>Acciones rápidas</div>
+            <div style={{ display: "grid", gap: 10, marginTop: 12 }}>
+              <button style={styles.primaryBtn} onClick={() => onGo("eventos")}>
+                Crear / abrir evento
+              </button>
+              <button style={styles.secondaryBtn} onClick={() => onGo("clientes")}>
+                Crear / abrir cliente
+              </button>
+              <button style={styles.secondaryBtn} onClick={() => onGo("catalogo")}>
+                Ver catálogo
+              </button>
+            </div>
+          </div>
+
+          <div style={styles.card}>
+            <div style={styles.cardTitle}>Evento seleccionado</div>
+            {!selectedEvent ? (
+              <div style={styles.muted}>No hay evento seleccionado. Ve a <b>Eventos</b> y elige uno.</div>
+            ) : (
+              <div style={{ marginTop: 10, display: "grid", gap: 8 }}>
+                <div>
+                  <b>{selectedEvent.title}</b>
+                </div>
+                <div style={styles.muted}>
+                  {selectedEvent.date || "(sin fecha)"} • {selectedEvent.location || "(sin lugar)"}
+                </div>
+                <div style={styles.muted}>
+                  Cliente: {selectedEvent.clientId ? clientsById[selectedEvent.clientId]?.name || "(no encontrado)" : "(sin cliente)"}
+                </div>
+                <div style={styles.mutedSmall}>
+                  Items: {totals.items} • Subtotal: {currencyMXN(totals.subtotal)}
+                </div>
+                <div style={{ display: "flex", gap: 10 }}>
+                  <button style={styles.primaryBtn} onClick={() => onGo("eventos")}>
+                    Abrir evento
+                  </button>
+                  <button style={styles.secondaryBtn} onClick={() => onGo("catalogo")}>
+                    Abrir catálogo
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
         <div style={styles.card}>
-          <div style={styles.cardTitle}>Evento seleccionado</div>
-          {!selectedEvent ? (
-            <div style={styles.muted}>No hay evento seleccionado. Ve a <b>Eventos</b> y elige uno.</div>
+          <div style={styles.cardTitle}>Próximo evento</div>
+          {!nextEvent ? (
+            <div style={styles.muted}>Aún no hay eventos. Crea el primero.</div>
           ) : (
-            <div style={{ marginTop: 10, display: "grid", gap: 8 }}>
-              <div>
-                <b>{selectedEvent.title}</b>
-              </div>
-              <div style={styles.muted}>
-                {selectedEvent.date || "(sin fecha)"} • {selectedEvent.location || "(sin lugar)"}
-              </div>
-              <div style={styles.muted}>
-                Cliente: {selectedEvent.clientId ? clientsById[selectedEvent.clientId]?.name || "(no encontrado)" : "(sin cliente)"}
+            <div style={{ marginTop: 10, display: "grid", gap: 6 }}>
+              <div style={{ fontWeight: 800 }}>{nextEvent.title}</div>
+              <div style={styles.mutedSmall}>
+                {nextEvent.date || "(sin fecha)"} • {nextEvent.location || "(sin lugar)"}
               </div>
               <div style={styles.mutedSmall}>
-                Items: {totals.items} • Subtotal: {currencyMXN(totals.subtotal)}
-              </div>
-              <div style={{ display: "flex", gap: 10 }}>
-                <button style={styles.primaryBtn} onClick={() => onGo("eventos")}>
-                  Abrir evento
-                </button>
-                <button style={styles.secondaryBtn} onClick={() => onGo("catalogo")}>
-                  Abrir catálogo
-                </button>
+                Cliente: {nextEvent.clientId ? clientsById[nextEvent.clientId]?.name || "(no encontrado)" : "(sin cliente)"}
               </div>
             </div>
           )}
         </div>
-      </div>
-
-      <div style={styles.card}>
-        <div style={styles.cardTitle}>Próximo evento</div>
-        {!nextEvent ? (
-          <div style={styles.muted}>Aún no hay eventos. Crea el primero.</div>
-        ) : (
-          <div style={{ marginTop: 10, display: "grid", gap: 6 }}>
-            <div style={{ fontWeight: 800 }}>{nextEvent.title}</div>
-            <div style={styles.mutedSmall}>
-              {nextEvent.date || "(sin fecha)"} • {nextEvent.location || "(sin lugar)"}
-            </div>
-            <div style={styles.mutedSmall}>
-              Cliente: {nextEvent.clientId ? clientsById[nextEvent.clientId]?.name || "(no encontrado)" : "(sin cliente)"}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
