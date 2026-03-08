@@ -19,7 +19,7 @@ function MicrophoneBalloons({ micActive }: { micActive: boolean }) {
     vy: number
     inflation: number
   }>>([])
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number | null>(null)
   const audioContextRef = useRef<AudioContext | null>(null)
   const analyserRef = useRef<AnalyserNode | null>(null)
   const dataArrayRef = useRef<Uint8Array | null>(null)
