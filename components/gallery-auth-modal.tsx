@@ -18,7 +18,7 @@ export function GalleryAuthModal({ isOpen, onClose, onSuccess }: GalleryAuthModa
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const t = {
+  const translations = {
     es: {
       title: "Autenticacion Requerida",
       subtitle: "Ingresa con tu cuenta de administrador",
@@ -43,7 +43,20 @@ export function GalleryAuthModal({ isOpen, onClose, onSuccess }: GalleryAuthModa
       notAdmin: "You don't have admin permissions",
       error: "Login error",
     },
-  }[locale]
+    fr: {
+      title: "Authentification Requise",
+      subtitle: "Connectez-vous avec votre compte administrateur",
+      email: "Adresse e-mail",
+      password: "Mot de passe",
+      login: "Se connecter",
+      loggingIn: "Verification...",
+      cancel: "Annuler",
+      invalidCredentials: "Identifiants invalides",
+      notAdmin: "Vous n'avez pas les permissions administrateur",
+      error: "Erreur de connexion",
+    },
+  }
+  const t = translations[locale]
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
