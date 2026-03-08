@@ -42,6 +42,30 @@ const defaultVideos = [
     descEs: "Cada detalle importa",
     descEn: "Every detail matters",
   },
+  {
+    src: "/images/gallery/dj-party-1.jpg",
+    titleEs: "DJ & Audio Profesional",
+    titleEn: "Professional DJ & Audio",
+    descEs: "Ambiente y energia para tu fiesta",
+    descEn: "Atmosphere and energy for your party",
+    mediaType: "image",
+  },
+  {
+    src: "/images/gallery/led-robot.jpg",
+    titleEs: "Robot LED Show",
+    titleEn: "LED Robot Show",
+    descEs: "Entretenimiento interactivo futurista",
+    descEn: "Futuristic interactive entertainment",
+    mediaType: "image",
+  },
+  {
+    src: "/images/gallery/fire-effects.jpg",
+    titleEs: "Efectos de Fuego",
+    titleEn: "Fire Effects",
+    descEs: "Momentos de alto impacto",
+    descEn: "High-impact moments",
+    mediaType: "image",
+  },
 ]
 
 interface VideoCardProps {
@@ -103,8 +127,8 @@ function VideoCard({ video, index, locale }: VideoCardProps) {
   return (
     <div
       ref={containerRef}
-      className={`group relative overflow-hidden rounded-2xl border border-border bg-card transition-all duration-700 hover:border-gold/20 ${
-        isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+      className={`group relative overflow-hidden rounded-2xl border-2 bg-card/50 backdrop-blur-sm transition-all duration-500 hover:border-gold hover:shadow-[0_0_30px_hsl(32,100%,52%,0.25)] ${
+        isVisible ? "translate-y-0 opacity-100 border-border" : "translate-y-6 opacity-0 border-transparent"
       }`}
       style={{ transitionDelay: `${index * 120}ms` }}
     >

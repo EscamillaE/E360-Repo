@@ -70,19 +70,22 @@ export function PortalCards() {
               <Link
                 key={portal.title}
                 href={portal.href}
-                className={`group relative rounded-2xl border border-border bg-card/50 p-5 transition-all duration-700 hover:border-gold/20 hover:bg-card ${
-                  isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+                className={`group relative rounded-2xl border-2 bg-card/50 backdrop-blur-sm p-5 transition-all duration-500 hover:border-gold hover:shadow-[0_0_30px_hsl(32,100%,52%,0.25)] hover:bg-card/80 ${
+                  isVisible ? "translate-y-0 opacity-100 border-border" : "translate-y-6 opacity-0 border-transparent"
                 }`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gold/10">
-                  <Icon className="h-5 w-5 text-gold" />
+                <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-gold/10 transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-neon-orange group-hover:to-gold group-hover:shadow-[0_0_20px_hsl(32,100%,52%,0.4)]">
+                  <Icon className="h-5 w-5 text-gold transition-colors group-hover:text-white" />
                 </div>
-                <h3 className="mb-1 text-sm font-semibold text-foreground">{portal.title}</h3>
+                <h3 className="mb-1.5 text-sm font-semibold text-foreground">{portal.title}</h3>
                 <p className="mb-3 text-xs leading-relaxed text-muted-foreground">
                   {portal.description}
                 </p>
-                <ChevronRight className="h-4 w-4 text-gold transition-transform group-hover:translate-x-1" />
+                <div className="flex items-center gap-1 text-xs font-medium text-gold transition-transform group-hover:translate-x-1">
+                  <span className="opacity-0 group-hover:opacity-100 transition-opacity">Ver mas</span>
+                  <ChevronRight className="h-4 w-4" />
+                </div>
               </Link>
             )
           })}

@@ -73,13 +73,13 @@ export function HeroSection() {
         >
           <Link
             href="/catalogo"
-            className="btn-neon inline-flex items-center justify-center rounded-full px-8 py-3 text-sm font-semibold text-white"
+            className="btn-neon inline-flex items-center justify-center rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-[0_0_30px_hsl(32,100%,52%,0.3)] hover:shadow-[0_0_40px_hsl(32,100%,52%,0.5)] transition-shadow"
           >
             {t.hero.cta1}
           </Link>
           <Link
             href="#contacto"
-            className="inline-flex items-center justify-center rounded-full border border-border px-8 py-3 text-sm font-semibold text-foreground transition-all hover:bg-secondary"
+            className="inline-flex items-center justify-center rounded-full border-2 border-border bg-card/50 backdrop-blur-sm px-8 py-3.5 text-sm font-semibold text-foreground transition-all hover:border-gold hover:shadow-[0_0_25px_hsl(32,100%,52%,0.2)]"
           >
             {t.hero.cta2}
           </Link>

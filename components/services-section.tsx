@@ -30,6 +30,7 @@ function ServiceCard({
   index: number
 }) {
   const [isVisible, setIsVisible] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -46,17 +47,29 @@ function ServiceCard({
   return (
     <div
       ref={ref}
-      className={`group relative rounded-2xl border border-border bg-card/50 p-6 transition-all duration-700 hover:border-gold/20 hover:bg-card ${
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`group relative rounded-2xl border-2 bg-card/50 backdrop-blur-sm p-6 transition-all duration-500 ${
+        isHovered 
+          ? "border-gold shadow-[0_0_30px_hsl(32,100%,52%,0.25)] bg-card/80" 
+          : "border-border hover:border-gold/30"
+      } ${
         isVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
       }`}
       style={{ transitionDelay: `${index * 80}ms` }}
     >
-      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-gold/10 transition-colors group-hover:bg-gold/15">
-        <Icon className="h-5 w-5 text-gold" />
+      <div className={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl transition-all duration-300 ${
+        isHovered ? "bg-gradient-to-br from-neon-orange to-gold shadow-[0_0_20px_hsl(32,100%,52%,0.4)]" : "bg-gold/10"
+      }`}>
+        <Icon className={`h-5 w-5 transition-colors ${isHovered ? "text-white" : "text-gold"}`} />
       </div>
-      <h3 className="mb-2 text-[15px] font-semibold text-foreground">{title}</h3>
-      <p className="mb-3 text-[13px] leading-relaxed text-muted-foreground">{description}</p>
-      <span className="text-[11px] font-medium text-gold">{highlight}</span>
+      <h3 className="mb-2 text-base font-semibold text-foreground">{title}</h3>
+      <p className="mb-4 text-sm leading-relaxed text-muted-foreground">{description}</p>
+      <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-all ${
+        isHovered ? "bg-gold/20 text-gold" : "bg-gold/10 text-gold"
+      }`}>
+        {highlight}
+      </span>
     </div>
   )
 }

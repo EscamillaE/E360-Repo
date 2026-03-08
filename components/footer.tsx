@@ -35,14 +35,14 @@ export function Footer() {
               href={`https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(locale === "es" ? "Hola, me interesa cotizar un evento con Eventos 360" : "Hello, I'm interested in getting a quote for an event with Eventos 360")}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-neon inline-flex items-center justify-center gap-2 rounded-full px-8 py-3 text-sm font-semibold text-white"
+              className="btn-neon inline-flex items-center justify-center gap-2 rounded-full px-8 py-3.5 text-sm font-semibold text-white shadow-[0_0_30px_hsl(32,100%,52%,0.3)] hover:shadow-[0_0_40px_hsl(32,100%,52%,0.5)] transition-shadow"
             >
               <Phone className="h-4 w-4" />
               {t.footer.whatsapp}
             </a>
             <a
               href={`mailto:${CONTACT.email}`}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-border px-8 py-3 text-sm font-semibold text-foreground transition-all hover:bg-secondary"
+              className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-border bg-card/50 backdrop-blur-sm px-8 py-3.5 text-sm font-semibold text-foreground transition-all hover:border-gold hover:shadow-[0_0_25px_hsl(32,100%,52%,0.2)]"
             >
               <Mail className="h-4 w-4" />
               {t.footer.email}
@@ -51,11 +51,11 @@ export function Footer() {
         </div>
 
         {/* Contact Info Grid */}
-        <div className="mb-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mb-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {/* Phone */}
-          <div className="flex flex-col items-center rounded-xl border border-border bg-card/50 p-5 text-center">
-            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-gold/10">
-              <Phone className="h-5 w-5 text-gold" />
+          <div className="group flex flex-col items-center rounded-xl border-2 border-border bg-card/50 backdrop-blur-sm p-5 text-center transition-all duration-300 hover:border-gold hover:shadow-[0_0_25px_hsl(32,100%,52%,0.2)]">
+            <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-gold/10 transition-all group-hover:bg-gradient-to-br group-hover:from-neon-orange group-hover:to-gold group-hover:shadow-[0_0_15px_hsl(32,100%,52%,0.4)]">
+              <Phone className="h-5 w-5 text-gold group-hover:text-white transition-colors" />
             </div>
             <p className="mb-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
               {locale === "es" ? "Telefono" : "Phone"}
@@ -69,9 +69,9 @@ export function Footer() {
           </div>
 
           {/* Email */}
-          <div className="flex flex-col items-center rounded-xl border border-border bg-card/50 p-5 text-center">
-            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-gold/10">
-              <Mail className="h-5 w-5 text-gold" />
+          <div className="group flex flex-col items-center rounded-xl border-2 border-border bg-card/50 backdrop-blur-sm p-5 text-center transition-all duration-300 hover:border-gold hover:shadow-[0_0_25px_hsl(32,100%,52%,0.2)]">
+            <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-gold/10 transition-all group-hover:bg-gradient-to-br group-hover:from-neon-orange group-hover:to-gold group-hover:shadow-[0_0_15px_hsl(32,100%,52%,0.4)]">
+              <Mail className="h-5 w-5 text-gold group-hover:text-white transition-colors" />
             </div>
             <p className="mb-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
               Email
@@ -82,9 +82,9 @@ export function Footer() {
           </div>
 
           {/* Instagram */}
-          <div className="flex flex-col items-center rounded-xl border border-border bg-card/50 p-5 text-center">
-            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-gold/10">
-              <Instagram className="h-5 w-5 text-gold" />
+          <div className="group flex flex-col items-center rounded-xl border-2 border-border bg-card/50 backdrop-blur-sm p-5 text-center transition-all duration-300 hover:border-gold hover:shadow-[0_0_25px_hsl(32,100%,52%,0.2)]">
+            <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-gold/10 transition-all group-hover:bg-gradient-to-br group-hover:from-neon-orange group-hover:to-gold group-hover:shadow-[0_0_15px_hsl(32,100%,52%,0.4)]">
+              <Instagram className="h-5 w-5 text-gold group-hover:text-white transition-colors" />
             </div>
             <p className="mb-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
               Instagram
@@ -100,9 +100,9 @@ export function Footer() {
           </div>
 
           {/* Facebook */}
-          <div className="flex flex-col items-center rounded-xl border border-border bg-card/50 p-5 text-center">
-            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-gold/10">
-              <Facebook className="h-5 w-5 text-gold" />
+          <div className="group flex flex-col items-center rounded-xl border-2 border-border bg-card/50 backdrop-blur-sm p-5 text-center transition-all duration-300 hover:border-gold hover:shadow-[0_0_25px_hsl(32,100%,52%,0.2)]">
+            <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-gold/10 transition-all group-hover:bg-gradient-to-br group-hover:from-neon-orange group-hover:to-gold group-hover:shadow-[0_0_15px_hsl(32,100%,52%,0.4)]">
+              <Facebook className="h-5 w-5 text-gold group-hover:text-white transition-colors" />
             </div>
             <p className="mb-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
               Facebook
@@ -132,12 +132,12 @@ export function Footer() {
         </div>
 
         {/* Social Icons Row */}
-        <div className="mb-8 flex justify-center gap-4">
+        <div className="mb-8 flex justify-center gap-3">
           <a
             href={`https://wa.me/${CONTACT.whatsapp}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card/50 text-muted-foreground transition-all hover:border-gold/30 hover:bg-gold/10 hover:text-gold"
+            className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-border bg-card/50 text-muted-foreground transition-all duration-300 hover:border-gold hover:bg-gradient-to-br hover:from-neon-orange hover:to-gold hover:text-white hover:shadow-[0_0_20px_hsl(32,100%,52%,0.4)]"
             aria-label="WhatsApp"
           >
             <Phone className="h-4 w-4" />
@@ -146,7 +146,7 @@ export function Footer() {
             href={`https://instagram.com/${CONTACT.instagram}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card/50 text-muted-foreground transition-all hover:border-gold/30 hover:bg-gold/10 hover:text-gold"
+            className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-border bg-card/50 text-muted-foreground transition-all duration-300 hover:border-gold hover:bg-gradient-to-br hover:from-neon-orange hover:to-gold hover:text-white hover:shadow-[0_0_20px_hsl(32,100%,52%,0.4)]"
             aria-label="Instagram"
           >
             <Instagram className="h-4 w-4" />
@@ -155,14 +155,14 @@ export function Footer() {
             href={`https://facebook.com/${CONTACT.facebook}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card/50 text-muted-foreground transition-all hover:border-gold/30 hover:bg-gold/10 hover:text-gold"
+            className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-border bg-card/50 text-muted-foreground transition-all duration-300 hover:border-gold hover:bg-gradient-to-br hover:from-neon-orange hover:to-gold hover:text-white hover:shadow-[0_0_20px_hsl(32,100%,52%,0.4)]"
             aria-label="Facebook"
           >
             <Facebook className="h-4 w-4" />
           </a>
           <a
             href={`mailto:${CONTACT.email}`}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card/50 text-muted-foreground transition-all hover:border-gold/30 hover:bg-gold/10 hover:text-gold"
+            className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-border bg-card/50 text-muted-foreground transition-all duration-300 hover:border-gold hover:bg-gradient-to-br hover:from-neon-orange hover:to-gold hover:text-white hover:shadow-[0_0_20px_hsl(32,100%,52%,0.4)]"
             aria-label="Email"
           >
             <Mail className="h-4 w-4" />
