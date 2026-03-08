@@ -4,38 +4,14 @@ import { useState, useEffect, useCallback, useRef } from "react"
 import { TalkingOrb } from "./talking-orb"
 import { Mic, MicOff, Volume2, VolumeX, Globe } from "lucide-react"
 
-// Web Speech API type declarations
-interface SpeechRecognitionEvent extends Event {
-  resultIndex: number
-  results: SpeechRecognitionResultList
-}
+// Web Speech API - use native types with webkit fallback
+type SpeechRecognitionType = typeof window.SpeechRecognition
 
-interface SpeechRecognitionErrorEvent extends Event {
-  error: string
-}
-
-interface SpeechRecognition extends EventTarget {
-  continuous: boolean
-  interimResults: boolean
-  lang: string
-  onstart: (() => void) | null
-  onresult: ((event: SpeechRecognitionEvent) => void) | null
-  onerror: ((event: SpeechRecognitionErrorEvent) => void) | null
-  onend: (() => void) | null
-  start: () => void
-  stop: () => void
-  abort: () => void
-}
-
-interface SpeechRecognitionConstructor {
-  new (): SpeechRecognition
-}
-
-declare global {
-  interface Window {
-    SpeechRecognition?: SpeechRecognitionConstructor
-    webkitSpeechRecognition?: SpeechRecognitionConstructor
-  }
+// Helper to get SpeechRecognition constructor
+function getSpeechRecognition(): SpeechRecognitionType | undefined {
+  if (typeof window === "undefined") return undefined
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
 }
 
 type Language = "es" | "en"
@@ -243,8 +219,8 @@ export function VoiceAssistant({ onNavigate }: VoiceAssistantProps) {
   const startListening = useCallback(() => {
     if (typeof window === "undefined") return
     
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-    if (!SpeechRecognition) {
+    const SpeechRecognitionCtor = getSpeechRecognition()
+    if (!SpeechRecognitionCtor) {
       processInput(language === "es" ? "hola" : "hello")
       return
     }
@@ -253,7 +229,7 @@ export function VoiceAssistant({ onNavigate }: VoiceAssistantProps) {
       recognitionRef.current.abort()
     }
 
-    const recognition = new SpeechRecognition()
+    const recognition = new SpeechRecognitionCtor()
     recognition.continuous = false
     recognition.interimResults = false
     recognition.lang = language === "es" ? "es-MX" : "en-US"
