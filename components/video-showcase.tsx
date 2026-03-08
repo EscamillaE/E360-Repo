@@ -66,6 +66,30 @@ const defaultVideos = [
     descEn: "High-impact moments",
     mediaType: "image",
   },
+  {
+    src: "/images/gallery/wedding-setup.jpg",
+    titleEs: "Bodas Elegantes",
+    titleEn: "Elegant Weddings",
+    descEs: "Decoracion y ambientacion premium",
+    descEn: "Premium decoration and ambiance",
+    mediaType: "image",
+  },
+  {
+    src: "/images/gallery/vip-lounge.jpg",
+    titleEs: "Lounge VIP",
+    titleEn: "VIP Lounge",
+    descEs: "Espacios exclusivos para tus invitados",
+    descEn: "Exclusive spaces for your guests",
+    mediaType: "image",
+  },
+  {
+    src: "/images/gallery/confetti-party.jpg",
+    titleEs: "Momentos Magicos",
+    titleEn: "Magical Moments",
+    descEs: "Celebraciones inolvidables",
+    descEn: "Unforgettable celebrations",
+    mediaType: "image",
+  },
 ]
 
 interface VideoCardProps {
@@ -260,7 +284,12 @@ export function VideoShowcase() {
 
   return (
     <>
-      <section id="galeria" className="relative px-6 py-28">
+      <section id="galeria" className="relative px-6 py-28 border-t border-border">
+        {/* Section start indicator */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-neon-orange to-gold text-white text-[10px] font-semibold uppercase tracking-wider shadow-[0_0_20px_hsl(32,100%,52%,0.4)]">
+          Galeria
+        </div>
+        
         <div className="mx-auto max-w-6xl">
           {/* Header with gear icon */}
           <div className="relative mb-16 text-center">

@@ -20,7 +20,12 @@ export function Footer() {
   const { t, locale } = useApp()
 
   return (
-    <footer id="contacto" className="border-t border-border px-6 py-20">
+    <footer id="contacto" className="relative border-t border-border px-6 py-20">
+      {/* Section start indicator */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-neon-orange to-gold text-white text-[10px] font-semibold uppercase tracking-wider shadow-[0_0_20px_hsl(32,100%,52%,0.4)]">
+        Contacto
+      </div>
+      
       <div className="mx-auto max-w-5xl">
         {/* CTA */}
         <div className="mb-14 text-center">

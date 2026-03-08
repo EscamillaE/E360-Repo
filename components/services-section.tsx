@@ -78,7 +78,12 @@ export function ServicesSection() {
   const { t } = useApp()
 
   return (
-    <section id="servicios" className="relative px-6 py-28">
+    <section id="servicios" className="relative px-6 py-28 border-t border-border">
+      {/* Section start indicator */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-neon-orange to-gold text-white text-[10px] font-semibold uppercase tracking-wider shadow-[0_0_20px_hsl(32,100%,52%,0.4)]">
+        Servicios
+      </div>
+      
       <div className="mx-auto max-w-6xl">
         <div className="mb-16 text-center">
           <p className="gradient-neon-text mb-3 text-[11px] font-medium uppercase tracking-[0.35em]">

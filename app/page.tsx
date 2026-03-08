@@ -12,11 +12,19 @@ import { AiAssistant } from "@/components/ai-assistant"
 
 export default function HomePage() {
   const [isLunaOpen, setIsLunaOpen] = useState(false)
+  const [lunaActive, setLunaActive] = useState(false)
+
+  const handleLunaToggle = () => {
+    setLunaActive(!lunaActive)
+    if (!lunaActive) {
+      setIsLunaOpen(true)
+    }
+  }
 
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-background">
-      {/* Navigation with Luna orb */}
-      <Navbar onLunaClick={() => setIsLunaOpen(true)} />
+      {/* Navigation with Luna orb toggle */}
+      <Navbar onLunaToggle={handleLunaToggle} lunaActive={lunaActive} />
 
       {/* Hero with particles */}
       <HeroSection />
