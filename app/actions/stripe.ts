@@ -49,5 +49,9 @@ export async function startQuoteCheckoutSession(items: QuoteItem[], subtotal: nu
     },
   })
 
+  if (!session.client_secret) {
+    throw new Error('Failed to create checkout session')
+  }
+
   return session.client_secret
 }
