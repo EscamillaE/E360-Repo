@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState, useCallback } from "react"
-import { Play, Volume2, VolumeX, Settings } from "lucide-react"
+import { Play, Volume2, VolumeX, Settings, Instagram, Facebook, ExternalLink } from "lucide-react"
 import { useApp } from "@/components/providers"
 import { GalleryAuthModal } from "@/components/gallery-auth-modal"
 import { GalleryEditModal } from "@/components/gallery-edit-modal"
@@ -21,6 +21,40 @@ interface MediaItem {
 }
 
 const defaultVideos = [
+  // Cabina 360 Videos - Autoplay showcases
+  {
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Video%202026-03-08%20at%2012.20.52%20PM-AQAb1MYHt2CcwmbXC0IfUeEIMie9yV.mp4",
+    titleEs: "Cabina 360 en Accion",
+    titleEn: "360 Booth in Action",
+    descEs: "Videos dinamicos en 360 grados para tu evento",
+    descEn: "Dynamic 360-degree videos for your event",
+    featured: true,
+  },
+  {
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Video%202026-03-08%20at%2012.29.44%20PM-Wx4Nkx1cUkWko1iyzKWSrzB2wMSrWQ.mp4",
+    titleEs: "Experiencia Premium 360",
+    titleEn: "Premium 360 Experience",
+    descEs: "Efectos especiales y slow motion profesional",
+    descEn: "Professional special effects and slow motion",
+    featured: true,
+  },
+  {
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Video%202026-02-27%20at%2011.46.41%20PM-CEkKnGtme7VhcsJ8WOXcTLTvtLirHq.mp4",
+    titleEs: "Momentos Virales",
+    titleEn: "Viral Moments",
+    descEs: "Contenido listo para compartir al instante",
+    descEn: "Content ready to share instantly",
+    featured: true,
+  },
+  {
+    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Video%202026-03-08%20at%2012.59.24%20PM-SsLKnIqMwzCdJYfwHtruurdWA71yeA.mp4",
+    titleEs: "Cabina 360 Luxury",
+    titleEn: "360 Luxury Booth",
+    descEs: "La experiencia mas completa para eventos VIP",
+    descEn: "The most complete experience for VIP events",
+    featured: true,
+  },
+  // Original showcase videos
   {
     src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Video%202026-02-27%20at%2011.40.23%20PM-TEnmltgz51xqaT95dIKs8CgDWKq5KG.mp4",
     titleEs: "Experiencia Inmersiva",
@@ -35,13 +69,6 @@ const defaultVideos = [
     descEs: "Audio y DJ de alta calidad",
     descEn: "High-quality audio and DJ",
   },
-  {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Video%202026-02-27%20at%2011.38.21%20PM-gCEBykq0xpRQHSsV5xGYv0f9oJPYlv.mp4",
-    titleEs: "Momentos Unicos",
-    titleEn: "Unique Moments",
-    descEs: "Cada detalle importa",
-    descEn: "Every detail matters",
-  },
 ]
 
 interface VideoCardProps {
@@ -52,6 +79,7 @@ interface VideoCardProps {
     descEs: string
     descEn: string
     mediaType?: "video" | "image"
+    featured?: boolean
   }
   index: number
   locale: "es" | "en"
@@ -59,8 +87,8 @@ interface VideoCardProps {
 
 function VideoCard({ video, index, locale }: VideoCardProps) {
   const [isVisible, setIsVisible] = useState(false)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(true)
+  const [isPlaying, setIsPlaying] = useState(true) // Start playing by default
+  const [isMuted, setIsMuted] = useState(true) // Always start muted for autoplay
   const containerRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
@@ -69,13 +97,27 @@ function VideoCard({ video, index, locale }: VideoCardProps) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true)
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+          // Autoplay when visible
+          if (videoRef.current && isVideo) {
+            videoRef.current.play().catch(() => {
+              // Autoplay failed, user interaction required
+              setIsPlaying(false)
+            })
+          }
+        } else {
+          // Pause when not visible to save resources
+          if (videoRef.current && isVideo) {
+            videoRef.current.pause()
+          }
+        }
       },
-      { threshold: 0.2 }
+      { threshold: 0.3 }
     )
     if (containerRef.current) observer.observe(containerRef.current)
     return () => observer.disconnect()
-  }, [])
+  }, [isVideo])
 
   const handlePlay = () => {
     if (!isVideo) return
@@ -117,10 +159,11 @@ function VideoCard({ video, index, locale }: VideoCardProps) {
             ref={videoRef}
             src={video.src}
             className="h-full w-full object-cover"
+            autoPlay
             loop
-            muted={isMuted}
+            muted
             playsInline
-            preload="metadata"
+            preload="auto"
           />
         ) : (
           <img
@@ -269,6 +312,77 @@ export function VideoShowcase() {
             {videosToDisplay.map((video, index) => (
               <VideoCard key={video.src + index} video={video} index={index} locale={locale} />
             ))}
+          </div>
+
+          {/* Social Media Live Feed Section */}
+          <div className="mt-20">
+            <div className="text-center mb-10">
+              <p className="gradient-neon-text mb-3 text-[11px] font-medium uppercase tracking-[0.35em]">
+                {locale === "es" ? "Siguenos en Redes" : "Follow Us"}
+              </p>
+              <h3 className="text-2xl font-bold text-foreground md:text-3xl text-balance">
+                {locale === "es" ? "Contenido en Vivo" : "Live Content"}
+              </h3>
+              <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
+                {locale === "es" 
+                  ? "Mira nuestros eventos mas recientes directamente desde nuestras redes sociales"
+                  : "Watch our latest events directly from our social media"
+                }
+              </p>
+            </div>
+
+            {/* Social Media Links */}
+            <div className="grid gap-6 sm:grid-cols-2 max-w-2xl mx-auto">
+              {/* Instagram Card */}
+              <a
+                href="https://www.instagram.com/eventos360mx"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex flex-col items-center justify-center gap-4 rounded-2xl border border-border bg-gradient-to-br from-[#833AB4]/10 via-[#FD1D1D]/10 to-[#FCAF45]/10 p-8 transition-all hover:border-[#E1306C]/50 hover:shadow-lg hover:shadow-[#E1306C]/10"
+              >
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#FCAF45] text-white shadow-lg">
+                  <Instagram className="h-8 w-8" />
+                </div>
+                <div className="text-center">
+                  <h4 className="text-lg font-semibold text-foreground">@eventos360mx</h4>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {locale === "es" ? "Reels, Stories y mas" : "Reels, Stories and more"}
+                  </p>
+                </div>
+                <span className="absolute top-4 right-4 opacity-0 transition-opacity group-hover:opacity-100">
+                  <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                </span>
+              </a>
+
+              {/* Facebook Card */}
+              <a
+                href="https://www.facebook.com/eventos360mx"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex flex-col items-center justify-center gap-4 rounded-2xl border border-border bg-[#1877F2]/5 p-8 transition-all hover:border-[#1877F2]/50 hover:shadow-lg hover:shadow-[#1877F2]/10"
+              >
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#1877F2] text-white shadow-lg">
+                  <Facebook className="h-8 w-8" />
+                </div>
+                <div className="text-center">
+                  <h4 className="text-lg font-semibold text-foreground">Eventos 360</h4>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {locale === "es" ? "Videos en vivo y albumes" : "Live videos and albums"}
+                  </p>
+                </div>
+                <span className="absolute top-4 right-4 opacity-0 transition-opacity group-hover:opacity-100">
+                  <ExternalLink className="h-4 w-4 text-muted-foreground" />
+                </span>
+              </a>
+            </div>
+
+            {/* Embedded Feed Note */}
+            <p className="text-center text-xs text-muted-foreground mt-8">
+              {locale === "es" 
+                ? "Los videos de la galeria se actualizan automaticamente con nuestro contenido mas reciente"
+                : "Gallery videos are automatically updated with our latest content"
+              }
+            </p>
           </div>
         </div>
       </section>
