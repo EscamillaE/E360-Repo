@@ -177,24 +177,24 @@ function IdleSlideshow({
         <div className="flex flex-wrap justify-center gap-8">
           {qrCodes
             .filter(qr => slide.qrTargets?.includes(qr.key))
-            .map(qr => (
-              <LargeQRCode key={qr.key} {...qr} />
+            .map(({ key, ...rest }) => (
+              <LargeQRCode key={key} {...rest} />
             ))}
         </div>
       )}
 
       {slide.type === "catalog" && (
         <div className="flex flex-wrap justify-center gap-8">
-          {qrCodes.filter(qr => qr.key === "catalog" || qr.key === "website").map(qr => (
-            <LargeQRCode key={qr.key} {...qr} />
+          {qrCodes.filter(qr => qr.key === "catalog" || qr.key === "website").map(({ key, ...rest }) => (
+            <LargeQRCode key={key} {...rest} />
           ))}
         </div>
       )}
 
       {slide.type === "promo" && (
         <div className="flex flex-wrap justify-center gap-8">
-          {qrCodes.filter(qr => qr.key === "whatsapp").map(qr => (
-            <LargeQRCode key={qr.key} {...qr} />
+          {qrCodes.filter(qr => qr.key === "whatsapp").map(({ key, ...rest }) => (
+            <LargeQRCode key={key} {...rest} />
           ))}
         </div>
       )}
