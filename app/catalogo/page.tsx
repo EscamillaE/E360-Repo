@@ -30,7 +30,6 @@ import {
   CreditCard,
 } from "lucide-react"
 import { catalog, type CatalogCategory, type CatalogItem } from "@/lib/catalog-data"
-import { AiAssistant } from "@/components/ai-assistant"
 
 // Dynamically import Stripe checkout to avoid SSR issues
 const StripeCheckout = dynamic(() => import("@/components/checkout/stripe-checkout"), {
@@ -985,9 +984,6 @@ export default function CatalogoPage() {
           }
         }
       `}</style>
-      
-      {/* AI Assistant - Luna */}
-      <AiAssistant />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-export type Locale = "es" | "en" | "fr"
+export type Locale = "es" | "en"
 
 export const translations = {
   es: {
@@ -142,12 +142,11 @@ export const translations = {
     ai: {
       title: "Asistente E360",
       subtitle: "Tu asesor de eventos",
-      welcome: "Hola! Soy Luna, tu asistente de Eventos 360.",
+      welcome: "Hola! Soy tu asistente de Eventos 360.",
       welcomeDesc: "Preguntame sobre paquetes, efectos, shows, precios o ayuda para armar tu evento.",
       placeholder: "Escribe tu mensaje...",
       thinking: "Pensando...",
       suggestions: ["Paquetes de DJ", "Efectos especiales", "Shows de drones", "Armar cotizacion"],
-      languagePrompt: "En que idioma prefieres que te atienda?",
     },
     audio: {
       on: "Audio ON",
@@ -312,12 +311,11 @@ export const translations = {
     ai: {
       title: "E360 Assistant",
       subtitle: "Your event advisor",
-      welcome: "Hey! I'm Luna, your Eventos 360 assistant.",
+      welcome: "Hi! I'm your Eventos 360 assistant.",
       welcomeDesc: "Ask me about packages, effects, shows, pricing, or help building your event.",
       placeholder: "Type your message...",
       thinking: "Thinking...",
       suggestions: ["DJ Packages", "Special effects", "Drone shows", "Build a quote"],
-      languagePrompt: "What language would you prefer?",
     },
     audio: {
       on: "Audio ON",
@@ -339,176 +337,6 @@ export const translations = {
     theme: {
       light: "Light",
       dark: "Dark",
-    },
-  },
-  fr: {
-    nav: {
-      home: "Accueil",
-      services: "Services",
-      catalog: "Catalogue",
-      gallery: "Galerie",
-      contact: "Contact",
-      quote: "Devis",
-      quoteNow: "Demander un Devis",
-    },
-    hero: {
-      tagline: "Production Integrale d'Evenements",
-      heading1: "Votre evenement,",
-      heading2: "notre passion.",
-      subtitle:
-        "Cabine 360, audio professionnel, eclairage, effets speciaux et tout ce dont vous avez besoin pour creer des moments inoubliables a Queretaro.",
-      cta1: "Voir le catalogue",
-      cta2: "Demander un devis",
-    },
-    services: {
-      label: "Services",
-      heading: "Tout pour votre evenement",
-      subtitle:
-        "Solutions de production completes avec la plus haute qualite pour chaque type de celebration.",
-      items: [
-        {
-          title: "DJ & Audio",
-          description:
-            "Son haute fidelite avec DJ professionnel. Forfaits de Cabina Blanca a Sweet Dream.",
-          highlight: "A partir de $4,830 MXN",
-        },
-        {
-          title: "Cabine 360 / 180",
-          description:
-            "Videos dynamiques a 360 degres et photos semi-circulaires, pretes a partager instantanement.",
-          highlight: "Videos virales",
-        },
-        {
-          title: "Eclairage",
-          description:
-            "Lumieres LED, lyres et lasers qui creent l'atmosphere parfaite.",
-          highlight: "Ambiance unique",
-        },
-        {
-          title: "Effets Speciaux",
-          description:
-            "Feu, CO2, etincelles, fumee, laser et confettis pour des moments d'impact.",
-          highlight: "Impact visuel",
-        },
-        {
-          title: "Robot LED & Drones",
-          description:
-            "Spectacles interactifs avec robot LED et drones avec formations personnalisees.",
-          highlight: "Spectacles en direct",
-        },
-        {
-          title: "Pistes de Danse",
-          description:
-            "Pistes LED pixel, blanches et HD personnalisees de 4x4 a 6x5 metres.",
-          highlight: "LED interactif",
-        },
-        {
-          title: "Miroir Magique",
-          description:
-            "Miroir photo interactif avec impressions instantanees et accessoires amusants.",
-          highlight: "Photos instantanees",
-        },
-        {
-          title: "Mobilier",
-          description:
-            "Chaises Tiffany, Chanel, Crossback, Thonik et Sewing pour chaque style.",
-          highlight: "Style & confort",
-        },
-        {
-          title: "Traiteur & Bar",
-          description:
-            "Pause cafe, collations et bars mobiles avec barmen professionnels.",
-          highlight: "Service complet",
-        },
-      ],
-    },
-    gallery: {
-      label: "Galerie",
-      heading: "Notre travail",
-      subtitle: "Chaque evenement est un chef-d'oeuvre. Decouvrez nos productions les plus recentes.",
-    },
-    portals: {
-      label: "Plateforme",
-      heading: "Accedez a nos portails",
-      subtitle: "Outils numeriques pour explorer, devis et gerer vos evenements.",
-      catalog: "Catalogue",
-      catalogDesc: "Explorez les produits et services avec prix en MXN.",
-      client: "Portail Client",
-      clientDesc: "Accedez a vos devis et suivez vos evenements.",
-      admin: "Admin",
-      adminDesc: "Gerez catalogue, devis, galerie et clients.",
-      kiosk: "Mode Kiosque",
-      kioskDesc: "Vue interactive pour expositions et points de vente.",
-    },
-    quote: {
-      label: "Generateur de Devis",
-      heading: "Creez votre evenement parfait",
-      subtitle:
-        "Selectionnez les services dont vous avez besoin et obtenez une estimation instantanee. Prix en MXN.",
-      cta: "Ouvrir le generateur",
-      popular: "Forfaits populaires",
-      moreServices: "+40 services dans le generateur complet",
-    },
-    footer: {
-      heading: "Pret a creer quelque chose d'incroyable?",
-      subtitle:
-        "Indiquez-nous la date et le type d'evenement, nous nous occupons du reste.",
-      whatsapp: "Envoyer WhatsApp",
-      email: "Envoyer un email",
-      description:
-        "Production d'evenements complete a Queretaro. DJ, audio, eclairage, effets speciaux, cabines photo et plus.",
-      rights: "Tous droits reserves.",
-    },
-    catalog: {
-      title: "Catalogue",
-      search: "Rechercher produits, forfaits, effets...",
-      results: "resultats pour",
-      result: "resultat pour",
-      back: "Retour",
-      backCategories: "Retour aux categories",
-      heading: "Produits & Services",
-      subtitle: "Decouvrez notre gamme complete. Prix en pesos mexicains (MXN).",
-      products: "produits",
-      product: "produit",
-      addQuote: "Ajouter",
-      added: "Ajoute",
-      quoteTitle: "Votre devis",
-      quoteEmpty: "Ajoutez des produits pour voir votre devis",
-      total: "Total estime",
-      sendWhatsapp: "Envoyer via WhatsApp",
-      clearQuote: "Effacer",
-      qty: "Qte",
-    },
-    ai: {
-      title: "Assistant E360",
-      subtitle: "Votre conseiller evenementiel",
-      welcome: "Bonjour! Je suis Luna, votre assistante Eventos 360.",
-      welcomeDesc: "Posez-moi des questions sur les forfaits, effets, spectacles, prix ou aide pour creer votre evenement.",
-      placeholder: "Tapez votre message...",
-      thinking: "Je reflechis...",
-      suggestions: ["Forfaits DJ", "Effets speciaux", "Spectacles de drones", "Creer un devis"],
-      languagePrompt: "Dans quelle langue preferez-vous?",
-    },
-    audio: {
-      on: "Audio ON",
-      off: "Audio OFF",
-    },
-    admin: {
-      title: "Tableau de Bord Admin",
-      gallery: "Galerie",
-      galleryDesc: "Gerez les photos et videos du portfolio",
-      upload: "Telecharger fichier",
-      uploadDesc: "Glissez des fichiers ou cliquez pour telecharger",
-      noMedia: "Aucun fichier dans la galerie",
-      delete: "Supprimer",
-      catalogMgmt: "Catalogue",
-      quotes: "Devis",
-      clients: "Clients",
-      settings: "Parametres",
-    },
-    theme: {
-      light: "Clair",
-      dark: "Sombre",
     },
   },
 } as const
