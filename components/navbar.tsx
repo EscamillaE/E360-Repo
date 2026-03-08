@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { Menu, X, Sun, Moon, Globe } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -36,16 +35,9 @@ export function Navbar() {
       )}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3">
-          <Image
-            src="/images/logo.png"
-            alt="Eventos 360"
-            width={36}
-            height={36}
-            className="rounded-full"
-          />
-          <span className="text-sm font-semibold tracking-wide text-foreground">
+        {/* Company Name */}
+        <Link href="/" className="flex items-center">
+          <span className="text-lg font-bold tracking-wide text-foreground">
             EVENTOS <span className="gradient-neon-text">360</span>
           </span>
         </Link>

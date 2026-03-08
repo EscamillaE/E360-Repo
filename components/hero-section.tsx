@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { ChevronDown } from "lucide-react"
 import { useApp } from "@/components/providers"
@@ -22,19 +21,7 @@ export function HeroSection() {
           isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
         }`}
       >
-        {/* Logo */}
-        <div className="mb-10 relative">
-          <Image
-            src="/images/logo.png"
-            alt="Eventos 360 Logo"
-            width={140}
-            height={140}
-            className="relative drop-shadow-lg"
-            priority
-          />
-        </div>
-
-        {/* Tagline */}
+          {/* Tagline */}
         <p
           className={`gradient-neon-text mb-6 text-[11px] font-medium uppercase tracking-[0.35em] transition-all delay-300 duration-700 ${
             isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
