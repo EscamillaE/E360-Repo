@@ -9,6 +9,7 @@ export interface CatalogItem {
   image: string
   serviceHours?: string
   includes?: string[]
+  videos?: string[]
 }
 
 export interface CatalogCategory {
@@ -20,6 +21,84 @@ export interface CatalogCategory {
 }
 
 export const catalog: CatalogCategory[] = [
+  {
+    id: "cabina-360",
+    name: "Cabina 360 / 180",
+    description:
+      "Videos dinamicos en 360 grados y fotos semicirculares de alta calidad, listos para compartir al instante. La experiencia viral perfecta para tu evento.",
+    icon: "camera",
+    items: [
+      {
+        id: "cabina-360-basica",
+        name: "Cabina 360 Basica",
+        category: "Cabina 360 / 180",
+        description:
+          "Cabina 360 con plataforma giratoria, iluminacion LED profesional, operador y videos ilimitados. Incluye entrega digital inmediata por QR.",
+        price: "$4,500 MXN",
+        priceValue: 4500,
+        unit: "evento",
+        serviceHours: "3 hrs servicio continuo",
+        includes: ["Plataforma 360 giratoria", "Iluminacion LED anillo", "Operador profesional", "Videos ilimitados", "Entrega digital por QR", "Props basicos"],
+        image: "/images/catalog/cabina-360.jpg",
+        videos: [
+          "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Video%202026-03-08%20at%2012.20.52%20PM-AQAb1MYHt2CcwmbXC0IfUeEIMie9yV.mp4",
+          "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Video%202026-03-08%20at%2012.29.44%20PM-Wx4Nkx1cUkWko1iyzKWSrzB2wMSrWQ.mp4"
+        ]
+      },
+      {
+        id: "cabina-360-premium",
+        name: "Cabina 360 Premium",
+        category: "Cabina 360 / 180",
+        description:
+          "Experiencia completa con efectos especiales: slow motion, boomerang, rafagas de confeti, humo y mas. Incluye branding personalizado en videos.",
+        price: "$7,200 MXN",
+        priceValue: 7200,
+        unit: "evento",
+        serviceHours: "4 hrs servicio continuo",
+        includes: ["Todo lo de Cabina Basica", "Efectos slow motion y boomerang", "Maquina de humo", "Rafagas de confeti", "Branding personalizado", "Props premium", "Operador + asistente"],
+        image: "/images/catalog/cabina-360-premium.jpg",
+        videos: [
+          "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Video%202026-02-27%20at%2011.46.41%20PM-CEkKnGtme7VhcsJ8WOXcTLTvtLirHq.mp4",
+          "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Video%202026-03-08%20at%2012.59.24%20PM-SsLKnIqMwzCdJYfwHtruurdWA71yeA.mp4"
+        ]
+      },
+      {
+        id: "cabina-180",
+        name: "Cabina 180 (Glam Booth)",
+        category: "Cabina 360 / 180",
+        description:
+          "Cabina semicircular con iluminacion profesional tipo Hollywood. Fotos y videos de alta calidad con efecto glamour.",
+        price: "$3,800 MXN",
+        priceValue: 3800,
+        unit: "evento",
+        serviceHours: "3 hrs servicio continuo",
+        includes: ["Cabina 180 semicircular", "Iluminacion Hollywood", "Camara profesional", "Fotos y videos ilimitados", "Entrega digital inmediata", "Props de lujo"],
+        image: "/images/catalog/cabina-180.jpg",
+        videos: [
+          "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Video%202026-03-08%20at%2012.20.52%20PM-AQAb1MYHt2CcwmbXC0IfUeEIMie9yV.mp4"
+        ]
+      },
+      {
+        id: "cabina-360-lujo",
+        name: "Cabina 360 Luxury Experience",
+        category: "Cabina 360 / 180",
+        description:
+          "La experiencia mas completa: plataforma extendida para grupos, efectos especiales multiples, alfombra roja, backdrop personalizado y impresion instantanea.",
+        price: "$12,500 MXN",
+        priceValue: 12500,
+        unit: "evento",
+        serviceHours: "5 hrs servicio continuo",
+        includes: ["Plataforma 360 extendida (hasta 4 personas)", "Todos los efectos especiales", "Alfombra roja VIP", "Backdrop personalizado", "Impresion instantanea", "2 operadores", "Branding completo", "Props ilimitados", "Asistente de invitados"],
+        image: "/images/catalog/cabina-360-luxury.jpg",
+        videos: [
+          "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Video%202026-03-08%20at%2012.20.52%20PM-AQAb1MYHt2CcwmbXC0IfUeEIMie9yV.mp4",
+          "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Video%202026-03-08%20at%2012.29.44%20PM-Wx4Nkx1cUkWko1iyzKWSrzB2wMSrWQ.mp4",
+          "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Video%202026-02-27%20at%2011.46.41%20PM-CEkKnGtme7VhcsJ8WOXcTLTvtLirHq.mp4",
+          "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Video%202026-03-08%20at%2012.59.24%20PM-SsLKnIqMwzCdJYfwHtruurdWA71yeA.mp4"
+        ]
+      },
+    ],
+  },
   {
     id: "paquetes-dj",
     name: "Paquetes DJ & Audio",

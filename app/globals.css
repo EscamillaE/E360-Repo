@@ -153,3 +153,22 @@ body {
   background: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--neon-yellow)));
   box-shadow: 0 0 20px hsl(var(--gold) / 0.6), 0 0 40px hsl(var(--neon-orange) / 0.3);
 }
+
+/* Scrollbar hide utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Touch-friendly interactions */
+@media (pointer: coarse) {
+  .touch-action-pan-x {
+    touch-action: pan-x;
+  }
+  .touch-action-pan-y {
+    touch-action: pan-y;
+  }
+}
