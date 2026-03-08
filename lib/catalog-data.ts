@@ -22,6 +22,67 @@ export interface CatalogCategory {
 
 export const catalog: CatalogCategory[] = [
   {
+    id: "experiencias-escenicas",
+    name: "Experiencias Escenicas Premium",
+    description:
+      "Shows escenicas unicos que transforman la bienvenida y momentos clave de tu evento en experiencias memorables e irrepetibles.",
+    icon: "sparkles",
+    items: [
+      {
+        id: "living-roses-gold",
+        name: "Living Roses Experience - Gold",
+        category: "Experiencias Escenicas Premium",
+        description:
+          "Anfitrionas escenicas florales con rosas doradas gigantes que reciben a los invitados y crean el primer momento memorable del evento. Ideal para bodas, galas, marcas, XV y eventos sociales premium.",
+        price: "$8,500 MXN",
+        priceValue: 8500,
+        unit: "evento",
+        serviceHours: "3 hrs servicio continuo",
+        includes: ["2 Anfitrionas con vestuario floral dorado", "Rosas gigantes doradas artesanales", "Coreografia de bienvenida", "Interaccion con invitados", "Sesion de fotos con invitados", "Maquillaje y peinado profesional"],
+        image: "/images/catalog/living-roses-gold.jpeg",
+      },
+      {
+        id: "living-roses-white",
+        name: "Living Roses Experience - White Elegance",
+        category: "Experiencias Escenicas Premium",
+        description:
+          "Anfitrionas escenicas con rosas blancas y vestidos verde esmeralda. Perfecto para bodas y eventos elegantes donde la bienvenida se convierte en recuerdo.",
+        price: "$8,500 MXN",
+        priceValue: 8500,
+        unit: "evento",
+        serviceHours: "3 hrs servicio continuo",
+        includes: ["2 Anfitrionas con vestuario floral blanco/verde", "Rosas gigantes blancas artesanales", "Coreografia de bienvenida", "Interaccion con invitados", "Sesion de fotos con invitados", "Maquillaje y peinado profesional"],
+        image: "/images/catalog/living-roses-white.jpeg",
+      },
+      {
+        id: "living-roses-red",
+        name: "Living Roses Experience - Red Passion",
+        category: "Experiencias Escenicas Premium",
+        description:
+          "Anfitrionas escenicas con rosas rojas vibrantes y vestidos negros elegantes. Impacta desde la llegada, genera interaccion natural y eleva la percepcion de lujo.",
+        price: "$8,500 MXN",
+        priceValue: 8500,
+        unit: "evento",
+        serviceHours: "3 hrs servicio continuo",
+        includes: ["2 Anfitrionas con vestuario floral negro/rojo", "Rosas gigantes rojas artesanales", "Coreografia de bienvenida", "Interaccion con invitados", "Sesion de fotos con invitados", "Maquillaje y peinado profesional"],
+        image: "/images/catalog/living-roses-red.jpeg",
+      },
+      {
+        id: "botarga-dr-simi",
+        name: "Botarga Dr. Simi",
+        category: "Experiencias Escenicas Premium",
+        description:
+          "El iconico Dr. Simi animando tu evento con sus legendarios bailes y carisma. Perfecto para fiestas tematicas, eventos corporativos y celebraciones donde quieras agregar un toque de diversion mexicana viral.",
+        price: "$3,500 MXN",
+        priceValue: 3500,
+        unit: "evento",
+        serviceHours: "2 hrs servicio continuo",
+        includes: ["Botarga Dr. Simi profesional", "Animador dentro del traje", "Coreografias virales", "Interaccion con invitados", "Sesion de fotos", "Musica tematica incluida"],
+        image: "/images/catalog/botarga-dr-simi.jpg",
+      },
+    ],
+  },
+  {
     id: "cabina-360",
     name: "Cabina 360 / 180",
     description:
