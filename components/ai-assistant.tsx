@@ -183,9 +183,10 @@ export function AiAssistant() {
 
   // Initialize speech recognition
   useEffect(() => {
-    if (typeof window !== "undefined" && ("SpeechRecognition" in window || "webkitSpeechRecognition" in window)) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-      recognitionRef.current = new SpeechRecognition()
+    if (typeof window !== "undefined") {
+      const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition
+      if (!SpeechRecognitionClass) return
+      recognitionRef.current = new SpeechRecognitionClass()
       recognitionRef.current.continuous = false
       recognitionRef.current.interimResults = false
       recognitionRef.current.lang = locale === "es" ? "es-MX" : "en-US"
