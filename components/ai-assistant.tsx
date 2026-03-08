@@ -10,6 +10,7 @@ import {
   Music, Flame, Camera, ChevronRight, Globe, Navigation
 } from "lucide-react"
 import { useApp } from "@/components/providers"
+import { LunaOrbButton } from "@/components/luna-orb-button"
 
 // Web Speech API type declarations
 interface SpeechRecognitionEvent extends Event {
