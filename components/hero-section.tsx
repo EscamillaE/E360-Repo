@@ -1,10 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { ChevronDown } from "lucide-react"
 import { useApp } from "@/components/providers"
+import { ParticlesBackground } from "@/components/particles-background"
 
 export function HeroSection() {
   const { t } = useApp()
@@ -16,25 +16,16 @@ export function HeroSection() {
   }, [])
 
   return (
-    <section className="relative flex min-h-[100dvh] flex-col items-center justify-center px-6 text-center">
+    <section className="relative flex min-h-[100dvh] flex-col items-center justify-center px-6 text-center overflow-hidden">
+      {/* Particles Background */}
+      <ParticlesBackground />
+
       <div
         className={`relative z-10 flex flex-col items-center transition-all duration-1000 ease-out ${
           isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
         }`}
       >
-        {/* Logo */}
-        <div className="mb-10 relative">
-          <Image
-            src="/images/logo.png"
-            alt="Eventos 360 Logo"
-            width={140}
-            height={140}
-            className="relative drop-shadow-lg"
-            priority
-          />
-        </div>
-
-        {/* Tagline */}
+        {/* Tagline - no logo, just text */}
         <p
           className={`gradient-neon-text mb-6 text-[11px] font-medium uppercase tracking-[0.35em] transition-all delay-300 duration-700 ${
             isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
@@ -45,7 +36,7 @@ export function HeroSection() {
 
         {/* Heading */}
         <h1
-          className={`mb-6 max-w-2xl text-4xl font-bold leading-[1.1] tracking-tight text-foreground transition-all delay-500 duration-700 md:text-6xl lg:text-7xl ${
+          className={`mb-6 max-w-3xl text-4xl font-bold leading-[1.1] tracking-tight text-foreground transition-all delay-500 duration-700 md:text-6xl lg:text-7xl ${
             isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           }`}
         >
@@ -58,7 +49,7 @@ export function HeroSection() {
 
         {/* Subtitle */}
         <p
-          className={`mb-10 max-w-md text-[15px] leading-relaxed text-muted-foreground transition-all delay-700 duration-700 ${
+          className={`mb-10 max-w-lg text-base leading-relaxed text-muted-foreground transition-all delay-700 duration-700 ${
             isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
           }`}
         >
@@ -86,7 +77,7 @@ export function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-10">
         <ChevronDown className="h-5 w-5 text-muted-foreground" />
       </div>
     </section>

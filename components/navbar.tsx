@@ -3,12 +3,19 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Menu, X, Sun, Moon, Globe } from "lucide-react"
+import { Menu, X, Sun, Moon, Globe, Home, ArrowLeft } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useApp } from "@/components/providers"
+import { LunaOrbButton } from "@/components/luna-orb-button"
 
-export function Navbar() {
-  const { t, locale, setLocale, theme, toggleTheme } = useApp()
+interface NavbarProps {
+  showBack?: boolean
+  backHref?: string
+  onLunaClick?: () => void
+}
+
+export function Navbar({ showBack, backHref = "/", onLunaClick }: NavbarProps) {
+  const { t, locale, cycleLocale, theme, toggleTheme } = useApp()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
 
@@ -26,6 +33,8 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  const localeLabel = locale === "es" ? "ES" : locale === "en" ? "EN" : "FR"
+
   return (
     <nav
       className={cn(
@@ -36,19 +45,29 @@ export function Navbar() {
       )}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3">
-          <Image
-            src="/images/logo.png"
-            alt="Eventos 360"
-            width={36}
-            height={36}
-            className="rounded-full"
-          />
-          <span className="text-sm font-semibold tracking-wide text-foreground">
-            EVENTOS <span className="gradient-neon-text">360</span>
-          </span>
-        </Link>
+        {/* Left side - Logo or Back button */}
+        <div className="flex items-center gap-3">
+          {showBack ? (
+            <Link 
+              href={backHref}
+              className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-border bg-card/50 transition-all hover:border-gold hover:shadow-[0_0_15px_hsl(32,100%,52%,0.2)]"
+            >
+              <ArrowLeft className="h-4 w-4 text-foreground" />
+            </Link>
+          ) : null}
+          <Link href="/" className="flex items-center gap-3">
+            <Image
+              src="/images/logo.png"
+              alt="Eventos 360"
+              width={36}
+              height={36}
+              className="rounded-full"
+            />
+            <span className="text-sm font-semibold tracking-wide text-foreground">
+              EVENTOS <span className="gradient-neon-text">360</span>
+            </span>
+          </Link>
+        </div>
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-6 lg:flex">
@@ -63,28 +82,37 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* Right controls */}
+        {/* Right controls - Always visible */}
         <div className="flex items-center gap-2">
-          {/* EN/ES Toggle */}
+          {/* Luna Orb Button - AI Assistant */}
+          {onLunaClick && (
+            <LunaOrbButton 
+              onClick={onLunaClick}
+              size="sm"
+              className="mr-1"
+            />
+          )}
+
+          {/* Language Toggle (ES/EN/FR) */}
           <button
-            onClick={() => setLocale(locale === "es" ? "en" : "es")}
-            className="flex h-8 items-center gap-1.5 rounded-full border border-border bg-secondary/50 px-3 text-xs font-medium text-foreground transition-all hover:bg-secondary"
+            onClick={cycleLocale}
+            className="flex h-9 items-center gap-1.5 rounded-full border-2 border-border bg-card/50 px-3 text-xs font-medium text-foreground transition-all hover:border-gold hover:shadow-[0_0_15px_hsl(32,100%,52%,0.2)]"
             aria-label="Toggle language"
           >
-            <Globe className="h-3.5 w-3.5 text-muted-foreground" />
-            <span>{locale === "es" ? "ES" : "EN"}</span>
+            <Globe className="h-3.5 w-3.5 text-gold" />
+            <span>{localeLabel}</span>
           </button>
 
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-secondary/50 transition-all hover:bg-secondary"
+            className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-border bg-card/50 transition-all hover:border-gold hover:shadow-[0_0_15px_hsl(32,100%,52%,0.2)]"
             aria-label="Toggle theme"
           >
             {theme === "dark" ? (
-              <Sun className="h-3.5 w-3.5 text-muted-foreground" />
+              <Sun className="h-4 w-4 text-gold" />
             ) : (
-              <Moon className="h-3.5 w-3.5 text-muted-foreground" />
+              <Moon className="h-4 w-4 text-gold" />
             )}
           </button>
 
@@ -99,7 +127,7 @@ export function Navbar() {
           {/* Mobile menu */}
           <button
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-border lg:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-border bg-card/50 lg:hidden"
             aria-label="Toggle menu"
           >
             {isMobileOpen ? (

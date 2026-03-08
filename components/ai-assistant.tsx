@@ -5,11 +5,12 @@ import { useChat } from "@ai-sdk/react"
 import { DefaultChatTransport } from "ai"
 import { cn } from "@/lib/utils"
 import { 
-  MessageSquare, X, Send, Loader2, Sparkles, Mic, MicOff, 
-  Volume2, VolumeX, Table, List, Zap, DollarSign, Star,
-  Music, Flame, Camera, ChevronRight
+  X, Send, Loader2, Mic, MicOff, 
+  Volume2, VolumeX, Zap, DollarSign, Star,
+  Music, Flame, Camera, ChevronRight, Globe, Navigation
 } from "lucide-react"
 import { useApp } from "@/components/providers"
+import { LunaOrbButton } from "@/components/luna-orb-button"
 
 // Web Speech API type declarations
 interface SpeechRecognitionEvent extends Event {
@@ -44,6 +45,9 @@ declare global {
   }
 }
 
+type Personality = "barrio" | "fresa" | "professional"
+type Language = "es" | "en" | "fr"
+
 function getMessageText(message: { parts?: Array<{ type: string; text?: string }> }): string {
   if (!message.parts || !Array.isArray(message.parts)) return ""
   return message.parts
@@ -52,72 +56,91 @@ function getMessageText(message: { parts?: Array<{ type: string; text?: string }
     .join("")
 }
 
-// Natural conversation responses in Mexican Spanish and American English
+// Natural conversation responses with personality modes
 const naturalResponses = {
   es: {
-    greetings: [
-      "Hola! Que onda, como te puedo ayudar hoy?",
-      "Que tal! Listo para armar tu evento de diez?",
-      "Hey! Bienvenido a Eventos 360, que se te ofrece?",
-    ],
-    thinking: [
-      "Dejame checarlo...",
-      "Un momento, ya lo busco...",
-      "Va que va, dejame ver...",
-    ],
-    packages: [
-      "Tenemos varios paquetes bien chidos! Desde el basico Magic hasta el Sweet Dream que es lo maximo.",
-      "Mira, nuestros paquetes van desde $4,830 hasta eventos de lujo completos. Cual te late mas?",
-    ],
-    effects: [
-      "Los efectos especiales estan increibles - fuego, CO2, chisperos, laser... todo para que tu fiesta explote!",
-      "Tenemos de todo: maquinas de fuego, canones de CO2 con confeti, chisperos frios, humo y laser. Que te gustaria incluir?",
-    ],
-    promo: [
-      "Oye, ahorita tenemos promociones bien buenas! Preguntame cual te conviene.",
-      "Hay descuentos chidos si armas paquete completo. Te platico?",
-    ],
+    barrio: {
+      greetings: [
+        "Que onda carnal! Como te puedo ayudar?",
+        "Que pedo! Listo para armar tu fiestota?",
+        "Hey que tranza! Bienvenido a Eventos 360, que se te ofrece compa?",
+      ],
+      thinking: ["Dejame checo...", "Un ratito, ya lo busco...", "Va que va, ahorita te digo..."],
+      confirm: ["Sale!", "Va!", "Orale pues!", "Chido!"],
+    },
+    fresa: {
+      greetings: [
+        "Ay hola! Que gusto que nos visites, como te puedo ayudar?",
+        "Hola bonita/o! Lista para planear tu evento increible?",
+        "Holi! Bienvenido a Eventos 360, cuentame que necesitas!",
+      ],
+      thinking: ["Dejame ver...", "Un momento por favor...", "Ya te busco..."],
+      confirm: ["Perfecto!", "Increible!", "Me encanta!", "Genial!"],
+    },
+    professional: {
+      greetings: [
+        "Buen dia, soy Luna, su asesora de eventos. En que puedo ayudarle?",
+        "Bienvenido a Eventos 360. Es un placer atenderle.",
+        "Hola, estoy para ayudarle a planificar su evento ideal.",
+      ],
+      thinking: ["Permitame un momento...", "Verificando la informacion...", "En seguida le informo..."],
+      confirm: ["Perfecto.", "Excelente eleccion.", "Muy bien.", "Entendido."],
+    },
   },
   en: {
-    greetings: [
-      "Hey there! How can I help you plan your event today?",
-      "What's up! Ready to create an amazing party?",
-      "Hi! Welcome to Eventos 360, what can I do for you?",
-    ],
-    thinking: [
-      "Let me check that out...",
-      "One sec, looking it up...",
-      "Sure thing, let me see...",
-    ],
-    packages: [
-      "We've got awesome packages! From the basic Magic all the way up to the Sweet Dream premium experience.",
-      "Our packages range from $4,830 to full luxury events. What sounds good to you?",
-    ],
-    effects: [
-      "Special effects are fire - literally! We've got flames, CO2, cold sparklers, laser... everything to make your party pop!",
-      "We have it all: fire machines, CO2 cannons with confetti, cold sparklers, smoke and laser. What would you like?",
-    ],
-    promo: [
-      "Hey, we've got some great deals going on right now! Want me to tell you about them?",
-      "There are sweet discounts if you bundle services. Want the details?",
-    ],
+    barrio: {
+      greetings: ["Hey what's up! How can I help you?", "Yo! Ready to plan an epic party?", "Hey there! Welcome, what do you need?"],
+      thinking: ["Let me check...", "One sec...", "Gotcha, looking it up..."],
+      confirm: ["Cool!", "Awesome!", "Nice!", "Got it!"],
+    },
+    fresa: {
+      greetings: ["Oh hi! So happy you're here, how can I help?", "Hello gorgeous! Ready for an amazing event?", "Hiii! Welcome to Eventos 360!"],
+      thinking: ["Let me see...", "Just a moment...", "Looking that up for you..."],
+      confirm: ["Perfect!", "Amazing!", "Love it!", "Great!"],
+    },
+    professional: {
+      greetings: ["Good day, I'm Luna, your event advisor. How may I assist you?", "Welcome to Eventos 360. It's my pleasure to help.", "Hello, I'm here to help plan your ideal event."],
+      thinking: ["One moment please...", "Checking that for you...", "I'll have that information shortly..."],
+      confirm: ["Perfect.", "Excellent choice.", "Very well.", "Understood."],
+    },
+  },
+  fr: {
+    barrio: {
+      greetings: ["Salut! Comment je peux t'aider?", "Hey! Pret pour une fete de ouf?", "Coucou! Bienvenue chez Eventos 360!"],
+      thinking: ["Laisse-moi voir...", "Un instant...", "Je cherche..."],
+      confirm: ["Cool!", "Super!", "Genial!", "OK!"],
+    },
+    fresa: {
+      greetings: ["Oh bonjour! Ravie de te voir, comment puis-je t'aider?", "Coucou! Prete pour un evenement incroyable?", "Salut! Bienvenue!"],
+      thinking: ["Un moment s'il te plait...", "Je regarde...", "Je cherche ca pour toi..."],
+      confirm: ["Parfait!", "Magnifique!", "J'adore!", "Genial!"],
+    },
+    professional: {
+      greetings: ["Bonjour, je suis Luna, votre conseillere evenementielle. Comment puis-je vous aider?", "Bienvenue chez Eventos 360. C'est un plaisir de vous servir.", "Bonjour, je suis la pour vous aider a planifier votre evenement."],
+      thinking: ["Un moment s'il vous plait...", "Je verifie...", "Je vous informe tout de suite..."],
+      confirm: ["Parfait.", "Excellent choix.", "Tres bien.", "Compris."],
+    },
   },
 }
 
+// Language selection prompt
+const languagePrompts = {
+  es: "En que idioma prefieres que te atienda?",
+  en: "What language would you prefer?",
+  fr: "Dans quelle langue preferez-vous?",
+}
+
 // Format message with rich elements
-function RichMessage({ text, locale }: { text: string; locale: "es" | "en" }) {
-  // Detect if message contains price/package info
+function RichMessage({ text, locale }: { text: string; locale: Language }) {
   const hasPrice = /\$[\d,]+|MXN|pesos/i.test(text)
-  const hasList = text.includes("•") || text.includes("-") || text.includes("1.")
-  const hasPackage = /paquete|package|magic|party|luxury|fancy/i.test(text)
+  const hasList = text.includes("•") || text.includes("-") || /^\d+\./.test(text)
+  const hasPackage = /paquete|package|forfait|magic|party|luxury|fancy/i.test(text)
   
-  // Split into paragraphs
   const paragraphs = text.split(/\n\n+/)
   
   return (
     <div className="space-y-3">
       {paragraphs.map((p, i) => {
-        // Check if paragraph is a list
         const lines = p.split(/\n/)
         const isList = lines.length > 1 && lines.every(l => /^[\•\-\d\.]/.test(l.trim()))
         
@@ -134,7 +157,6 @@ function RichMessage({ text, locale }: { text: string; locale: "es" | "en" }) {
           )
         }
         
-        // Check for price highlights
         if (hasPrice && /\$[\d,]+/.test(p)) {
           return (
             <div key={i} className="flex items-center gap-2 rounded-lg bg-gold/10 px-3 py-2">
@@ -147,16 +169,15 @@ function RichMessage({ text, locale }: { text: string; locale: "es" | "en" }) {
         return <p key={i} className="text-sm leading-relaxed">{p}</p>
       })}
       
-      {/* Quick action chips if package mentioned */}
       {hasPackage && (
         <div className="flex flex-wrap gap-1.5 pt-1">
           <span className="inline-flex items-center gap-1 rounded-full bg-gold/10 px-2.5 py-1 text-[11px] font-medium text-gold">
             <Zap className="h-3 w-3" />
-            {locale === "es" ? "Ver detalles" : "View details"}
+            {locale === "es" ? "Ver detalles" : locale === "fr" ? "Voir details" : "View details"}
           </span>
           <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
             <Star className="h-3 w-3" />
-            {locale === "es" ? "Comparar" : "Compare"}
+            {locale === "es" ? "Comparar" : locale === "fr" ? "Comparer" : "Compare"}
           </span>
         </div>
       )}
@@ -164,22 +185,33 @@ function RichMessage({ text, locale }: { text: string; locale: "es" | "en" }) {
   )
 }
 
-export function AiAssistant() {
-  const { t, locale } = useApp()
-  const [isOpen, setIsOpen] = useState(false)
+interface AiAssistantProps {
+  isOpen?: boolean
+  onOpenChange?: (open: boolean) => void
+}
+
+export function AiAssistant({ isOpen: controlledOpen, onOpenChange }: AiAssistantProps) {
+  const { t, locale, setLocale } = useApp()
+  const [internalOpen, setInternalOpen] = useState(false)
   const [input, setInput] = useState("")
   const [isListening, setIsListening] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [voiceEnabled, setVoiceEnabled] = useState(true)
+  const [personality, setPersonality] = useState<Personality>("professional")
+  const [showLanguageSelector, setShowLanguageSelector] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const synthRef = useRef<SpeechSynthesisUtterance | null>(null)
+
+  const isOpen = controlledOpen !== undefined ? controlledOpen : internalOpen
+  const setIsOpen = onOpenChange || setInternalOpen
 
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({ api: "/api/chat" }),
   })
 
   const isLoading = status === "streaming" || status === "submitted"
+  const currentLang = locale as Language
 
   // Initialize speech recognition
   useEffect(() => {
@@ -189,13 +221,12 @@ export function AiAssistant() {
       recognitionRef.current = new SpeechRecognitionClass()
       recognitionRef.current.continuous = false
       recognitionRef.current.interimResults = false
-      recognitionRef.current.lang = locale === "es" ? "es-MX" : "en-US"
+      recognitionRef.current.lang = locale === "es" ? "es-MX" : locale === "fr" ? "fr-FR" : "en-US"
       
       recognitionRef.current.onresult = (event) => {
         const transcript = event.results[0][0].transcript
         setInput(transcript)
         setIsListening(false)
-        // Auto-send voice input
         if (transcript.trim()) {
           sendMessage({ text: transcript })
           setInput("")
@@ -207,13 +238,12 @@ export function AiAssistant() {
     }
   }, [locale, sendMessage])
 
-  // Speak the last assistant message
   const speakMessage = useCallback((text: string) => {
     if (!voiceEnabled || typeof window === "undefined" || !("speechSynthesis" in window)) return
     
     window.speechSynthesis.cancel()
     const utterance = new SpeechSynthesisUtterance(text)
-    utterance.lang = locale === "es" ? "es-MX" : "en-US"
+    utterance.lang = locale === "es" ? "es-MX" : locale === "fr" ? "fr-FR" : "en-US"
     utterance.rate = 1.0
     utterance.pitch = 1.0
     
@@ -224,7 +254,6 @@ export function AiAssistant() {
     window.speechSynthesis.speak(utterance)
   }, [locale, voiceEnabled])
 
-  // Auto-speak new messages
   useEffect(() => {
     if (messages.length > 0 && voiceEnabled) {
       const lastMsg = messages[messages.length - 1]
@@ -246,7 +275,7 @@ export function AiAssistant() {
       recognitionRef.current.stop()
       setIsListening(false)
     } else {
-      recognitionRef.current.lang = locale === "es" ? "es-MX" : "en-US"
+      recognitionRef.current.lang = locale === "es" ? "es-MX" : locale === "fr" ? "fr-FR" : "en-US"
       recognitionRef.current.start()
       setIsListening(true)
     }
@@ -264,6 +293,20 @@ export function AiAssistant() {
     if (!input.trim() || isLoading) return
     sendMessage({ text: input })
     setInput("")
+    setShowLanguageSelector(false)
+  }
+
+  const selectLanguage = (lang: Language) => {
+    setLocale(lang)
+    setShowLanguageSelector(false)
+    const responses = naturalResponses[lang][personality]
+    const greeting = responses.greetings[Math.floor(Math.random() * responses.greetings.length)]
+    speakMessage(greeting)
+  }
+
+  const navigateTo = (path: string) => {
+    window.location.href = path
+    setIsOpen(false)
   }
 
   const quickSuggestions = locale === "es" 
@@ -273,6 +316,13 @@ export function AiAssistant() {
         { icon: Camera, label: "Cabina 360", query: "Como funciona la cabina 360?" },
         { icon: DollarSign, label: "Cotizar", query: "Quiero cotizar mi evento" },
       ]
+    : locale === "fr"
+    ? [
+        { icon: Music, label: "Forfaits DJ", query: "Quels sont les forfaits DJ?" },
+        { icon: Flame, label: "Effets", query: "Quels effets speciaux avez-vous?" },
+        { icon: Camera, label: "Cabine 360", query: "Comment fonctionne la cabine 360?" },
+        { icon: DollarSign, label: "Devis", query: "Je veux un devis" },
+      ]
     : [
         { icon: Music, label: "DJ Packages", query: "What DJ packages do you have?" },
         { icon: Flame, label: "Effects", query: "What special effects are available?" },
@@ -280,24 +330,32 @@ export function AiAssistant() {
         { icon: DollarSign, label: "Quote", query: "I want to get a quote" },
       ]
 
+  const navigationItems = [
+    { label: locale === "es" ? "Ver Catalogo" : locale === "fr" ? "Voir Catalogue" : "View Catalog", path: "/catalogo" },
+    { label: locale === "es" ? "Servicios" : locale === "fr" ? "Services" : "Services", path: "/#servicios" },
+    { label: locale === "es" ? "Galeria" : locale === "fr" ? "Galerie" : "Gallery", path: "/#galeria" },
+    { label: locale === "es" ? "Contacto" : locale === "fr" ? "Contact" : "Contact", path: "/#contacto" },
+  ]
+
   return (
     <>
-      {/* Floating trigger button - Voice first design */}
-      <button
-        onClick={() => setIsOpen(true)}
+      {/* Floating trigger button with Luna orb */}
+      <div
         className={cn(
-          "fixed bottom-6 left-6 z-50 flex items-center gap-3 rounded-full border-2 border-gold/30 bg-card/90 px-5 py-3 text-sm font-medium backdrop-blur-md transition-all hover:border-gold hover:shadow-[0_0_30px_hsl(32,100%,52%,0.3)]",
+          "fixed bottom-6 left-6 z-50 flex items-center gap-3 rounded-full border-2 border-gold/30 bg-card/90 pl-2 pr-5 py-2 backdrop-blur-md transition-all hover:border-gold hover:shadow-[0_0_30px_hsl(32,100%,52%,0.3)] cursor-pointer",
           isOpen && "hidden"
         )}
-        aria-label="Open AI Assistant"
+        onClick={() => setIsOpen(true)}
       >
-        <div className="relative">
-          <div className="absolute inset-0 animate-ping rounded-full bg-gold/30" />
-          <Sparkles className="relative h-5 w-5 text-gold" />
+        <LunaOrbButton onClick={() => setIsOpen(true)} size="md" isSpeaking={isSpeaking} />
+        <div className="text-left">
+          <span className="block text-sm font-medium text-foreground">Luna</span>
+          <span className="block text-xs text-muted-foreground">
+            {locale === "es" ? "Hablame!" : locale === "fr" ? "Parle-moi!" : "Talk to me!"}
+          </span>
         </div>
-        <span className="text-foreground">{locale === "es" ? "Habla con Luna" : "Talk to Luna"}</span>
-        <Mic className="h-4 w-4 text-muted-foreground" />
-      </button>
+        <Mic className="h-4 w-4 text-gold" />
+      </div>
 
       {/* Chat panel */}
       <div
@@ -314,25 +372,23 @@ export function AiAssistant() {
           {/* Header */}
           <div className="flex items-center justify-between border-b border-border px-5 py-4">
             <div className="flex items-center gap-3">
-              <div className="relative">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-neon-orange to-gold">
-                  <Sparkles className="h-5 w-5 text-white" />
-                </div>
-                {isSpeaking && (
-                  <span className="absolute -right-0.5 -top-0.5 flex h-3 w-3">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-75" />
-                    <span className="relative inline-flex h-3 w-3 rounded-full bg-gold" />
-                  </span>
-                )}
-              </div>
+              <LunaOrbButton onClick={() => {}} size="md" isSpeaking={isSpeaking} isActive={isListening} />
               <div>
                 <h3 className="text-sm font-semibold text-foreground">Luna</h3>
                 <p className="text-xs text-muted-foreground">
-                  {locale === "es" ? "Tu asesora de eventos" : "Your event advisor"}
+                  {locale === "es" ? "Tu asesora de eventos" : locale === "fr" ? "Votre conseillere" : "Your event advisor"}
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
+              {/* Language toggle */}
+              <button
+                onClick={() => setShowLanguageSelector(true)}
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary/80 text-muted-foreground transition-all hover:bg-secondary hover:text-gold"
+                aria-label="Change language"
+              >
+                <Globe className="h-4 w-4" />
+              </button>
               {/* Voice toggle */}
               <button
                 onClick={() => {
@@ -361,9 +417,95 @@ export function AiAssistant() {
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto px-5 py-4">
-            {messages.length === 0 && (
+            {/* Language selector on first open */}
+            {showLanguageSelector && messages.length === 0 && (
               <div className="flex flex-col items-center justify-center h-full text-center">
-                {/* Voice-first prompt */}
+                <LunaOrbButton onClick={() => {}} size="lg" isSpeaking={isSpeaking} className="mb-6" />
+                
+                <h4 className="mb-4 text-base font-semibold text-foreground">
+                  {languagePrompts[currentLang]}
+                </h4>
+                
+                <div className="flex gap-3 mb-8">
+                  <button
+                    onClick={() => selectLanguage("es")}
+                    className={cn(
+                      "flex flex-col items-center gap-2 rounded-xl border-2 px-6 py-4 transition-all",
+                      locale === "es" 
+                        ? "border-gold bg-gold/10 text-gold" 
+                        : "border-border bg-card/50 text-foreground hover:border-gold/40"
+                    )}
+                  >
+                    <span className="text-2xl">🇲🇽</span>
+                    <span className="text-sm font-medium">Espanol</span>
+                  </button>
+                  <button
+                    onClick={() => selectLanguage("en")}
+                    className={cn(
+                      "flex flex-col items-center gap-2 rounded-xl border-2 px-6 py-4 transition-all",
+                      locale === "en" 
+                        ? "border-gold bg-gold/10 text-gold" 
+                        : "border-border bg-card/50 text-foreground hover:border-gold/40"
+                    )}
+                  >
+                    <span className="text-2xl">🇺🇸</span>
+                    <span className="text-sm font-medium">English</span>
+                  </button>
+                  <button
+                    onClick={() => selectLanguage("fr")}
+                    className={cn(
+                      "flex flex-col items-center gap-2 rounded-xl border-2 px-6 py-4 transition-all",
+                      locale === "fr" 
+                        ? "border-gold bg-gold/10 text-gold" 
+                        : "border-border bg-card/50 text-foreground hover:border-gold/40"
+                    )}
+                  >
+                    <span className="text-2xl">🇫🇷</span>
+                    <span className="text-sm font-medium">Francais</span>
+                  </button>
+                </div>
+
+                {/* Personality selector (Spanish only) */}
+                {locale === "es" && (
+                  <div className="w-full">
+                    <p className="text-xs text-muted-foreground mb-2">Estilo de conversacion:</p>
+                    <div className="flex gap-2 justify-center">
+                      <button
+                        onClick={() => setPersonality("barrio")}
+                        className={cn(
+                          "rounded-full px-3 py-1.5 text-xs font-medium transition-all",
+                          personality === "barrio" ? "bg-gold text-white" : "bg-secondary text-muted-foreground hover:bg-secondary/80"
+                        )}
+                      >
+                        Casual
+                      </button>
+                      <button
+                        onClick={() => setPersonality("fresa")}
+                        className={cn(
+                          "rounded-full px-3 py-1.5 text-xs font-medium transition-all",
+                          personality === "fresa" ? "bg-gold text-white" : "bg-secondary text-muted-foreground hover:bg-secondary/80"
+                        )}
+                      >
+                        Amigable
+                      </button>
+                      <button
+                        onClick={() => setPersonality("professional")}
+                        className={cn(
+                          "rounded-full px-3 py-1.5 text-xs font-medium transition-all",
+                          personality === "professional" ? "bg-gold text-white" : "bg-secondary text-muted-foreground hover:bg-secondary/80"
+                        )}
+                      >
+                        Profesional
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Empty state with voice-first prompt */}
+            {!showLanguageSelector && messages.length === 0 && (
+              <div className="flex flex-col items-center justify-center h-full text-center">
                 <button
                   onClick={toggleListening}
                   className={cn(
@@ -392,26 +534,43 @@ export function AiAssistant() {
                 </button>
                 
                 <h4 className="mb-2 text-base font-semibold text-foreground">
-                  {locale === "es" ? "Hola! Soy Luna" : "Hey! I'm Luna"}
+                  {t.ai.welcome}
                 </h4>
                 <p className="text-sm leading-relaxed text-muted-foreground max-w-[300px] mb-6">
-                  {locale === "es" 
-                    ? "Preguntame lo que quieras sobre eventos, paquetes, precios o efectos especiales. Puedes hablarme o escribir!"
-                    : "Ask me anything about events, packages, prices, or special effects. You can talk to me or type!"}
+                  {t.ai.welcomeDesc}
                 </p>
                 
-                {/* Quick suggestions as cards */}
-                <div className="grid grid-cols-2 gap-2 w-full">
+                {/* Quick suggestions */}
+                <div className="grid grid-cols-2 gap-2 w-full mb-4">
                   {quickSuggestions.map((s) => (
                     <button
                       key={s.label}
-                      onClick={() => sendMessage({ text: s.query })}
+                      onClick={() => { sendMessage({ text: s.query }); setShowLanguageSelector(false); }}
                       className="flex items-center gap-2 rounded-xl border-2 border-border bg-card/50 px-3 py-2.5 text-left transition-all hover:border-gold/40 hover:bg-card"
                     >
                       <s.icon className="h-4 w-4 text-gold flex-shrink-0" />
                       <span className="text-xs font-medium text-foreground">{s.label}</span>
                     </button>
                   ))}
+                </div>
+
+                {/* Navigation shortcuts */}
+                <div className="w-full border-t border-border pt-4">
+                  <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1 justify-center">
+                    <Navigation className="h-3 w-3" />
+                    {locale === "es" ? "Navegacion rapida" : locale === "fr" ? "Navigation rapide" : "Quick navigation"}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5 justify-center">
+                    {navigationItems.map((item) => (
+                      <button
+                        key={item.path}
+                        onClick={() => navigateTo(item.path)}
+                        className="rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground hover:bg-gold/10 hover:text-gold transition-all"
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
@@ -439,7 +598,7 @@ export function AiAssistant() {
                     {isUser ? (
                       <p className="text-sm leading-relaxed">{text}</p>
                     ) : (
-                      <RichMessage text={text} locale={locale} />
+                      <RichMessage text={text} locale={currentLang} />
                     )}
                   </div>
                 </div>
@@ -450,7 +609,7 @@ export function AiAssistant() {
               <div className="mb-3 flex justify-start">
                 <div className="flex items-center gap-2 rounded-2xl rounded-bl-md border-2 border-border bg-card/80 px-4 py-3 text-sm text-muted-foreground">
                   <Loader2 className="h-4 w-4 animate-spin text-gold" />
-                  <span>{locale === "es" ? "Dejame ver..." : "Let me check..."}</span>
+                  <span>{t.ai.thinking}</span>
                 </div>
               </div>
             )}
@@ -461,7 +620,6 @@ export function AiAssistant() {
           {/* Input with voice button */}
           <div className="border-t border-border px-4 py-3">
             <form onSubmit={handleSubmit} className="flex items-center gap-2">
-              {/* Voice input button */}
               <button
                 type="button"
                 onClick={toggleListening}
@@ -481,14 +639,14 @@ export function AiAssistant() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder={locale === "es" ? "Escribe o habla..." : "Type or speak..."}
+                placeholder={t.ai.placeholder}
                 disabled={isLoading}
                 className="flex-1 rounded-xl border-2 border-border bg-card/50 px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-gold/50 focus:outline-none disabled:opacity-50"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isLoading}
-                className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-neon-orange to-gold text-white transition-all hover:shadow-[0_0_20px_hsl(32,100%,52%,0.4)] disabled:opacity-40"
+                className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-neon-orange to-gold text-white transition-all hover:shadow-[0_0_20px_hsl(32,100%,52%,0.4)] disabled:opacity-50"
                 aria-label="Send message"
               >
                 {isLoading ? (

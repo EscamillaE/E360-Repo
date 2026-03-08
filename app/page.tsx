@@ -1,3 +1,6 @@
+"use client"
+
+import { useState } from "react"
 import { Navbar } from "@/components/navbar"
 import { HeroSection } from "@/components/hero-section"
 import { ServicesSection } from "@/components/services-section"
@@ -5,23 +8,23 @@ import { VideoShowcase } from "@/components/video-showcase"
 import { PortalCards } from "@/components/portal-cards"
 import { QuotePreview } from "@/components/quote-preview"
 import { Footer } from "@/components/footer"
-import { AudioParticles } from "@/components/audio-particles"
 import { AiAssistant } from "@/components/ai-assistant"
 
 export default function HomePage() {
+  const [isLunaOpen, setIsLunaOpen] = useState(false)
+
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-background">
-      {/* Animated particles background */}
-      <AudioParticles />
+      {/* Navigation with Luna orb */}
+      <Navbar onLunaClick={() => setIsLunaOpen(true)} />
 
-      {/* Navigation */}
-      <Navbar />
-
-      {/* Hero */}
+      {/* Hero with particles */}
       <HeroSection />
 
       {/* Services */}
-      <ServicesSection />
+      <div id="servicios">
+        <ServicesSection />
+      </div>
 
       {/* Portal Cards */}
       <PortalCards />
@@ -35,10 +38,12 @@ export default function HomePage() {
       <QuotePreview />
 
       {/* Footer with Contact */}
-      <Footer />
+      <div id="contacto">
+        <Footer />
+      </div>
 
-      {/* AI Assistant */}
-      <AiAssistant />
+      {/* AI Assistant - Luna */}
+      <AiAssistant isOpen={isLunaOpen} onOpenChange={setIsLunaOpen} />
     </main>
   )
 }

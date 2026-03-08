@@ -18,6 +18,7 @@ interface AppContextType {
   setTheme: (theme: "light" | "dark") => void
   toggleTheme: () => void
   isMounted: boolean
+  cycleLocale: () => void
 }
 
 const AppContext = createContext<AppContextType | null>(null)
@@ -30,7 +31,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setIsMounted(true)
     const saved = localStorage.getItem("e360-locale") as Locale | null
-    if (saved === "en" || saved === "es") setLocaleState(saved)
+    if (saved === "en" || saved === "es" || saved === "fr") setLocaleState(saved)
     const savedTheme = localStorage.getItem("e360-theme") as "light" | "dark" | null
     if (savedTheme === "light" || savedTheme === "dark") {
       setThemeState(savedTheme)
@@ -49,6 +50,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("e360-locale", l)
   }, [])
 
+  const cycleLocale = useCallback(() => {
+    setLocaleState((prev) => {
+      const next = prev === "es" ? "en" : prev === "en" ? "fr" : "es"
+      localStorage.setItem("e360-locale", next)
+      return next
+    })
+  }, [])
+
   const setTheme = useCallback((t: "light" | "dark") => {
     setThemeState(t)
   }, [])
@@ -61,7 +70,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   return (
     <AppContext.Provider
-      value={{ locale, setLocale, t, theme, setTheme, toggleTheme, isMounted }}
+      value={{ locale, setLocale, t, theme, setTheme, toggleTheme, isMounted, cycleLocale }}
     >
       {children}
     </AppContext.Provider>
