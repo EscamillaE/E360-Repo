@@ -19,7 +19,7 @@ export function E360AnimatedLogo({
   const animationRef = useRef<number | null>(null)
   const audioContextRef = useRef<AudioContext | null>(null)
   const analyserRef = useRef<AnalyserNode | null>(null)
-  const dataArrayRef = useRef<Uint8Array | null>(null)
+  const dataArrayRef = useRef<Uint8Array<ArrayBuffer> | null>(null)
   const [localMicActive, setLocalMicActive] = useState(false)
   
   const isMicOn = micActive || localMicActive
@@ -93,7 +93,7 @@ export function E360AnimatedLogo({
         source.connect(analyserRef.current)
         analyserRef.current.fftSize = 256
         const bufferLength = analyserRef.current.frequencyBinCount
-        dataArrayRef.current = new Uint8Array(bufferLength)
+        dataArrayRef.current = new Uint8Array(bufferLength) as Uint8Array<ArrayBuffer>
       } catch (err) {
         console.error("Microphone access denied:", err)
       }
