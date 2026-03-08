@@ -33,7 +33,7 @@ export function GalleryEditModal({ isOpen, onClose, mediaItems, onUpdate }: Gall
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const t = {
+  const translations = {
     es: {
       title: "Editar Galeria",
       addMedia: "Agregar Media",
@@ -74,7 +74,28 @@ export function GalleryEditModal({ isOpen, onClose, mediaItems, onUpdate }: Gall
       edit: "Edit",
       confirmDelete: "Are you sure you want to delete this item?",
     },
-  }[locale]
+    fr: {
+      title: "Modifier la Galerie",
+      addMedia: "Ajouter un Media",
+      upload: "Telecharger le fichier",
+      uploading: "Telechargement...",
+      save: "Enregistrer",
+      saving: "Enregistrement...",
+      cancel: "Annuler",
+      delete: "Supprimer",
+      titleEs: "Titre (Espagnol)",
+      titleEn: "Titre (Anglais)",
+      descEs: "Description (Espagnol)",
+      descEn: "Description (Anglais)",
+      featured: "En vedette",
+      dragToReorder: "Glisser pour reordonner",
+      noMedia: "Aucun media dans la galerie",
+      addFirst: "Ajoutez votre premiere video ou image",
+      edit: "Modifier",
+      confirmDelete: "Etes-vous sur de vouloir supprimer cet element?",
+    },
+  }
+  const t = translations[locale]
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
