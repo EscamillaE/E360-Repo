@@ -111,9 +111,9 @@ function FlipProductCard({
     >
       <div className="flip-card-inner w-full h-full">
         {/* Front of Card */}
-        <div className={`flip-card-front rounded-2xl overflow-hidden card-hover-outline ${cartQuantity > 0 ? "border-gold/60" : ""}`}>
+        <div className={`flip-card-front rounded-2xl overflow-hidden border-2 bg-card/50 backdrop-blur-sm transition-all duration-300 ${cartQuantity > 0 ? "border-gold shadow-[0_0_30px_hsl(32,100%,52%,0.35)]" : "border-border hover:border-gold hover:shadow-[0_0_25px_hsl(32,100%,52%,0.25)]"}`}>
           {/* Image */}
-          <div className="relative h-56 w-full overflow-hidden bg-secondary">
+          <div className="relative h-56 w-full overflow-hidden bg-secondary/50">
             {item.image && !imgError ? (
               <Image
                 src={item.image}
@@ -143,7 +143,7 @@ function FlipProductCard({
           </div>
 
           {/* Content */}
-          <div className="p-5 bg-card h-[224px] flex flex-col">
+          <div className="p-5 bg-card/80 h-[224px] flex flex-col">
             <h3 className="text-xl font-semibold text-foreground leading-tight mb-2 line-clamp-2">
               {item.name}
             </h3>
@@ -170,7 +170,7 @@ function FlipProductCard({
         </div>
 
         {/* Back of Card */}
-        <div className="flip-card-back rounded-2xl overflow-hidden card-hover-outline bg-card">
+        <div className="flip-card-back rounded-2xl overflow-hidden border-2 border-gold bg-card/50 backdrop-blur-sm shadow-[0_0_25px_hsl(32,100%,52%,0.25)]">
           <div className="p-5 h-full flex flex-col">
             {/* Header */}
             <div className="flex items-start justify-between mb-4">
@@ -401,10 +401,10 @@ function CategoryTabs({
       >
         <button
           onClick={() => onTabChange(null)}
-          className={`flex-shrink-0 flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all hover-outline ${
+          className={`flex-shrink-0 flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-medium transition-all duration-300 ${
             activeTab === null
-              ? "bg-gradient-to-r from-neon-orange to-gold text-background shadow-lg shadow-gold/30"
-              : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-gold"
+              ? "border-2 border-gold bg-gradient-to-r from-neon-orange to-gold text-background shadow-[0_4px_20px_hsl(32,100%,52%,0.4)]"
+              : "border-2 border-border bg-card/50 backdrop-blur-sm text-muted-foreground hover:text-foreground hover:border-gold hover:shadow-[0_0_15px_hsl(32,100%,52%,0.2)]"
           }`}
         >
           <Sparkles className="h-4 w-4" />
@@ -416,10 +416,10 @@ function CategoryTabs({
             <button
               key={category.id}
               onClick={() => onTabChange(category.id)}
-              className={`flex-shrink-0 flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all hover-outline ${
+              className={`flex-shrink-0 flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-medium transition-all duration-300 ${
                 activeTab === category.id
-                  ? "bg-gradient-to-r from-neon-orange to-gold text-background shadow-lg shadow-gold/30"
-                  : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-gold"
+                  ? "border-2 border-gold bg-gradient-to-r from-neon-orange to-gold text-background shadow-[0_4px_20px_hsl(32,100%,52%,0.4)]"
+                  : "border-2 border-border bg-card/50 backdrop-blur-sm text-muted-foreground hover:text-foreground hover:border-gold hover:shadow-[0_0_15px_hsl(32,100%,52%,0.2)]"
               }`}
             >
               <Icon className="h-4 w-4" />
