@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react"
 import { Play, Volume2, VolumeX, Settings } from "lucide-react"
 import { useApp } from "@/components/providers"
+import { E360AnimatedLogo } from "@/components/e360-animated-logo"
 import { GalleryAuthModal } from "@/components/gallery-auth-modal"
 import { GalleryEditModal } from "@/components/gallery-edit-modal"
 import { createClient } from "@/lib/supabase/client"
@@ -307,6 +308,11 @@ export function VideoShowcase() {
               <Settings className="h-4 w-4" />
             </button>
 
+            {/* E360 Animated Logo */}
+            <div className="mb-6">
+              <E360AnimatedLogo size={100} className="mx-auto" />
+            </div>
+            
             <p className="gradient-neon-text mb-3 text-[11px] font-medium uppercase tracking-[0.35em]">
               {t.gallery.label}
             </p>

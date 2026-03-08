@@ -23,6 +23,7 @@ import {
   LogOut,
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
+import { AiAssistant } from "@/components/ai-assistant"
 
 type AdminTab = "dashboard" | "catalog" | "quotes" | "clients" | "settings"
 
@@ -801,6 +802,9 @@ export default function AdminPage() {
         client={editingClient}
         onSave={handleSaveClient}
       />
+      
+      {/* AI Assistant - Luna */}
+      <AiAssistant />
     </div>
   )
 }
