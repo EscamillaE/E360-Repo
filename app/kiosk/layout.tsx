@@ -3,7 +3,11 @@ import type { Metadata, Viewport } from "next"
 export const metadata: Metadata = {
   title: "Eventos 360 - Kiosk | Expo Queretaro 2026",
   description:
-    "Modo kiosk para la expo en el Centro de Negocios de Queretaro. Explora nuestros servicios de produccion de eventos.",
+    "Modo kiosk interactivo para la expo en el Centro de Negocios de Queretaro. Explora nuestros servicios de produccion de eventos: Cabina 360, DJ, iluminacion, efectos especiales y mas.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 }
 
 export const viewport: Viewport = {
@@ -19,5 +23,9 @@ export default function KioskLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <>{children}</>
+  return (
+    <div className="kiosk-mode min-h-screen bg-background">
+      {children}
+    </div>
+  )
 }

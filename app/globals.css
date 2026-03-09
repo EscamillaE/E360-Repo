@@ -172,3 +172,67 @@ body {
     touch-action: pan-y;
   }
 }
+
+/* Kiosk Mode Styles */
+.kiosk-mode {
+  cursor: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.kiosk-mode * {
+  cursor: none;
+}
+
+/* Show cursor on hover for interactive elements in dev */
+@media (hover: hover) {
+  .kiosk-mode button,
+  .kiosk-mode a,
+  .kiosk-mode [role="button"] {
+    cursor: pointer;
+  }
+}
+
+/* Line clamp utilities */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Snap scroll utilities */
+.snap-x {
+  scroll-snap-type: x mandatory;
+}
+
+.snap-mandatory {
+  scroll-snap-type: x mandatory;
+}
+
+.snap-center {
+  scroll-snap-align: center;
+}
+
+/* Animation for screensaver */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
