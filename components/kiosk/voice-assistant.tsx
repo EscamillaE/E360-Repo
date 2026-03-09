@@ -150,7 +150,7 @@ export function VoiceAssistant({ onNavigate }: VoiceAssistantProps) {
   const [isMuted, setIsMuted] = useState(false)
   const [transcript, setTranscript] = useState("")
   const [response, setResponse] = useState("")
-  const recognitionRef = useRef<SpeechRecognition | null>(null)
+  const recognitionRef = useRef<InstanceType<NonNullable<SpeechRecognitionType>> | null>(null)
   const synthRef = useRef<SpeechSynthesisUtterance | null>(null)
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null)
 
