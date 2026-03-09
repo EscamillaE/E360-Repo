@@ -1,9 +1,14 @@
 "use client"
 
+/// <reference path="../../types/speech.d.ts" />
+
 import { useState, useRef, useEffect, useCallback } from "react"
 import { TalkingOrb } from "./talking-orb"
 import { Mic, MicOff, Volume2, VolumeX, Globe } from "lucide-react"
 import { cn } from "@/lib/utils"
+
+// Use a more permissive type for the recognition ref
+type SpeechRecognitionInstance = InstanceType<typeof window.SpeechRecognition> | InstanceType<typeof window.webkitSpeechRecognition> | null
 
 type Language = "es-MX" | "en-US"
 
@@ -59,7 +64,7 @@ export function VoiceAssistant({ onNavigate, className }: VoiceAssistantProps) {
   const [response, setResponse] = useState("")
   const [hasGreeted, setHasGreeted] = useState(false)
   
-  const recognitionRef = useRef<SpeechRecognition | null>(null)
+  const recognitionRef = useRef<SpeechRecognitionInstance>(null)
   const synthRef = useRef<SpeechSynthesisUtterance | null>(null)
   const idleTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -343,10 +348,4 @@ export function VoiceAssistant({ onNavigate, className }: VoiceAssistantProps) {
   )
 }
 
-// Type declarations for Web Speech API
-declare global {
-  interface Window {
-    SpeechRecognition: typeof SpeechRecognition
-    webkitSpeechRecognition: typeof SpeechRecognition
-  }
-}
+
