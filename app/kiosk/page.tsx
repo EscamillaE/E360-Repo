@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import Image from "next/image"
 import dynamic from "next/dynamic"
 import {
@@ -91,20 +91,19 @@ export default function KioskPage() {
   const [selectedCategory, setSelectedCategory] = useState<CatalogCategory | null>(null)
   const [language, setLanguage] = useState<Language>("es")
   const [showAssistant, setShowAssistant] = useState(true)
-  const [idleTimer, setIdleTimer] = useState<NodeJS.Timeout | null>(null)
+  const idleTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   const t = TRANSLATIONS[language]
 
   // Auto-return to main screen after 90s of inactivity
   const resetIdleTimer = useCallback(() => {
-    if (idleTimer) clearTimeout(idleTimer)
-    const timer = setTimeout(() => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
+    idleTimerRef.current = setTimeout(() => {
       setView("main")
       setSelectedCategory(null)
       setShowAssistant(true)
     }, 90000)
-    setIdleTimer(timer)
-  }, [idleTimer])
+  }, [])
 
   useEffect(() => {
     const handleInteraction = () => resetIdleTimer()
@@ -114,9 +113,9 @@ export default function KioskPage() {
     return () => {
       window.removeEventListener("touchstart", handleInteraction)
       window.removeEventListener("click", handleInteraction)
-      if (idleTimer) clearTimeout(idleTimer)
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
     }
-  }, [resetIdleTimer, idleTimer])
+  }, [resetIdleTimer])
 
   return (
     <div className="flex min-h-screen flex-col bg-background select-none overflow-hidden">
