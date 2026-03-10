@@ -59,7 +59,6 @@ export default function KioskPage() {
   const [view, setView] = useState<KioskView>("welcome")
   const [selectedCategory, setSelectedCategory] = useState<CatalogCategory | null>(null)
   const [selectedProduct, setSelectedProduct] = useState<CatalogItem | null>(null)
-  const [idleTimer, setIdleTimer] = useState<ReturnType<typeof setTimeout> | null>(null)
   const [attractIndex, setAttractIndex] = useState(0)
   const [showVideo, setShowVideo] = useState(false)
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
@@ -68,18 +67,18 @@ export default function KioskPage() {
   const [showAdminHint, setShowAdminHint] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const lastTouchTime = useRef(0)
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Reset to screensaver after inactivity
   const resetIdleTimer = useCallback(() => {
-    if (idleTimer) clearTimeout(idleTimer)
-    const timer = setTimeout(() => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
+    idleTimerRef.current = setTimeout(() => {
       setView("screensaver")
       setSelectedCategory(null)
       setSelectedProduct(null)
       setShowVideo(false)
     }, IDLE_TIMEOUT)
-    setIdleTimer(timer)
-  }, [idleTimer])
+  }, [])
 
   // Screensaver attract message rotation
   useEffect(() => {
@@ -107,9 +106,9 @@ export default function KioskPage() {
     return () => {
       window.removeEventListener("touchstart", handleInteraction)
       window.removeEventListener("click", handleInteraction)
-      if (idleTimer) clearTimeout(idleTimer)
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
     }
-  }, [view, resetIdleTimer, idleTimer])
+  }, [view, resetIdleTimer])
 
   // Admin access via logo tap (5 taps in 3 seconds)
   const handleLogoTap = () => {
