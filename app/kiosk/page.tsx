@@ -95,9 +95,11 @@ export default function KioskPage() {
 
   const t = TRANSLATIONS[language]
 
-  // Auto-return to main screen after 90s of inactivity
+  // Auto-return to main screen after 90s of inactivity (uses ref to prevent re-render loops)
   const resetIdleTimer = useCallback(() => {
-    if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
+    if (idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current)
+    }
     idleTimerRef.current = setTimeout(() => {
       setView("main")
       setSelectedCategory(null)
