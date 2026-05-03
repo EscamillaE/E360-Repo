@@ -29,6 +29,8 @@ import {
 } from "lucide-react"
 import { catalog, type CatalogCategory, type CatalogItem } from "@/lib/catalog-data"
 import { QRCodeSVG } from "qrcode.react"
+import { UnifiedCatalog } from "@/components/unified-catalog"
+import { AudioPlayer } from "@/components/audio-player"
 
 const iconMap: Record<string, React.ElementType> = {
   music: Music,
