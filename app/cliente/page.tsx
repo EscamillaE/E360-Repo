@@ -266,6 +266,7 @@ export default function ClientePage() {
               className="flex items-center gap-2 text-muted-foreground transition-colors hover:text-foreground"
             >
               <ArrowLeft className="h-4 w-4" />
+              <span className="text-sm hidden sm:inline">Inicio</span>
             </Link>
             <div className="h-5 w-px bg-border" />
             <div className="flex items-center gap-3">
